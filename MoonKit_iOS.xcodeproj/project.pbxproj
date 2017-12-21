@@ -1,0 +1,437 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C29DBCF01FEC03C700A7EB56 /* MoonKit_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBCE61FEC03C700A7EB56 /* MoonKit_iOS.framework */; };
+		C29DBCF51FEC03C700A7EB56 /* MoonKit_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBCF41FEC03C700A7EB56 /* MoonKit_iOSTests.swift */; };
+		C29DBCF71FEC03C700A7EB56 /* MoonKit_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBCE91FEC03C700A7EB56 /* MoonKit_iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C29DBCF11FEC03C700A7EB56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C29DBCDD1FEC03C700A7EB56 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C29DBCE51FEC03C700A7EB56;
+			remoteInfo = MoonKit_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C29DBCE61FEC03C700A7EB56 /* MoonKit_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C29DBCE91FEC03C700A7EB56 /* MoonKit_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit_iOS.h; sourceTree = "<group>"; };
+		C29DBCEA1FEC03C700A7EB56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKit_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C29DBCF41FEC03C700A7EB56 /* MoonKit_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonKit_iOSTests.swift; sourceTree = "<group>"; };
+		C29DBCF61FEC03C700A7EB56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C29DBCE21FEC03C700A7EB56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C29DBCEC1FEC03C700A7EB56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C29DBCF01FEC03C700A7EB56 /* MoonKit_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C29DBCDC1FEC03C700A7EB56 = {
+			isa = PBXGroup;
+			children = (
+				C29DBCE81FEC03C700A7EB56 /* MoonKit_iOS */,
+				C29DBCF31FEC03C700A7EB56 /* MoonKit_iOSTests */,
+				C29DBCE71FEC03C700A7EB56 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C29DBCE71FEC03C700A7EB56 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C29DBCE61FEC03C700A7EB56 /* MoonKit_iOS.framework */,
+				C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C29DBCE81FEC03C700A7EB56 /* MoonKit_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C29DBCE91FEC03C700A7EB56 /* MoonKit_iOS.h */,
+				C29DBCEA1FEC03C700A7EB56 /* Info.plist */,
+			);
+			path = MoonKit_iOS;
+			sourceTree = "<group>";
+		};
+		C29DBCF31FEC03C700A7EB56 /* MoonKit_iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				C29DBCF41FEC03C700A7EB56 /* MoonKit_iOSTests.swift */,
+				C29DBCF61FEC03C700A7EB56 /* Info.plist */,
+			);
+			path = MoonKit_iOSTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C29DBCE31FEC03C700A7EB56 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C29DBCF71FEC03C700A7EB56 /* MoonKit_iOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C29DBCFA1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOS" */;
+			buildPhases = (
+				C29DBCE11FEC03C700A7EB56 /* Sources */,
+				C29DBCE21FEC03C700A7EB56 /* Frameworks */,
+				C29DBCE31FEC03C700A7EB56 /* Headers */,
+				C29DBCE41FEC03C700A7EB56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MoonKit_iOS;
+			productName = MoonKit_iOS;
+			productReference = C29DBCE61FEC03C700A7EB56 /* MoonKit_iOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C29DBCEE1FEC03C700A7EB56 /* MoonKit_iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C29DBCFD1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOSTests" */;
+			buildPhases = (
+				C29DBCEB1FEC03C700A7EB56 /* Sources */,
+				C29DBCEC1FEC03C700A7EB56 /* Frameworks */,
+				C29DBCED1FEC03C700A7EB56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C29DBCF21FEC03C700A7EB56 /* PBXTargetDependency */,
+			);
+			name = MoonKit_iOSTests;
+			productName = MoonKit_iOSTests;
+			productReference = C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C29DBCDD1FEC03C700A7EB56 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Moondeer Studios";
+				TargetAttributes = {
+					C29DBCE51FEC03C700A7EB56 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					C29DBCEE1FEC03C700A7EB56 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C29DBCE01FEC03C700A7EB56 /* Build configuration list for PBXProject "MoonKit_iOS" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C29DBCDC1FEC03C700A7EB56;
+			productRefGroup = C29DBCE71FEC03C700A7EB56 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */,
+				C29DBCEE1FEC03C700A7EB56 /* MoonKit_iOSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C29DBCE41FEC03C700A7EB56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C29DBCED1FEC03C700A7EB56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C29DBCE11FEC03C700A7EB56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C29DBCEB1FEC03C700A7EB56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C29DBCF51FEC03C700A7EB56 /* MoonKit_iOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C29DBCF21FEC03C700A7EB56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */;
+			targetProxy = C29DBCF11FEC03C700A7EB56 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C29DBCF81FEC03C700A7EB56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C29DBCF91FEC03C700A7EB56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C29DBCFB1FEC03C700A7EB56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JT6STF4SHA;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MoonKit_iOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C29DBCFC1FEC03C700A7EB56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JT6STF4SHA;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MoonKit_iOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C29DBCFE1FEC03C700A7EB56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JT6STF4SHA;
+				INFOPLIST_FILE = MoonKit_iOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C29DBCFF1FEC03C700A7EB56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JT6STF4SHA;
+				INFOPLIST_FILE = MoonKit_iOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C29DBCE01FEC03C700A7EB56 /* Build configuration list for PBXProject "MoonKit_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C29DBCF81FEC03C700A7EB56 /* Debug */,
+				C29DBCF91FEC03C700A7EB56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C29DBCFA1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C29DBCFB1FEC03C700A7EB56 /* Debug */,
+				C29DBCFC1FEC03C700A7EB56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C29DBCFD1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C29DBCFE1FEC03C700A7EB56 /* Debug */,
+				C29DBCFF1FEC03C700A7EB56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C29DBCDD1FEC03C700A7EB56 /* Project object */;
+}
