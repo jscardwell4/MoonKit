@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MoonKit_iOS.xcodeproj">
+      location = "self:/Users/Moondeer/Projects/MoonKit_iOS/MoonKit.xcodeproj">
    </FileRef>
 </Workspace>

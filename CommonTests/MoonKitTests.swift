@@ -1,15 +1,15 @@
 //
-//  MoonKit_iOSTests.swift
-//  MoonKit_iOSTests
+//  MoonKit.swift
+//  MoonKitTests
 //
 //  Created by Jason Cardwell on 12/21/17.
 //  Copyright © 2017 Moondeer Studios. All rights reserved.
 //
 
 import XCTest
-@testable import MoonKit_iOS
+@testable import MoonKit
 
-class MoonKit_iOSTests: XCTestCase {
+class MoonKitTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
