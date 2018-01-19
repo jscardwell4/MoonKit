@@ -5,8 +5,10 @@
 //  Created by Jason Cardwell on 9/22/17.
 //  Copyright © 2017 Moondeer Studios. All rights reserved.
 //
-
 import Foundation
+#if os(iOS)
+  import UIKit
+#endif
 
 extension Character {
 

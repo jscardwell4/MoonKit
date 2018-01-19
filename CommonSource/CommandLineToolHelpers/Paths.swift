@@ -59,6 +59,8 @@ public func expandGlobPatterns(in paths: [String],
 
   for path in paths {
 
+    let path = (path as NSString).replacingOccurrences(of: "(", with: "\\(")
+                                 .replacingOccurrences(of: ")", with: "\\)")
     let process = Process()
     process.launchPath = shell
     process.arguments = leadingArguments + ["\(lastArgument) \(path)"]
