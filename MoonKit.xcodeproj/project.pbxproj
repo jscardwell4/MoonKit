@@ -36,6 +36,10 @@
 		C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD471FEC078C00A7EB56 /* Bytes.swift */; };
 		C29DBD4B1FEC078C00A7EB56 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD471FEC078C00A7EB56 /* Bytes.swift */; };
 		C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD591FEC0CE900A7EB56 /* Paths.swift */; };
+		C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB7D201AAC4C00D50E78 /* Date.swift */; };
+		C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB7D201AAC4C00D50E78 /* Date.swift */; };
+		C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
+		C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,8 @@
 		C29DBD461FEC078C00A7EB56 /* ByteArrayConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByteArrayConvertible.swift; sourceTree = "<group>"; };
 		C29DBD471FEC078C00A7EB56 /* Bytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
 		C29DBD591FEC0CE900A7EB56 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
+		C2E6CB7D201AAC4C00D50E78 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostTimeBase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +187,7 @@
 			children = (
 				C29DBD421FEC072800A7EB56 /* FourCharacterCode.swift */,
 				C29DBD3C1FEC06F900A7EB56 /* RegularExpression.swift */,
+				C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -189,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				C29DBD3F1FEC071700A7EB56 /* Strings.swift */,
+				C2E6CB7D201AAC4C00D50E78 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -395,8 +403,10 @@
 				C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
+				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
 				C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
+				C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD381FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C29DBD361FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C29DBD3D1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
@@ -423,10 +433,12 @@
 				C29DBD491FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */,
+				C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD2F1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
 				C29DBD391FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C29DBD371FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C29DBD3E1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
+				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD2D1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
