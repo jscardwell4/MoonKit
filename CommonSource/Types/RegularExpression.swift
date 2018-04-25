@@ -59,7 +59,7 @@ public struct RegularExpression {
     let matches = RegularExpression.namedCapturesExpression.match(string: regex.pattern)
 
     // Get the enumerated captures.
-    let captures = matches.map({$0.captures[1]}).enumerated().flatMap {
+    let captures = matches.map({$0.captures[1]}).enumerated().compactMap {
       $1 != nil ? (String($1!.substring), $0) : nil
     }
 
@@ -116,7 +116,7 @@ public struct RegularExpression {
     let range = NSRange(range ?? string.startIndex..<string.endIndex, in: string)
 
     // Return the matches returned by `regex` flat-mapped to `Match` instances.
-    return regex.matches(in: string, options: anchored ? .anchored : [], range: range).flatMap {
+    return regex.matches(in: string, options: anchored ? .anchored : [], range: range).compactMap {
       Match(result: $0, string: string, namedCaptureGroups: namedCaptureGroups)
     }
 
@@ -250,7 +250,7 @@ public struct RegularExpression {
 
     /// A brief description of the match.
     public var description: String {
-      return "{\(captures.flatMap({$0?.description}).joined(separator: ", "))}"
+      return "{\(captures.compactMap({$0?.description}).joined(separator: ", "))}"
     }
 
   }

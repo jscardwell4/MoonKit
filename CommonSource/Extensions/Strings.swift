@@ -176,7 +176,7 @@ extension String {
     if pad > 0 { self = String(repeating: "0", count: pad) + self }
     guard group > 0 && count > group else { return }
     let characterGroups: [String] = segment(group, options: .padFirstGroup(Character("0")))
-                                      .flatMap({String($0)})
+      .compactMap({String($0)})
     self = characterGroups.joined(separator: separator)
   }
 

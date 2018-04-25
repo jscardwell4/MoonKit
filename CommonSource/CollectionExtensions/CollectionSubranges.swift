@@ -7,7 +7,7 @@
 //
 import Foundation
 
-extension Collection where Self.Index == Int, Self.IndexDistance == Int {
+extension Collection where Self.Index:Strideable, Self.Index.Stride:SignedInteger {
 
   /// Generates a subrange suitable for slicing using the provided start index and length.
   ///
