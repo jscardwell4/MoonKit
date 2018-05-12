@@ -7,6 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591AB20A63FC400F1C813 /* AttributedStrings.swift */; };
+		C23591AD20A63FC400F1C813 /* AttributedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591AB20A63FC400F1C813 /* AttributedStrings.swift */; };
+		C23591BD20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */; };
+		C23591BE20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */; };
+		C23591BF20A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf */; };
+		C23591C020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf */; };
+		C23591C120A641EC00F1C813 /* InputMonoCompressed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B120A641EC00F1C813 /* InputMonoCompressed-Black.ttf */; };
+		C23591C220A641EC00F1C813 /* InputMonoCompressed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B120A641EC00F1C813 /* InputMonoCompressed-Black.ttf */; };
+		C23591C320A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B220A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf */; };
+		C23591C420A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B220A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf */; };
+		C23591C520A641EC00F1C813 /* InputMonoCompressed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B320A641EC00F1C813 /* InputMonoCompressed-Thin.ttf */; };
+		C23591C620A641EC00F1C813 /* InputMonoCompressed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B320A641EC00F1C813 /* InputMonoCompressed-Thin.ttf */; };
+		C23591C720A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B420A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf */; };
+		C23591C820A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B420A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf */; };
+		C23591C920A641EC00F1C813 /* InputMonoCompressed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B520A641EC00F1C813 /* InputMonoCompressed-Light.ttf */; };
+		C23591CA20A641EC00F1C813 /* InputMonoCompressed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B520A641EC00F1C813 /* InputMonoCompressed-Light.ttf */; };
+		C23591CB20A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B620A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf */; };
+		C23591CC20A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B620A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf */; };
+		C23591CD20A641EC00F1C813 /* InputMonoCompressed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B720A641EC00F1C813 /* InputMonoCompressed-Bold.ttf */; };
+		C23591CE20A641EC00F1C813 /* InputMonoCompressed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B720A641EC00F1C813 /* InputMonoCompressed-Bold.ttf */; };
+		C23591CF20A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B820A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf */; };
+		C23591D020A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B820A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf */; };
+		C23591D120A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B920A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf */; };
+		C23591D220A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591B920A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf */; };
+		C23591D320A641EC00F1C813 /* InputMonoCompressed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BA20A641EC00F1C813 /* InputMonoCompressed-Medium.ttf */; };
+		C23591D420A641EC00F1C813 /* InputMonoCompressed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BA20A641EC00F1C813 /* InputMonoCompressed-Medium.ttf */; };
+		C23591D520A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BB20A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf */; };
+		C23591D620A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BB20A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf */; };
+		C23591D720A641EC00F1C813 /* InputMonoCompressed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */; };
+		C23591D820A641EC00F1C813 /* InputMonoCompressed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */; };
+		C23591DC20A6423900F1C813 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DA20A6423900F1C813 /* FontStyle.swift */; };
+		C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DA20A6423900F1C813 /* FontStyle.swift */; };
+		C23591DE20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
+		C23591DF20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
 		C29DBCF01FEC03C700A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */; };
 		C29DBD0E1FEC041400A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBD051FEC041400A7EB56 /* MoonKit.framework */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -60,6 +94,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C23591AB20A63FC400F1C813 /* AttributedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStrings.swift; sourceTree = "<group>"; };
+		C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Italic.ttf"; sourceTree = "<group>"; };
+		C23591B020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-LightItalic.ttf"; sourceTree = "<group>"; };
+		C23591B120A641EC00F1C813 /* InputMonoCompressed-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Black.ttf"; sourceTree = "<group>"; };
+		C23591B220A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-BlackItalic.ttf"; sourceTree = "<group>"; };
+		C23591B320A641EC00F1C813 /* InputMonoCompressed-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Thin.ttf"; sourceTree = "<group>"; };
+		C23591B420A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-MediumItalic.ttf"; sourceTree = "<group>"; };
+		C23591B520A641EC00F1C813 /* InputMonoCompressed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Light.ttf"; sourceTree = "<group>"; };
+		C23591B620A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		C23591B720A641EC00F1C813 /* InputMonoCompressed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Bold.ttf"; sourceTree = "<group>"; };
+		C23591B820A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C23591B920A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-ExtraLight.ttf"; sourceTree = "<group>"; };
+		C23591BA20A641EC00F1C813 /* InputMonoCompressed-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Medium.ttf"; sourceTree = "<group>"; };
+		C23591BB20A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-BoldItalic.ttf"; sourceTree = "<group>"; };
+		C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Regular.ttf"; sourceTree = "<group>"; };
+		C23591DA20A6423900F1C813 /* FontStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontStyle.swift; sourceTree = "<group>"; };
+		C23591DB20A6423900F1C813 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKit_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD051FEC041400A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,9 +169,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C23591AE20A641EC00F1C813 /* CommonResources */ = {
+			isa = PBXGroup;
+			children = (
+				C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */,
+				C23591B020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf */,
+				C23591B120A641EC00F1C813 /* InputMonoCompressed-Black.ttf */,
+				C23591B220A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf */,
+				C23591B320A641EC00F1C813 /* InputMonoCompressed-Thin.ttf */,
+				C23591B420A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf */,
+				C23591B520A641EC00F1C813 /* InputMonoCompressed-Light.ttf */,
+				C23591B620A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf */,
+				C23591B720A641EC00F1C813 /* InputMonoCompressed-Bold.ttf */,
+				C23591B820A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf */,
+				C23591B920A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf */,
+				C23591BA20A641EC00F1C813 /* InputMonoCompressed-Medium.ttf */,
+				C23591BB20A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf */,
+				C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */,
+			);
+			path = CommonResources;
+			sourceTree = "<group>";
+		};
+		C23591D920A6423900F1C813 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C23591DA20A6423900F1C813 /* FontStyle.swift */,
+				C23591DB20A6423900F1C813 /* Fonts.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		C29DBCDC1FEC03C700A7EB56 = {
 			isa = PBXGroup;
 			children = (
+				C23591AE20A641EC00F1C813 /* CommonResources */,
 				C29DBD1C1FEC046600A7EB56 /* CommonSource */,
 				C29DBD1F1FEC04A200A7EB56 /* CommonTests */,
 				C29DBCE71FEC03C700A7EB56 /* Products */,
@@ -141,6 +223,7 @@
 		C29DBD1C1FEC046600A7EB56 /* CommonSource */ = {
 			isa = PBXGroup;
 			children = (
+				C23591D920A6423900F1C813 /* Fonts */,
 				C29DBD581FEC0C9400A7EB56 /* CommandLineToolHelpers */,
 				C29DBD451FEC072E00A7EB56 /* Protocols */,
 				C29DBD3B1FEC06EB00A7EB56 /* Extensions */,
@@ -197,6 +280,7 @@
 			children = (
 				C29DBD3F1FEC071700A7EB56 /* Strings.swift */,
 				C2E6CB7D201AAC4C00D50E78 /* Date.swift */,
+				C23591AB20A63FC400F1C813 /* AttributedStrings.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -367,6 +451,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23591CD20A641EC00F1C813 /* InputMonoCompressed-Bold.ttf in Resources */,
+				C23591C520A641EC00F1C813 /* InputMonoCompressed-Thin.ttf in Resources */,
+				C23591CB20A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf in Resources */,
+				C23591BF20A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf in Resources */,
+				C23591C320A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf in Resources */,
+				C23591C120A641EC00F1C813 /* InputMonoCompressed-Black.ttf in Resources */,
+				C23591CF20A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf in Resources */,
+				C23591C720A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf in Resources */,
+				C23591BD20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf in Resources */,
+				C23591C920A641EC00F1C813 /* InputMonoCompressed-Light.ttf in Resources */,
+				C23591D720A641EC00F1C813 /* InputMonoCompressed-Regular.ttf in Resources */,
+				C23591D520A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf in Resources */,
+				C23591D320A641EC00F1C813 /* InputMonoCompressed-Medium.ttf in Resources */,
+				C23591D120A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +479,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23591CE20A641EC00F1C813 /* InputMonoCompressed-Bold.ttf in Resources */,
+				C23591C620A641EC00F1C813 /* InputMonoCompressed-Thin.ttf in Resources */,
+				C23591CC20A641EC00F1C813 /* InputMonoCompressed-ExtraLightItalic.ttf in Resources */,
+				C23591C020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf in Resources */,
+				C23591C420A641EC00F1C813 /* InputMonoCompressed-BlackItalic.ttf in Resources */,
+				C23591C220A641EC00F1C813 /* InputMonoCompressed-Black.ttf in Resources */,
+				C23591D020A641EC00F1C813 /* InputMonoCompressed-ThinItalic.ttf in Resources */,
+				C23591C820A641EC00F1C813 /* InputMonoCompressed-MediumItalic.ttf in Resources */,
+				C23591BE20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf in Resources */,
+				C23591CA20A641EC00F1C813 /* InputMonoCompressed-Light.ttf in Resources */,
+				C23591D820A641EC00F1C813 /* InputMonoCompressed-Regular.ttf in Resources */,
+				C23591D620A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf in Resources */,
+				C23591D420A641EC00F1C813 /* InputMonoCompressed-Medium.ttf in Resources */,
+				C23591D220A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,10 +510,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23591DE20A6423900F1C813 /* Fonts.swift in Sources */,
 				C29DBD321FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
 				C29DBD301FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
+				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
@@ -411,6 +525,7 @@
 				C29DBD361FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C29DBD3D1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
+				C23591DC20A6423900F1C813 /* FontStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,10 +543,12 @@
 			files = (
 				C29DBD331FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
 				C29DBD311FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
+				C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */,
 				C29DBD4B1FEC078C00A7EB56 /* Bytes.swift in Sources */,
 				C29DBD441FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C29DBD491FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
+				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
 				C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */,
 				C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD2F1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
@@ -440,6 +557,7 @@
 				C29DBD3E1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD2D1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
+				C23591AD20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
