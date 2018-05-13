@@ -339,13 +339,13 @@ public enum FontStyle {
 /// Extension of attributed strings with `FontStyle` related functionality.
 extension NSAttributedString {
 
-  public convenience init(string: String, style: FontStyle) {
+  public convenience init(_ string: String, style: FontStyle) {
     self.init(string: string, attributes: style.attributes)
   }
 
   #if os(iOS)
 
-  public convenience init(string: String, style: FontStyle, color: UIColor) {
+  public convenience init(_ string: String, style: FontStyle, color: UIColor) {
     var attributes = style.attributes
     attributes[.foregroundColor] = color
     self.init(string: string, attributes: attributes)
@@ -353,7 +353,7 @@ extension NSAttributedString {
 
   #else
 
-  public convenience init(string: String, style: FontStyle, color: NSColor) {
+  public convenience init(_ string: String, style: FontStyle, color: NSColor) {
     var attributes = style.attributes
     attributes[.foregroundColor] = color
     self.init(string: string, attributes: attributes)
