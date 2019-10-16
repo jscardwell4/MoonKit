@@ -41,6 +41,12 @@
 		C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DA20A6423900F1C813 /* FontStyle.swift */; };
 		C23591DE20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
 		C23591DF20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
+		C250064120C8314A005A1BEB /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* Helpers.swift */; };
+		C250064220C8314A005A1BEB /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* Helpers.swift */; };
+		C250064420C831A5005A1BEB /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064320C831A5005A1BEB /* Logging.swift */; };
+		C250064520C831A5005A1BEB /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064320C831A5005A1BEB /* Logging.swift */; };
+		C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064620C831F0005A1BEB /* DebugConsoleView.swift */; };
+		C250064820C831F0005A1BEB /* DebugConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064620C831F0005A1BEB /* DebugConsoleView.swift */; };
 		C29DBCF01FEC03C700A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */; };
 		C29DBD0E1FEC041400A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBD051FEC041400A7EB56 /* MoonKit.framework */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -74,6 +80,8 @@
 		C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB7D201AAC4C00D50E78 /* Date.swift */; };
 		C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
 		C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
+		C2E9BE4120B8AD6100A07F63 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */; };
+		C2E9BE4220B8AD6100A07F63 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +119,9 @@
 		C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Regular.ttf"; sourceTree = "<group>"; };
 		C23591DA20A6423900F1C813 /* FontStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontStyle.swift; sourceTree = "<group>"; };
 		C23591DB20A6423900F1C813 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		C250064020C83149005A1BEB /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		C250064320C831A5005A1BEB /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		C250064620C831F0005A1BEB /* DebugConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsoleView.swift; sourceTree = "<group>"; };
 		C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKit_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD051FEC041400A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +144,7 @@
 		C29DBD591FEC0CE900A7EB56 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		C2E6CB7D201AAC4C00D50E78 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostTimeBase.swift; sourceTree = "<group>"; };
+		C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +242,9 @@
 				C29DBD3A1FEC06E300A7EB56 /* Types */,
 				C29DBD271FEC065700A7EB56 /* SequenceExtensions */,
 				C29DBD261FEC063000A7EB56 /* CollectionExtensions */,
+				C250064020C83149005A1BEB /* Helpers.swift */,
+				C250064620C831F0005A1BEB /* DebugConsoleView.swift */,
+				C250064320C831A5005A1BEB /* Logging.swift */,
 				C29DBD1D1FEC046600A7EB56 /* MoonKit.h */,
 				C29DBD1E1FEC046600A7EB56 /* Info.plist */,
 			);
@@ -271,6 +286,7 @@
 				C29DBD421FEC072800A7EB56 /* FourCharacterCode.swift */,
 				C29DBD3C1FEC06F900A7EB56 /* RegularExpression.swift */,
 				C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */,
+				C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -512,16 +528,20 @@
 			files = (
 				C23591DE20A6423900F1C813 /* Fonts.swift in Sources */,
 				C29DBD321FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
+				C250064420C831A5005A1BEB /* Logging.swift in Sources */,
 				C29DBD301FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */,
+				C2E9BE4120B8AD6100A07F63 /* CircularBuffer.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
+				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
 				C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
 				C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD381FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
+				C250064120C8314A005A1BEB /* Helpers.swift in Sources */,
 				C29DBD361FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C29DBD3D1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
@@ -541,6 +561,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2E9BE4220B8AD6100A07F63 /* CircularBuffer.swift in Sources */,
+				C250064220C8314A005A1BEB /* Helpers.swift in Sources */,
 				C29DBD331FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
 				C29DBD311FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */,
@@ -550,11 +572,13 @@
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
 				C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */,
+				C250064520C831A5005A1BEB /* Logging.swift in Sources */,
 				C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD2F1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
 				C29DBD391FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C29DBD371FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C29DBD3E1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
+				C250064820C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD2D1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
 				C23591AD20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
