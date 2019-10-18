@@ -424,7 +424,7 @@
 				TargetAttributes = {
 					C29DBCE51FEC03C700A7EB56 = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1110;
 						ProvisioningStyle = Automatic;
 					};
 					C29DBCEE1FEC03C700A7EB56 = {
@@ -448,6 +448,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C29DBCDC1FEC03C700A7EB56;
 			productRefGroup = C29DBCE71FEC03C700A7EB56 /* Products */;
@@ -753,7 +754,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -779,7 +780,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOS";
 				PRODUCT_NAME = MoonKit;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

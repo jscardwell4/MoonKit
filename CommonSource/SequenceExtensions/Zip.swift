@@ -10,7 +10,7 @@
 //
 import Foundation
 
-@_inlineable
+@inlinable
 public func zip<S1, S2, S3>(_ seq1: S1, _ seq2: S2, _ seq3: S3) -> Zip3Sequence<S1, S2, S3>
   where S1:Sequence, S2:Sequence, S3:Sequence
 {
@@ -26,8 +26,8 @@ public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
   public typealias Element = (Iterator1.Element, Iterator2.Element, Iterator3.Element)
 
   /// Creates an instance around a trio of underlying iterators.
-  @_inlineable
-  @_versioned
+  @inlinable
+  @usableFromInline
   internal init(_ iterator1: Iterator1, _ iterator2: Iterator2, _ iterator3: Iterator3) {
     (_baseStream1, _baseStream2, _baseStream3) = (iterator1, iterator2, iterator3)
   }
@@ -36,7 +36,7 @@ public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
   /// exists.
   ///
   /// Once `nil` has been returned, all subsequent calls return `nil`.
-  @_inlineable
+  @inlinable
   public mutating func next() -> Element? {
 
     if _reachedEnd {
@@ -55,16 +55,16 @@ public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
     return (element1, element2, element3)
   }
 
-  @_versioned
+  @usableFromInline
   internal var _baseStream1: Iterator1
 
-  @_versioned
+  @usableFromInline
   internal var _baseStream2: Iterator2
 
-  @_versioned
+  @usableFromInline
   internal var _baseStream3: Iterator3
 
-  @_versioned
+  @usableFromInline
   internal var _reachedEnd: Bool = false
 }
 
@@ -79,14 +79,14 @@ public struct Zip3Sequence<Sequence1:Sequence, Sequence2:Sequence, Sequence3:Seq
 
   /// Creates an instance that makes tuples of elements from `sequence1`, `sequence2` and
   /// `sequence3`.
-  @_inlineable
+  @inlinable
   public
   init(_ sequence1: Sequence1, _ sequence2: Sequence2, _ sequence3: Sequence3) {
     (_sequence1, _sequence2, _sequence3) = (sequence1, sequence2, sequence3)
   }
 
   /// Returns an iterator over the elements of this sequence.
-  @_inlineable
+  @inlinable
   public func makeIterator() -> Iterator {
     return Iterator(
       _sequence1.makeIterator(),
@@ -94,13 +94,13 @@ public struct Zip3Sequence<Sequence1:Sequence, Sequence2:Sequence, Sequence3:Seq
       _sequence3.makeIterator())
   }
 
-  @_versioned
+  @usableFromInline
   internal let _sequence1: Sequence1
 
-  @_versioned
+  @usableFromInline
   internal let _sequence2: Sequence2
 
-  @_versioned
+  @usableFromInline
   internal let _sequence3: Sequence3
 
 }

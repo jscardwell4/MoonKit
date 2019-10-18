@@ -139,7 +139,7 @@ public enum FontStyle {
   case ctThinItalicCentered, ctExtraLightItalicCentered, ctLightItalicCentered, ctItalicCentered,
        ctMediumItalicCentered, ctBoldItalicCentered, ctBlackItalicCentered
 
-  public var attributes: [NSAttributedStringKey:Any] {
+  public var attributes: [NSAttributedString.Key:Any] {
 
     let font: Any
     let paragraphStyle: Any

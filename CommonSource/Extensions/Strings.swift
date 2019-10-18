@@ -147,7 +147,7 @@ extension String {
 
     let string = String(format: pattern, value, maxPrecision)
 
-    guard let decimal = string.index(of: ".") else { self = string; return }
+    guard let decimal = string.firstIndex(of: ".") else { self = string; return }
 
     var end = string.endIndex
     while end > string.startIndex

@@ -147,7 +147,7 @@ extension String: ByteArrayConvertible {
   }
 
   public init(_ bytes: [Byte]) {
-    let endIndex = bytes.index(of: 0) ?? bytes.endIndex
+    let endIndex = bytes.firstIndex(of: 0) ?? bytes.endIndex
     let scalars = String.UnicodeScalarView(bytes[..<endIndex].map(UnicodeScalar.init))
     self = String(scalars)
   }

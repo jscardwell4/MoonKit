@@ -54,7 +54,7 @@ extension NSMutableAttributedString {
   /// - Parameters:
   ///   - string: The string to append.
   ///   - attributes: The attributes for `string` or `nil`.
-  public func append(_ string: String, attributes:  [NSAttributedStringKey:Any]? = nil) {
+  public func append(_ string: String, attributes:  [NSAttributedString.Key:Any]? = nil) {
     append(NSAttributedString(string: string, attributes: attributes))
   }
 
@@ -72,7 +72,7 @@ extension NSMutableAttributedString {
   /// - Parameters:
   ///   - lhs: The attributed string to which `rhs.0` will be appended with attributes `rhs.1`.
   ///   - rhs: The tuple containing the string and attributes to be appended to `lhs`.
-  public static func +=(lhs: NSMutableAttributedString, rhs: (String, [NSAttributedStringKey:Any])) {
+  public static func +=(lhs: NSMutableAttributedString, rhs: (String, [NSAttributedString.Key:Any])) {
     lhs.append(rhs.0, attributes: rhs.1)
   }
 
