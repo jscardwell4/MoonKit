@@ -334,6 +334,9 @@ extension RegularExpression: Equatable {
 
 extension RegularExpression: Hashable {
 
+  public func hash(into hasher: inout Hasher) {
+    pattern.hash(into: &hasher)
+  }
   public var hashValue: Int { return pattern.hashValue }
 
 }

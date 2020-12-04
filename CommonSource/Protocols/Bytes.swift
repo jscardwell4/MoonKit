@@ -27,15 +27,11 @@ public protocol DataConvertible {
 public extension DataConvertible where Self:NSCoding {
 
   var data: Data {
-    let data = NSMutableData()
-    let coder = NSKeyedArchiver(forWritingWith: data)
-    encode(with: coder)
-    coder.finishEncoding()
-    return data as Data
+    return {try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)}‽
   }
 
   init?(data: Data) {
-    let coder = NSKeyedUnarchiver(forReadingWith: data)
+    guard let coder = try? NSKeyedUnarchiver(forReadingFrom: data) else { return nil }
     self.init(coder: coder)
   }
   

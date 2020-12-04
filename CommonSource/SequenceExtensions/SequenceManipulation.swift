@@ -21,7 +21,7 @@ public extension Sequence {
 
    - parameter predicate: (Self.Generator.Element) throws -> Bool
   */
-  public func bisect(predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> ([Self.Iterator.Element], [Self.Iterator.Element]) {
+  func bisect(predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> ([Self.Iterator.Element], [Self.Iterator.Element]) {
     var group1: [Self.Iterator.Element] = [], group2: [Self.Iterator.Element] = []
     for element in self { if try predicate(element) { group1.append(element) } else { group2.append(element) } }
     return (group1, group2)
@@ -36,7 +36,7 @@ public extension Sequence {
 
   - returns: [[Generator.Element]]
   */
-  public func segment(_ segmentSize: Int = 2, options: SegmentOptions<Iterator.Element> = .unpaddedLastGroup) -> [[Iterator.Element]] {
+  func segment(_ segmentSize: Int = 2, options: SegmentOptions<Iterator.Element> = .unpaddedLastGroup) -> [[Iterator.Element]] {
     var result: [[Iterator.Element]] = []
     var array: [Iterator.Element] = []
     let segmentSize = segmentSize > 1 ? segmentSize : 1

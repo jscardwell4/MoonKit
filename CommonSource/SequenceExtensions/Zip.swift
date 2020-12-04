@@ -18,7 +18,7 @@ public func zip<S1, S2, S3>(_ seq1: S1, _ seq2: S2, _ seq3: S3) -> Zip3Sequence<
 }
 
 /// An iterator for `Zip3Sequence`.
-@_fixed_layout
+@frozen
 public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
   where Iterator1:IteratorProtocol, Iterator2:IteratorProtocol, Iterator3:IteratorProtocol
 {
@@ -27,7 +27,6 @@ public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
 
   /// Creates an instance around a trio of underlying iterators.
   @inlinable
-  @usableFromInline
   internal init(_ iterator1: Iterator1, _ iterator2: Iterator2, _ iterator3: Iterator3) {
     (_baseStream1, _baseStream2, _baseStream3) = (iterator1, iterator2, iterator3)
   }
@@ -68,7 +67,7 @@ public struct Zip3Iterator<Iterator1, Iterator2, Iterator3> : IteratorProtocol
   internal var _reachedEnd: Bool = false
 }
 
-@_fixed_layout
+@frozen
 public struct Zip3Sequence<Sequence1:Sequence, Sequence2:Sequence, Sequence3:Sequence> : Sequence {
 
   /// A type whose instances can produce the elements of this

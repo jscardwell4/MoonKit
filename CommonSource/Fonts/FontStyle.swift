@@ -23,15 +23,21 @@ import class AppKit.NSMutableParagraphStyle
 private func ctHalfLineParagraphStyle() -> CTParagraphStyle {
 
   // Calculate the line spacing.
-  var lineSpacing: CGFloat = -2.6
+  let lineSpacing = UnsafeMutableRawPointer.allocate(
+                            byteCount: MemoryLayout<CGFloat>.size,
+                            alignment: MemoryLayout<CGFloat>.alignment)
+  lineSpacing.storeBytes(of: -2.6, as: CGFloat.self)
 
   // Create the paragraph style settings.
   var setting = CTParagraphStyleSetting(spec: .lineSpacingAdjustment,
                                         valueSize: MemoryLayout<CGFloat>.size,
-                                        value: &lineSpacing)
+                                        value: lineSpacing)
 
   // Create the paragraph style.
   let paragraphStyle = CTParagraphStyleCreate(&setting, 1);
+
+
+  lineSpacing.deallocate()
 
   return paragraphStyle
 
@@ -40,15 +46,20 @@ private func ctHalfLineParagraphStyle() -> CTParagraphStyle {
 private func ctParagraphStyle() -> CTParagraphStyle {
 
   // Calculate the line spacing.
-  var lineSpacing: CGFloat = -1.6
+  let lineSpacing = UnsafeMutableRawPointer.allocate(
+                            byteCount: MemoryLayout<CGFloat>.size,
+                            alignment: MemoryLayout<CGFloat>.alignment)
+  lineSpacing.storeBytes(of: -1.6, as: CGFloat.self)
 
   // Create the paragraph style settings.
   var setting = CTParagraphStyleSetting(spec: .lineSpacingAdjustment,
                                         valueSize: MemoryLayout<CGFloat>.size,
-                                        value: &lineSpacing)
+                                        value: lineSpacing)
 
   // Create the paragraph style.
   let paragraphStyle = CTParagraphStyleCreate(&setting, 1);
+
+  lineSpacing.deallocate()
 
   return paragraphStyle
 
@@ -57,22 +68,31 @@ private func ctParagraphStyle() -> CTParagraphStyle {
 private func ctCenteredParagraphStyle() -> CTParagraphStyle {
 
   // Calculate the line spacing.
-  var lineSpacing: CGFloat = -1.6
+  let lineSpacing = UnsafeMutableRawPointer.allocate(
+                            byteCount: MemoryLayout<CGFloat>.size,
+                            alignment: MemoryLayout<CGFloat>.alignment)
+  lineSpacing.storeBytes(of: -1.6, as: CGFloat.self)
 
   // Create the paragraph style settings.
   let lineSpacingSetting = CTParagraphStyleSetting(spec: .lineSpacingAdjustment,
                                                    valueSize: MemoryLayout<CGFloat>.size,
-                                                   value: &lineSpacing)
+                                                   value: lineSpacing)
 
-  var alignment: CTTextAlignment = .center
+  let alignment = UnsafeMutableRawPointer.allocate(
+                    byteCount: MemoryLayout<CTTextAlignment>.size,
+                    alignment: MemoryLayout<CTTextAlignment>.alignment)
+  alignment.storeBytes(of: CTTextAlignment.center.rawValue, as: UInt8.self)
   let alignmentSetting = CTParagraphStyleSetting(spec: .alignment,
                                                  valueSize: MemoryLayout<CTTextAlignment>.size,
-                                                 value: &alignment)
+                                                 value: alignment)
 
   let settings = [lineSpacingSetting, alignmentSetting]
 
   // Create the paragraph style.
   let paragraphStyle = CTParagraphStyleCreate(settings, 2);
+
+  lineSpacing.deallocate()
+  alignment.deallocate()
 
   return paragraphStyle
 

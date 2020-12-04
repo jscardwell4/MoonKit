@@ -15,8 +15,7 @@ public protocol ByteArrayConvertible: Equatable, DataConvertible {
 
 public extension ByteArrayConvertible {
   var data: Data {
-    let bytes = self.bytes
-    return Data(bytes: UnsafePointer<UInt8>(bytes), count: bytes.count)
+    return bytes.withUnsafeBufferPointer { Data(bytes: $0.baseAddress!, count: $0.count) }
   }
 
   init?(data: Data) {
@@ -29,8 +28,7 @@ public extension ByteArrayConvertible {
   }
 
   func encodeWithCoder(_ coder: NSCoder) {
-    let bytes = Data(bytes: self.bytes)
-    coder.encode(bytes)
+    bytes.withUnsafeBufferPointer { coder.encode(Data(buffer: $0)) }
   }
 
 }
