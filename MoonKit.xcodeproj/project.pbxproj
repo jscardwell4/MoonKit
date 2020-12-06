@@ -47,12 +47,8 @@
 		C250064520C831A5005A1BEB /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064320C831A5005A1BEB /* Logging.swift */; };
 		C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064620C831F0005A1BEB /* DebugConsoleView.swift */; };
 		C250064820C831F0005A1BEB /* DebugConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064620C831F0005A1BEB /* DebugConsoleView.swift */; };
-		C29DBCF01FEC03C700A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */; };
-		C29DBD0E1FEC041400A7EB56 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29DBD051FEC041400A7EB56 /* MoonKit.framework */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD231FEC04E400A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C29DBD241FEC052000A7EB56 /* MoonKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD201FEC04A200A7EB56 /* MoonKitTests.swift */; };
-		C29DBD251FEC052100A7EB56 /* MoonKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD201FEC04A200A7EB56 /* MoonKitTests.swift */; };
 		C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD281FEC06AB00A7EB56 /* DictionaryMerging.swift */; };
 		C29DBD2D1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD281FEC06AB00A7EB56 /* DictionaryMerging.swift */; };
 		C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD291FEC06AB00A7EB56 /* CollectionCreationOperators.swift */; };
@@ -84,23 +80,6 @@
 		C2E9BE4220B8AD6100A07F63 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		C29DBCF11FEC03C700A7EB56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C29DBCDD1FEC03C700A7EB56 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C29DBCE51FEC03C700A7EB56;
-			remoteInfo = MoonKit_iOS;
-		};
-		C29DBD0F1FEC041400A7EB56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C29DBCDD1FEC03C700A7EB56 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C29DBD041FEC041400A7EB56;
-			remoteInfo = MoonKit_Mac;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		C23591AB20A63FC400F1C813 /* AttributedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStrings.swift; sourceTree = "<group>"; };
 		C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Italic.ttf"; sourceTree = "<group>"; };
@@ -123,9 +102,7 @@
 		C250064320C831A5005A1BEB /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C250064620C831F0005A1BEB /* DebugConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsoleView.swift; sourceTree = "<group>"; };
 		C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKit_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD051FEC041400A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C29DBD0D1FEC041400A7EB56 /* MoonKit_MacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKit_MacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD1D1FEC046600A7EB56 /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
 		C29DBD1E1FEC046600A7EB56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C29DBD201FEC04A200A7EB56 /* MoonKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonKitTests.swift; sourceTree = "<group>"; };
@@ -155,26 +132,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C29DBCEC1FEC03C700A7EB56 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C29DBCF01FEC03C700A7EB56 /* MoonKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C29DBD011FEC041400A7EB56 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C29DBD0A1FEC041400A7EB56 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C29DBD0E1FEC041400A7EB56 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,9 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */,
-				C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */,
 				C29DBD051FEC041400A7EB56 /* MoonKit.framework */,
-				C29DBD0D1FEC041400A7EB56 /* MoonKit_MacTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -358,24 +317,6 @@
 			productReference = C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C29DBCEE1FEC03C700A7EB56 /* MoonKit_iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C29DBCFD1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOSTests" */;
-			buildPhases = (
-				C29DBCEB1FEC03C700A7EB56 /* Sources */,
-				C29DBCEC1FEC03C700A7EB56 /* Frameworks */,
-				C29DBCED1FEC03C700A7EB56 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C29DBCF21FEC03C700A7EB56 /* PBXTargetDependency */,
-			);
-			name = MoonKit_iOSTests;
-			productName = MoonKit_iOSTests;
-			productReference = C29DBCEF1FEC03C700A7EB56 /* MoonKit_iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		C29DBD041FEC041400A7EB56 /* MoonKit_Mac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C29DBD161FEC041400A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_Mac" */;
@@ -394,24 +335,6 @@
 			productReference = C29DBD051FEC041400A7EB56 /* MoonKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C29DBD0C1FEC041400A7EB56 /* MoonKit_MacTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C29DBD191FEC041400A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_MacTests" */;
-			buildPhases = (
-				C29DBD091FEC041400A7EB56 /* Sources */,
-				C29DBD0A1FEC041400A7EB56 /* Frameworks */,
-				C29DBD0B1FEC041400A7EB56 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C29DBD101FEC041400A7EB56 /* PBXTargetDependency */,
-			);
-			name = MoonKit_MacTests;
-			productName = MoonKit_MacTests;
-			productReference = C29DBD0D1FEC041400A7EB56 /* MoonKit_MacTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -427,17 +350,9 @@
 						LastSwiftMigration = 1110;
 						ProvisioningStyle = Automatic;
 					};
-					C29DBCEE1FEC03C700A7EB56 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 					C29DBD041FEC041400A7EB56 = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
-						ProvisioningStyle = Automatic;
-					};
-					C29DBD0C1FEC041400A7EB56 = {
-						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1220;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -456,9 +371,7 @@
 			projectRoot = "";
 			targets = (
 				C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */,
-				C29DBCEE1FEC03C700A7EB56 /* MoonKit_iOSTests */,
 				C29DBD041FEC041400A7EB56 /* MoonKit_Mac */,
-				C29DBD0C1FEC041400A7EB56 /* MoonKit_MacTests */,
 			);
 		};
 /* End PBXProject section */
@@ -485,13 +398,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C29DBCED1FEC03C700A7EB56 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C29DBD031FEC041400A7EB56 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -510,13 +416,6 @@
 				C23591D620A641EC00F1C813 /* InputMonoCompressed-BoldItalic.ttf in Resources */,
 				C23591D420A641EC00F1C813 /* InputMonoCompressed-Medium.ttf in Resources */,
 				C23591D220A641EC00F1C813 /* InputMonoCompressed-ExtraLight.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C29DBD0B1FEC041400A7EB56 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,14 +449,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C29DBCEB1FEC03C700A7EB56 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C29DBD241FEC052000A7EB56 /* MoonKitTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C29DBD001FEC041400A7EB56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -586,28 +477,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C29DBD091FEC041400A7EB56 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C29DBD251FEC052100A7EB56 /* MoonKitTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C29DBCF21FEC03C700A7EB56 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */;
-			targetProxy = C29DBCF11FEC03C700A7EB56 /* PBXContainerItemProxy */;
-		};
-		C29DBD101FEC041400A7EB56 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C29DBD041FEC041400A7EB56 /* MoonKit_Mac */;
-			targetProxy = C29DBD0F1FEC041400A7EB56 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C29DBCF81FEC03C700A7EB56 /* Debug */ = {
@@ -787,44 +657,6 @@
 			};
 			name = Release;
 		};
-		C29DBCFE1FEC03C700A7EB56 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = MoonKit_iOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C29DBCFF1FEC03C700A7EB56 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = MoonKit_iOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		C29DBD171FEC041400A7EB56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -852,7 +684,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -881,51 +713,7 @@
 				PRODUCT_NAME = MoonKit;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
-		C29DBD1A1FEC041400A7EB56 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = MoonKit_MacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-MacTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		C29DBD1B1FEC041400A7EB56 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = MoonKit_MacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonKit-MacTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -950,29 +738,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C29DBCFD1FEC03C700A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C29DBCFE1FEC03C700A7EB56 /* Debug */,
-				C29DBCFF1FEC03C700A7EB56 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C29DBD161FEC041400A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C29DBD171FEC041400A7EB56 /* Debug */,
 				C29DBD181FEC041400A7EB56 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C29DBD191FEC041400A7EB56 /* Build configuration list for PBXNativeTarget "MoonKit_MacTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C29DBD1A1FEC041400A7EB56 /* Debug */,
-				C29DBD1B1FEC041400A7EB56 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
