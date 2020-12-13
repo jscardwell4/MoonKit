@@ -102,8 +102,16 @@ public final class Logger {
 extension Logger {
 
   /// An enumeration of available log levels.
-  public enum LogLevel: String {
+  public enum LogLevel: String, LosslessStringConvertible {
+
     case none, error, warning, info, verbose
+
+    public init?(_ description: String) {
+      guard let level = LogLevel(rawValue: description) else { return nil }
+      self = level
+    }
+
+    public var description: String { return rawValue }
 
     #if os(iOS)
     public typealias Color = UIColor
@@ -171,26 +179,34 @@ public func log(_ format: String, _ arguments: [CVarArg], level: Logger.LogLevel
 /// - Parameters:
 ///   - format: The string containing the message format.
 ///   - arguments: Any arguments used by `format`.
-public func loge(_ format: String, _ arguments: CVarArg...) { log(format, arguments, level: .error  ) }
+public func loge(_ format: String, _ arguments: CVarArg...) {
+  log(format, arguments, level: .error)
+}
 
 /// Function of convenience for invoking `log(_:_,level:)` with `level == .warning`.
 ///
 /// - Parameters:
 ///   - format: The string containing the message format.
 ///   - arguments: Any arguments used by `format`.
-public func logw(_ format: String, _ arguments: CVarArg...) { log(format, arguments, level: .warning) }
+public func logw(_ format: String, _ arguments: CVarArg...) {
+  log(format, arguments, level: .warning)
+}
 
 /// Function of convenience for invoking `log(_:_,level:)` with `level == .info`.
 ///
 /// - Parameters:
 ///   - format: The string containing the message format.
 ///   - arguments: Any arguments used by `format`.
-public func logi(_ format: String, _ arguments: CVarArg...) { log(format, arguments, level: .info   ) }
+public func logi(_ format: String, _ arguments: CVarArg...) {
+  log(format, arguments, level: .info)
+}
 
 /// Function of convenience for invoking `log(_:_,level:)` with `level == .verbose`.
 ///
 /// - Parameters:
 ///   - format: The string containing the message format.
 ///   - arguments: Any arguments used by `format`.
-public func logv(_ format: String, _ arguments: CVarArg...) { log(format, arguments, level: .verbose) }
+public func logv(_ format: String, _ arguments: CVarArg...) {
+  log(format, arguments, level: .verbose)
+}
 
