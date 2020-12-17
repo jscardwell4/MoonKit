@@ -177,7 +177,7 @@ public final class DebugConsoleView: TextView {
     let message = NSMutableAttributedString(attributedString: level.attributedTag)
 
     // Append a separator followed by the message content.
-    message.append(": \(content)\n", style: .regular, color: .black)
+    message.append(": \(content)\n", style: .regular, color: .label)
 
     #if os(iOS)
     // Get the current attributed text.
