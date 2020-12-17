@@ -1,89 +1,254 @@
 //
 //  CircularBuffer.swift
-//  MoonKit
+//  ChordFinder
 //
-//  Created by Jason Cardwell on 5/25/18.
-//  Copyright © 2018 Moondeer Studios. All rights reserved.
+//  Created by Jason Cardwell on 12/13/20.
+//  Copyright © 2020 Moondeer Studios. All rights reserved.
 //
 import Foundation
+import Darwin
+import Accelerate
+import AudioToolbox
 
-public struct CirclularBuffer<Element> {
 
-  private var array: Array<Element>
+struct CircularBuffer {
 
-  public private(set) var startIndex: Int = 0
+  /// Base address as returned by `vm_allocate`.
+  let bufferAddress: vm_address_t
 
-  public private(set) var endIndex: Int = 0
+  /// Base address of the contiguous storage.
+  private var buffer: UnsafeMutableRawPointer
 
-  public let capacity: Int
+  /// The capacity of the buffer.
+  let capacity: Int
 
-  public var count: Int {
+  /// Index of the buffer's tail.
+  private var tailIndex: Int = 0
 
-    switch (startIndex, endIndex) {
-      case let (start, end) where start == end: return 0
-      case let (start, end) where end > start: return end - start
-      case let (start, end) where end < start: return array.endIndex - start + end - 1
-      default:                                 fatalError("The impossible happened.")
-    }
+  /// Index of the buffer's head.
+  private var headIndex: Int = 0
 
-  }
+  /// The count of unread samples.
+  private var fillCount: Int = 0
 
-  public init(capacity: Int) {
-    self.capacity = capacity
-    array = []
-    array.reserveCapacity(capacity)
-  }
+// MARK: Initializing
 
-  public init<S>(_ s: S) where Element == S.Element, S:Sequence {
-    array = Array<Element>(s)
-    capacity = array.count
-    endIndex = array.endIndex
-  }
+  /// Initializing the buffer.
+  ///
+  /// - Parameter proposedLength: Desired buffer capacity. Because of the way the
+  ///                             memory mirroring technique works, the true buffer
+  ///                             length will be multiples of the device page size
+  ///                             (e.g. 4096 bytes)
+  init(length proposedLength: Int) {
 
-  public init(repeating repeatedValue: Element, count: Int) {
-    capacity = count
-    array = Array<Element>(repeating: repeatedValue, count: count)
-    endIndex = array.endIndex
-  }
+    func trunc_page(_ x: Int) -> Int { ((x) & (~(Int(vm_page_size) - 1))) }
+    func round_page(_ x: Int) -> Int { trunc_page((x) + (Int(vm_page_size) - 1)) }
 
-  public mutating func append(_ newElement: Element) {
+    let length = vm_size_t(round_page(proposedLength)) // We need whole page sizes
 
-    guard array.capacity > 0 else { return }
+    var retries = 3
 
-    array.withUnsafeMutableBufferPointer {
-      [capacity = self.capacity] buffer in
+    // Temporarily allocate twice the length, so we have the contiguous address space
+    // to support a second instance of the buffer directly after.
+    var bufferAddress = vm_address_t()
 
-      guard let baseAddress = buffer.baseAddress else { return }
+    repeat {
 
-      (baseAddress + endIndex).initialize(repeating: newElement, count: 1)
+      var result = vm_allocate(mach_task_self_,
+                               &bufferAddress,
+                               length * 2,
+                               VM_FLAGS_ANYWHERE)
 
-      switch (startIndex, endIndex) {
-
-      case let (start, end) where end >= start:
-
-        endIndex = end + 1 >= capacity ? 0 : end + 1
-
-      case let (start, end) where end < start:
-
-        endIndex = endIndex &+ 1
-        if endIndex == start {
-          startIndex = startIndex &+ 1
-          if startIndex == capacity { startIndex = 0 }
+      guard result == ERR_SUCCESS else {
+        retries -= 1
+        if retries == 0 {
+          fatalError("\(#fileID) \(#function) Buffer allocation failed.")
+        } else {
+          continue
         }
-
-      default:
-        fatalError("The impossible happened.")
-
       }
 
+      // Now replace the second half of the allocation with a virtual copy of the first
+      // half and deallocate the second half.
+      result = vm_deallocate(mach_task_self_, bufferAddress + length, length)
+
+      guard result  == ERR_SUCCESS else {
+        retries -= 1
+        if retries == 0 {
+          fatalError("\(#fileID) \(#function) Buffer allocation failed.")
+        } else {
+          vm_deallocate(mach_task_self_, bufferAddress, length)
+          continue
+        }
+      }
+
+      // Re-map the buffer to the address space immediately after the buffer
+      var virtualAddress = bufferAddress + length
+      var cur_prot = vm_prot_t()
+      var max_prot = vm_prot_t()
+      result = vm_remap(mach_task_self_,
+                        &virtualAddress,
+                        length,
+                        0,
+                        0,
+                        mach_task_self_,
+                        bufferAddress,
+                        0,
+                        &cur_prot,
+                        &max_prot,
+                        VM_INHERIT_DEFAULT)
+
+      guard result == ERR_SUCCESS else {
+        retries -= 1
+        if retries == 0 {
+          fatalError("\(#fileID) \(#function) Buffer allocation failed.")
+        } else {
+          // If this remap failed, we hit a race condition, so deallocate and try again
+          vm_deallocate(mach_task_self_, bufferAddress, length)
+          continue
+        }
+      }
+
+      // If the memory is not contiguous, clean up both allocated buffers and try again
+      guard virtualAddress == bufferAddress + length else {
+        retries -= 1
+        if retries == 0 {
+          fatalError("\(#fileID) \(#function) Couldn't map buffer memory to end.")
+        } else {
+          // If this remap failed, we hit a race condition, so deallocate and try again
+          vm_deallocate(mach_task_self_, virtualAddress, length)
+          vm_deallocate(mach_task_self_, bufferAddress, length)
+          continue
+        }
+      }
+
+      break
+
+    } while true
+
+    guard let buffer = UnsafeMutableRawPointer(bitPattern: bufferAddress) else {
+      fatalError("""
+                  \(#fileID) \(#function) \
+                  Failed to create pointer to `bufferAddress`.
+                  """)
     }
+
+    self.bufferAddress = bufferAddress
+    self.buffer = buffer
+    self.capacity = Int(length)
 
   }
 
-  public mutating func append<S>(contentsOf newElements: S)
-    where Element == S.Element, S:Sequence
-  {
-    for element in newElements { append(element) }
+  /// Releases buffer resources.
+  func cleanup() {
+
+    // Deallocate the virtual memory.
+    vm_deallocate(mach_task_self_, bufferAddress, vm_size_t(capacity))
+
+  }
+
+  /// Resets buffer to original, empty state.
+  mutating func clear() {
+
+    // Just return if the buffer is already empty.
+    guard fillCount > 0 else { return }
+
+    // Consume all the bytes in the buffer.
+    consume(amount: fillCount)
+
+  }
+
+// MARK: Reading (consuming)
+
+  /// This gives you a pointer to the end of the buffer, ready
+  /// for reading, and the number of available bytes to read.
+  ///
+  /// - Returns: A tuple with a pointer to the address to be read
+  ///            and the number of samples available to read.
+  func tail() -> (UnsafeRawPointer, Int)? {
+
+    // Return `nil` if there are no bytes to be read.
+    guard fillCount > 0 else { return nil }
+
+    // Return the address of the tail byte with available byte count.
+    return (UnsafeRawPointer(buffer + tailIndex), fillCount)
+
+  }
+
+  /// Consume bytes in buffer to free them for writing again.
+  ///
+  /// - Parameter amount: The number of bytes to consume.
+  mutating func consume(amount: Int) {
+
+    // Limit the consumption to bytes filled.
+    let amount = min(fillCount, amount)
+
+    // Advance the tail index in a circular fashion.
+    tailIndex = (tailIndex + amount) % capacity
+
+    // Subtract the consumed bytes from the fill count.
+    fillCount -= amount
+
+  }
+
+  /// This gives you a pointer to the front of the buffer, ready
+  /// for writing, and the number of available bytes to write.
+  ///
+  /// - Returns: A tuple with a pointer to the address for writing and
+  ///            the number of bytes available for writing.
+  func head() -> (UnsafeMutableRawPointer, Int)? {
+
+    // Calculate the number of bytes available for writing.
+    let availableBytes = capacity - fillCount
+
+    // Return `nil` if there is no free space in the buffer.
+    guard availableBytes > 0 else { return nil }
+
+    // Return the address of the head byte with available byte count.
+    return ((buffer + headIndex), availableBytes)
+
+  }
+
+// MARK: Writing (producing)
+
+  /// This marks the given section of the buffer ready for reading.
+  ///
+  /// - Parameter amount: Number of bytes to produce
+  mutating func produce(amount: Int) {
+
+    // Advance the head index in a circular fashion.
+    headIndex = (headIndex + amount) % capacity
+
+    // Update buffer's the fill count.
+    fillCount += amount
+
+    assert(fillCount <= capacity,
+           "\(#fileID) \(#function) amount exceeded capacity.")
+
+  }
+
+
+  /// This copies the given bytes to the buffer, and marks them ready for writing.
+  ///
+  /// - Parameters:
+  ///   - source: Source buffer
+  ///   - count: Number of bytes in source buffer
+  /// - Returns: `true` if bytes copied, `false` if there was insufficient space
+  mutating func produceBytes(source: UnsafeRawPointer, count: Int) -> Bool {
+
+    // Get a pointer to the head byte with enough space for `count` bytes
+    // return `false`.
+    guard let (headPointer, space) = head(), space >= count else { return false }
+
+    // Copy the bytes into the buffer.
+    memcpy(headPointer, source, count)
+
+    // Mark the bytes as produced.
+    produce(amount: count)
+
+    // Return `true` for having copied the bytes successfully.
+    return true
+
   }
 
 }

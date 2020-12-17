@@ -41,9 +41,22 @@ postfix operator ‽
 
 public postfix func ‽<T>(block: () throws -> T) -> T { return tryOrDie(block) }
 
+public postfix func ‽<T>(_ blockWithMessage: (() throws -> T, String)) -> T {
+  return tryOrDie(blockWithMessage.0, message: blockWithMessage.1)
+}
+
+
 public postfix func ‽<T>(block: () -> T?) -> T { return nonNilOrDie(block) }
 
+public postfix func ‽<T>(_ blockWithMessage: (() -> T?, String)) -> T {
+  return nonNilOrDie(blockWithMessage.0, message: blockWithMessage.1)
+}
+
 public postfix func ‽<T>(_ value: T?) -> T { return nonNilOrDie(value) }
+
+public postfix func ‽<T>(_ valueWithMessage: (T?, String)) -> T {
+  return nonNilOrDie(valueWithMessage.0, message: valueWithMessage.1)
+}
 
 /*
 

@@ -72,12 +72,12 @@
 		C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD471FEC078C00A7EB56 /* Bytes.swift */; };
 		C29DBD4B1FEC078C00A7EB56 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD471FEC078C00A7EB56 /* Bytes.swift */; };
 		C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD591FEC0CE900A7EB56 /* Paths.swift */; };
+		C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
+		C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB7D201AAC4C00D50E78 /* Date.swift */; };
 		C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB7D201AAC4C00D50E78 /* Date.swift */; };
 		C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
 		C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */; };
-		C2E9BE4120B8AD6100A07F63 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */; };
-		C2E9BE4220B8AD6100A07F63 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,9 +119,11 @@
 		C29DBD461FEC078C00A7EB56 /* ByteArrayConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByteArrayConvertible.swift; sourceTree = "<group>"; };
 		C29DBD471FEC078C00A7EB56 /* Bytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
 		C29DBD591FEC0CE900A7EB56 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
+		C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CircularBuffer+AudioBufferList.swift"; sourceTree = "<group>"; };
+		C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 		C2E6CB7D201AAC4C00D50E78 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostTimeBase.swift; sourceTree = "<group>"; };
-		C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
+		C2E9BE4020B8AD6100A07F63 /* CircularBuffer_Generic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularBuffer_Generic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,10 +244,12 @@
 		C29DBD3A1FEC06E300A7EB56 /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */,
+				C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */,
 				C29DBD421FEC072800A7EB56 /* FourCharacterCode.swift */,
 				C29DBD3C1FEC06F900A7EB56 /* RegularExpression.swift */,
 				C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */,
-				C2E9BE4020B8AD6100A07F63 /* CircularBuffer.swift */,
+				C2E9BE4020B8AD6100A07F63 /* CircularBuffer_Generic.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -431,7 +435,6 @@
 				C250064420C831A5005A1BEB /* Logging.swift in Sources */,
 				C29DBD301FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */,
-				C2E9BE4120B8AD6100A07F63 /* CircularBuffer.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
@@ -439,6 +442,7 @@
 				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
 				C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
+				C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */,
 				C29DBD381FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C250064120C8314A005A1BEB /* Helpers.swift in Sources */,
@@ -453,13 +457,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2E9BE4220B8AD6100A07F63 /* CircularBuffer.swift in Sources */,
 				C250064220C8314A005A1BEB /* Helpers.swift in Sources */,
 				C29DBD331FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
 				C29DBD311FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */,
 				C29DBD4B1FEC078C00A7EB56 /* Bytes.swift in Sources */,
 				C29DBD441FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
+				C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C29DBD491FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
