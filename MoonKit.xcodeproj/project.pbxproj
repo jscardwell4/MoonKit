@@ -55,6 +55,10 @@
 		C273172D258D5F7C00554FB2 /* SetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8E258D1AD3000AA924 /* SetType.swift */; };
 		C273173A258D665000554FB2 /* RepeatingSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC91258D1AD4000AA924 /* RepeatingSequence.swift */; };
 		C273173B258D665100554FB2 /* RepeatingSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC91258D1AD4000AA924 /* RepeatingSequence.swift */; };
+		C2731760258D6E2300554FB2 /* CountableRangeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */; };
+		C2731763258D6E2400554FB2 /* CountableRangeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */; };
+		C273176C258D701E00554FB2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD26258D308D000AA924 /* OrderedSet.swift */; };
+		C273176F258D701F00554FB2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD26258D308D000AA924 /* OrderedSet.swift */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD231FEC04E400A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD281FEC06AB00A7EB56 /* DictionaryMerging.swift */; };
@@ -84,8 +88,8 @@
 		C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2E3FD34258D3229000AA924 /* HashedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8F258D1AD4000AA924 /* HashedStorage.swift */; };
 		C2E3FD37258D322A000AA924 /* HashedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8F258D1AD4000AA924 /* HashedStorage.swift */; };
-		C2E3FD3A258D328A000AA924 /* Range+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FCF3258D2031000AA924 /* Range+MoonKitAdditions.swift */; };
-		C2E3FD3D258D328B000AA924 /* Range+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FCF3258D2031000AA924 /* Range+MoonKitAdditions.swift */; };
+		C2E3FD3A258D328A000AA924 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FCF3258D2031000AA924 /* Range.swift */; };
+		C2E3FD3D258D328B000AA924 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FCF3258D2031000AA924 /* Range.swift */; };
 		C2E3FD41258D36FE000AA924 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FCF8258D2072000AA924 /* Operators.swift */; };
 		C2E3FD42258D36FE000AA924 /* MiscellaneousFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD13258D29F2000AA924 /* MiscellaneousFunctions.swift */; };
 		C2E3FD43258D36FE000AA924 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD0C258D29BA000AA924 /* Numbers.swift */; };
@@ -180,7 +184,7 @@
 		C2E3FC97258D1AD4000AA924 /* UIntBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIntBig.swift; sourceTree = "<group>"; };
 		C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountableRangeMap.swift; sourceTree = "<group>"; };
 		C2E3FC99258D1AD4000AA924 /* WeakArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakArray.swift; sourceTree = "<group>"; };
-		C2E3FCF3258D2031000AA924 /* Range+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Range+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2E3FCF3258D2031000AA924 /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
 		C2E3FCF8258D2072000AA924 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		C2E3FCFD258D20D6000AA924 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C2E3FD02258D21DD000AA924 /* Packing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Packing.swift; sourceTree = "<group>"; };
@@ -265,8 +269,8 @@
 		C29DBD1C1FEC046600A7EB56 /* CommonSource */ = {
 			isa = PBXGroup;
 			children = (
-				C2E3FD40258D36D1000AA924 /* Functions */,
 				C2A6964A258C06F5009CB31F /* Ports in Progress */,
+				C2E3FD40258D36D1000AA924 /* Functions */,
 				C23591D920A6423900F1C813 /* Fonts */,
 				C29DBD581FEC0C9400A7EB56 /* CommandLineToolHelpers */,
 				C29DBD451FEC072E00A7EB56 /* Protocols */,
@@ -315,11 +319,10 @@
 		C29DBD3A1FEC06E300A7EB56 /* Types */ = {
 			isa = PBXGroup;
 			children = (
-				C2E3FC96258D1AD4000AA924 /* UInt128.swift */,
-				C2E3FD18258D2AAA000AA924 /* Ratio.swift */,
-				C2731712258D530500554FB2 /* Fraction.swift */,
 				C2E3FD1D258D3001000AA924 /* Data Structures */,
 				C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */,
+				C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */,
+				C2E3FC91258D1AD4000AA924 /* RepeatingSequence.swift */,
 				C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */,
 				C29DBD421FEC072800A7EB56 /* FourCharacterCode.swift */,
 				C29DBD3C1FEC06F900A7EB56 /* RegularExpression.swift */,
@@ -332,6 +335,7 @@
 		C29DBD3B1FEC06EB00A7EB56 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C2E3FCF3258D2031000AA924 /* Range.swift */,
 				C29DBD3F1FEC071700A7EB56 /* Strings.swift */,
 				C2E6CB7D201AAC4C00D50E78 /* Date.swift */,
 				C23591AB20A63FC400F1C813 /* AttributedStrings.swift */,
@@ -361,12 +365,10 @@
 		C2A6964A258C06F5009CB31F /* Ports in Progress */ = {
 			isa = PBXGroup;
 			children = (
-				C2E3FCF3258D2031000AA924 /* Range+MoonKitAdditions.swift */,
 				C2E3FC88258D1AD3000AA924 /* Any2DIndex.swift */,
 				C2E3FC8C258D1AD3000AA924 /* AnyComparable.swift */,
 				C2E3FC8B258D1AD3000AA924 /* BCD.swift */,
 				C2E3FC93258D1AD4000AA924 /* BitMap.swift */,
-				C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */,
 				C2E3FC84258D1AD3000AA924 /* HashableTuple.swift */,
 				C2E3FC8D258D1AD3000AA924 /* Heap.swift */,
 				C2E3FC83258D1AD3000AA924 /* Interval.swift */,
@@ -374,20 +376,24 @@
 				C2E3FC87258D1AD3000AA924 /* KeyValueCollection.swift */,
 				C2E3FC8A258D1AD3000AA924 /* List.swift */,
 				C2E3FC85258D1AD3000AA924 /* Point3D.swift */,
-				C2E3FC91258D1AD4000AA924 /* RepeatingSequence.swift */,
-				C2E3FC90258D1AD4000AA924 /* SortedArray.swift */,
 				C2E3FC94258D1AD4000AA924 /* Tree.swift */,
 				C2E3FC97258D1AD4000AA924 /* UIntBig.swift */,
 				C2E3FC99258D1AD4000AA924 /* WeakArray.swift */,
 				C2A6964B258C06F5009CB31F /* JSONValue.swift */,
 				C2A6964C258C06F5009CB31F /* JSONSerialization.swift */,
+				C2E3FC90258D1AD4000AA924 /* SortedArray.swift */,
 				C2A6964D258C06F5009CB31F /* ObjectJSONValue.swift */,
 				C2A6964E258C06F5009CB31F /* BoxedJSONValue.swift */,
 				C2A6964F258C06F5009CB31F /* JSONValueRelatedExtensions.swift */,
 				C2A69650258C06F5009CB31F /* JSONIncludeDirective.swift */,
 				C2A69651258C06F5009CB31F /* ArrayJSONValue.swift */,
-				C2A69652258C06F5009CB31F /* NotificationType.swift */,
+				C2731712258D530500554FB2 /* Fraction.swift */,
 				C2A69653258C06F5009CB31F /* JSONParser.swift */,
+				C2A69652258C06F5009CB31F /* NotificationType.swift */,
+				C2E3FD26258D308D000AA924 /* OrderedSet.swift */,
+				C2E3FD18258D2AAA000AA924 /* Ratio.swift */,
+				C2E3FD2B258D313C000AA924 /* OrderedDictionary.swift */,
+				C2E3FC96258D1AD4000AA924 /* UInt128.swift */,
 			);
 			path = "Ports in Progress";
 			sourceTree = "<group>";
@@ -399,8 +405,6 @@
 				C2E3FC89258D1AD3000AA924 /* Queue.swift */,
 				C2E3FC92258D1AD4000AA924 /* Stack.swift */,
 				C2E3FC8F258D1AD4000AA924 /* HashedStorage.swift */,
-				C2E3FD26258D308D000AA924 /* OrderedSet.swift */,
-				C2E3FD2B258D313C000AA924 /* OrderedDictionary.swift */,
 			);
 			path = "Data Structures";
 			sourceTree = "<group>";
@@ -573,6 +577,7 @@
 				C29DBD301FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C29DBD4A1FEC078C00A7EB56 /* Bytes.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
+				C2731760258D6E2300554FB2 /* CountableRangeMap.swift in Sources */,
 				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 				C2E3FD43258D36FE000AA924 /* Numbers.swift in Sources */,
 				C2731724258D586100554FB2 /* SetAlgebraType.swift in Sources */,
@@ -581,7 +586,7 @@
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C2E3FD44258D36FE000AA924 /* Math.swift in Sources */,
 				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
-				C2E3FD3A258D328A000AA924 /* Range+MoonKitAdditions.swift in Sources */,
+				C2E3FD3A258D328A000AA924 /* Range.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
 				C2E3FD57258D3884000AA924 /* Stack.swift in Sources */,
 				C273173A258D665000554FB2 /* RepeatingSequence.swift in Sources */,
@@ -594,6 +599,7 @@
 				C250064120C8314A005A1BEB /* Helpers.swift in Sources */,
 				C29DBD361FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C2E3FD4D258D3714000AA924 /* Protocols.swift in Sources */,
+				C273176C258D701E00554FB2 /* OrderedSet.swift in Sources */,
 				C29DBD3D1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */,
 				C23591DC20A6423900F1C813 /* FontStyle.swift in Sources */,
@@ -606,6 +612,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C273176F258D701F00554FB2 /* OrderedSet.swift in Sources */,
 				C273173B258D665100554FB2 /* RepeatingSequence.swift in Sources */,
 				C250064220C8314A005A1BEB /* Helpers.swift in Sources */,
 				C29DBD331FEC06AC00A7EB56 /* KeyPathConvenienceExtensions.swift in Sources */,
@@ -616,6 +623,7 @@
 				C29DBD441FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C29DBD491FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
+				C2731763258D6E2400554FB2 /* CountableRangeMap.swift in Sources */,
 				C2731725258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
@@ -625,7 +633,7 @@
 				C2E6CB82201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C29DBD2F1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
 				C29DBD391FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
-				C2E3FD3D258D328B000AA924 /* Range+MoonKitAdditions.swift in Sources */,
+				C2E3FD3D258D328B000AA924 /* Range.swift in Sources */,
 				C2E3FD47258D36FF000AA924 /* Operators.swift in Sources */,
 				C2E3FD37258D322A000AA924 /* HashedStorage.swift in Sources */,
 				C29DBD371FEC06D400A7EB56 /* Zip.swift in Sources */,

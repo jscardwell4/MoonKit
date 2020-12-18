@@ -567,6 +567,12 @@ extension BucketMapSlice: CustomStringConvertible, CustomDebugStringConvertible 
 internal struct Bucket: Comparable, Strideable, Hashable, CustomStringConvertible {
   let offset: Int
   let capacity: Int
+
+  init(offset: Int, capacity: Int) {
+    self.offset = offset
+    self.capacity = capacity
+  }
+
   func predecessor() -> Bucket { advanced(by: -1) }
   func successor() -> Bucket { advanced(by: 1) }
   func advanced(by n: Int) -> Bucket { Bucket(offset: (offset &+ n) & (capacity &- 1),

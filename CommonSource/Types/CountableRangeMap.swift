@@ -10,14 +10,14 @@ import Foundation
 //import Surge
 
 /// Type to serve as `value` for `CountableRangeMapStorage`
-fileprivate struct CountableRangeMapStorageHeader {
+internal struct CountableRangeMapStorageHeader {
   var count = 0
   let capacity: Int
   init(capacity: Int) { self.capacity = capacity }
 }
 
 /// Backing storage for `RangeMapBuffer` and `CountableRangeMapBuffer`
-fileprivate class CountableRangeMapStorage<Bound>: ManagedBuffer<CountableRangeMapStorageHeader, Bound> {
+internal class CountableRangeMapStorage<Bound>: ManagedBuffer<CountableRangeMapStorageHeader, Bound> {
 
   var elements: UnsafeMutablePointer<Bound> { return withUnsafeMutablePointerToElements {$0} }
 
@@ -81,7 +81,7 @@ public struct RangeMapIterator<Bound:Strideable>: IteratorProtocol {
 ///
 /// - lower: The lower bound of a given closed range.
 /// - upper: The upper bound of a given closed range.
-fileprivate enum Limit {
+internal enum Limit {
   case lower, upper
   init(_ index: Int) { self = index % 2 == 0 ? .lower : .upper }
 }
@@ -92,7 +92,7 @@ fileprivate enum Limit {
 /// - exact:       The index specifying an exact match for the searched value.
 /// - predecessor: The index specifying the nearest value less than the searched value.
 /// - successor:   The index specifying the nearest value greater than the searched value.
-fileprivate enum SearchIndex {
+internal enum SearchIndex {
 
   case exact(Int), predecessor(Int), successor(Int)
 
@@ -106,7 +106,7 @@ fileprivate enum SearchIndex {
 }
 
 /// Buffer backing instances of `CountableRangeMap`.
-fileprivate struct CountableRangeMapBuffer< Bound:Strideable>: _DestructorSafeContainer
+internal struct CountableRangeMapBuffer< Bound:Strideable>: _DestructorSafeContainer
   where Bound.Stride:SignedInteger
 {
 
@@ -575,7 +575,7 @@ extension CountableRangeMapBuffer: RandomAccessCollection {
 
 }
 
-fileprivate struct CountableRangeMapBufferSlice<Bound:Strideable>: _DestructorSafeContainer where Bound.Stride:SignedInteger {
+internal struct CountableRangeMapBufferSlice<Bound:Strideable>: _DestructorSafeContainer where Bound.Stride:SignedInteger {
 
   typealias Buffer = CountableRangeMapBuffer<Bound>
   typealias BufferSlice = CountableRangeMapBufferSlice<Bound>
@@ -723,7 +723,7 @@ public struct CountableRangeMap<
     for index in indices {
       let lowerBound = buffer[index << 1]
       let upperBound = buffer[index << 1 &+ 1]
-      let distance = OrderedDictionaryIndex.Index(Int(lowerBound.distance(to: upperBound))) &+ 1
+      let distance = Int(lowerBound.distance(to: upperBound)) + 1
       result = result &+ numericCast(distance)
     }
 
@@ -753,13 +753,13 @@ public struct CountableRangeMap<
 
   public init(_ range: CountableClosedRange<Bound>) { buffer = Buffer(range: range) }
 
-  public init(_ range: ClosedRange<Bound>) { buffer = Buffer(range: rangeCast(range)) }
+//  public init(_ range: ClosedRange<Bound>) { buffer = Buffer(range: rangeCast(range)) }
 
-  public init(_ range: CountableRange<Bound>) {
-    buffer = range.isEmpty
-      ? Buffer(minimumCapacity: 0)
-      : Buffer(range: rangeCast(range))
-  }
+//  public init(_ range: CountableRange<Bound>) {
+//    buffer = range.isEmpty
+//      ? Buffer(minimumCapacity: 0)
+//      : Buffer(range: rangeCast(range))
+//  }
 
   public init(_ range: Range<Bound>) {
     buffer = range.lowerBound == range.upperBound
@@ -783,12 +783,12 @@ public struct CountableRangeMap<
 
   public mutating func insert(_ range: CountableClosedRange<Bound>) { _insert(range) }
 
-  public mutating func insert(_ range: ClosedRange<Bound>) { _insert(rangeCast(range)) }
+//  public mutating func insert(_ range: ClosedRange<Bound>) { _insert(rangeCast(range)) }
 
-  public mutating func insert(_ range: CountableRange<Bound>) {
-    guard !range.isEmpty else { return }
-    _insert(rangeCast(range))
-  }
+//  public mutating func insert(_ range: CountableRange<Bound>) {
+//    guard !range.isEmpty else { return }
+//    _insert(rangeCast(range))
+//  }
 
   public mutating func insert(_ range: Range<Bound>) {
     guard range.upperBound > range.lowerBound else { return }
@@ -823,12 +823,12 @@ public struct CountableRangeMap<
 
   public mutating func remove(_ range: CountableClosedRange<Bound>) { _remove(range) }
 
-  public mutating func remove(_ range: ClosedRange<Bound>) { _remove(rangeCast(range)) }
+//  public mutating func remove(_ range: ClosedRange<Bound>) { _remove(rangeCast(range)) }
 
-  public mutating func remove(_ range: CountableRange<Bound>) {
-    guard !range.isEmpty else { return }
-    _remove(rangeCast(range))
-  }
+//  public mutating func remove(_ range: CountableRange<Bound>) {
+//    guard !range.isEmpty else { return }
+//    _remove(rangeCast(range))
+//  }
 
   public mutating func remove(_ range: Range<Bound>) {
     guard !range.isEmpty else { return }
@@ -846,13 +846,13 @@ public struct CountableRangeMap<
     return _inverted(coverage: coverage)
   }
 
-  public func inverted(coverage: CountableRange<Bound>) -> CountableRangeMap<Bound> {
-    return _inverted(coverage: rangeCast(coverage))
-  }
+//  public func inverted(coverage: CountableRange<Bound>) -> CountableRangeMap<Bound> {
+//    return _inverted(coverage: rangeCast(coverage))
+//  }
 
-  public func inverted(coverage: ClosedRange<Bound>) -> CountableRangeMap<Bound> {
-    return _inverted(coverage: rangeCast(coverage))
-  }
+//  public func inverted(coverage: ClosedRange<Bound>) -> CountableRangeMap<Bound> {
+//    return _inverted(coverage: rangeCast(coverage))
+//  }
 
   public func inverted(coverage: Range<Bound>) -> CountableRangeMap<Bound> {
     return _inverted(coverage: rangeCast(coverage))
@@ -865,8 +865,8 @@ public struct CountableRangeMap<
 
   /// Replaces `ranges` the gaps between `ranges` over `coverage`.
   public mutating func invert(coverage: CountableClosedRange<Bound>) { _invert(coverage: coverage) }
-  public mutating func invert(coverage: ClosedRange<Bound>) { _invert(coverage: rangeCast(coverage)) }
-  public mutating func invert(coverage: CountableRange<Bound>) { _invert(coverage: rangeCast(coverage)) }
+//  public mutating func invert(coverage: ClosedRange<Bound>) { _invert(coverage: rangeCast(coverage)) }
+//  public mutating func invert(coverage: CountableRange<Bound>) { _invert(coverage: rangeCast(coverage)) }
   public mutating func invert(coverage: Range<Bound>) { _invert(coverage: rangeCast(coverage)) }
 
 }
@@ -946,7 +946,6 @@ extension CountableRangeMap: Equatable {
 
 }
 
-@_fixed_layout
 public struct CountableRangeMapSlice<
   Bound:Strideable>: RandomAccessCollection, _DestructorSafeContainer where Bound.Stride:SignedInteger
   
@@ -989,7 +988,7 @@ public struct CountableRangeMapSlice<
     for index in indices {
       let lowerBound = buffer[index << 1]
       let upperBound = buffer[index << 1 &+ 1]
-      let distance = lowerBound.distance(to: upperBound) &+ 1
+      let distance = lowerBound.distance(to: upperBound) + 1
       result = result &+ numericCast(distance)
     }
 

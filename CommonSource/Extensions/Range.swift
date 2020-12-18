@@ -1,5 +1,5 @@
 //
-//  Range+MoonKitAdditions.swift
+//  Range.swift
 //  MoonKit
 //
 //  Created by Jason Cardwell on 7/26/15.

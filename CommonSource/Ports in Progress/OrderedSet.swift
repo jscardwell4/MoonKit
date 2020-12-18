@@ -171,7 +171,9 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
 
   /// Returns the hash value of `member` squeezed into `capacity`
   @inline(__always) func idealBucket(for member: Member, capacity: Int) -> Bucket {
-    return Bucket(offset: squeezeHashValue(member.hashValue, 0..<capacity), capacity: capacity)
+    let offset = squeezeHashValue(hashValue: member.hashValue, 0..<capacity)
+    return Bucket(offset: offset,
+                  capacity: capacity)
   }
 
   /// Returns the bucket containing `member` or `nil` if no bucket contains `member`.
@@ -450,7 +452,8 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   mutating func insert<S:Collection>(contentsOf newMembers: S, at i: Index) where S.Iterator.Element == Member {
 
     // Insert new members, accumulating a list of their buckets
-    var newMembersBuckets = [Bucket](minimumCapacity: numericCast(newMembers.count))
+    var newMembersBuckets = [Bucket]()
+    newMembersBuckets.reserveCapacity(numericCast(newMembers.count))
 
     var pending: PendingAssignments = [:]
 
@@ -501,8 +504,7 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   ///
   /// - Complexity: O(`self.count`).
   mutating func removeSubrange(_ subRange: Range<Index>) {
-    let subRange = CountableRange(subRange)
-    switch CountableRange(subRange).count {
+    switch subRange.count {
       case 0: return
       case 1: destroy(at: subRange.lowerBound)
       default: //case let delta:
@@ -528,6 +530,10 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
 
   }
 
+  mutating func removeSubrange(_ subRange: ClosedRange<Index>) {
+    removeSubrange(subRange.lowerBound..<(subRange.upperBound + 1))
+  }
+
   /// Remove all members.
   ///
   /// Invalidates all indices with respect to `self`.
@@ -539,7 +545,7 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   /// - Complexity: O(`self.count`).
   mutating func removeAll(keepingCapacity keepCapacity: Bool) {
     guard keepCapacity else { self = Buffer.init(); return }
-    for bucket in bucketMap { (members + bucket.offset).deinitialize() }
+    for bucket in bucketMap { (members + bucket.offset).deinitialize(count: 1) }
     bucketMap.initializeStorage()
     endIndex = 0
     storage.count = 0
@@ -660,7 +666,10 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
 
   /// Returns the hash value of `value` squeezed into `capacity`
   @inline(__always) func idealBucket(for member: Member, capacity: Int) -> Bucket {
-    return Bucket(offset: _squeezeHashValue(member.hashValue, 0..<capacity), capacity: capacity)
+    let range = 0..<capacity
+    let memberhash = member.hashValue
+    let offset: Int = squeezeHashValue(hashValue: memberhash, range)
+    return Bucket(offset: offset, capacity: capacity)
   }
 
   @inline(__always) func find(_ member: Member) -> (bucket: Bucket, found: Bool) {
@@ -678,7 +687,7 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
 }
 
 // MARK: - RandomAccessCollection
-extension OrderedSetBufferSlice: RandomAccessCollection {
+extension OrderedSetBufferSlice: MutableCollection, RandomAccessCollection {
   typealias Index = Int
   typealias SubSequence = BufferSlice
 
@@ -707,8 +716,14 @@ extension OrderedSetBufferSlice: RandomAccessCollection {
   }
 
   subscript(index: Int) -> Member {
-    precondition(index >= startIndex && index < endIndex, "invalid index '\(index)'")
-    return members[bucketMap[index].offset]
+    get {
+      precondition(index >= startIndex && index < endIndex, "invalid index '\(index)'")
+      return members[bucketMap[index].offset]
+    }
+    set {
+      precondition(index >= startIndex && index < endIndex, "invalid index '\(index)'")
+      members[bucketMap[index].offset] = newValue
+    }
   }
 
   subscript(subRange: Range<Int>) -> SubSequence {
@@ -1036,8 +1051,7 @@ extension OrderedSet: SetType {
       ranges.insert(index)
       otherRanges.insert(otherIndex)
     }
-//    otherRanges.invert(coverage: orderedSet.startIndex...orderedSet.index(before: orderedSet.endIndex))
-    fatalError("\(#fileID) \(#function) port incomplete.")
+    otherRanges.invert(coverage: orderedSet.startIndex...orderedSet.index(before: orderedSet.endIndex))
     let removeCount = ranges.flattenedCount
     let addCount = otherRanges.flattenedCount
 
