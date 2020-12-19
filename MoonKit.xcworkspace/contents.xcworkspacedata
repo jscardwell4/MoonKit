@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../MoonKit_old/MoonKit_old.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:MoonKit.xcodeproj">
+   </FileRef>
+</Workspace>

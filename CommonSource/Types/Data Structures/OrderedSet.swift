@@ -7,11 +7,10 @@
 //
 import Foundation
 
-
 // MARK: - OrderedSetStorage
-/// Specialization of `HashedStorage` for an ordered set
-internal final class OrderedSetStorage<Member:Hashable>: HashedStorage {
 
+/// Specialization of `HashedStorage` for an ordered set
+internal final class OrderedSetStorage<Member: Hashable>: HashedStorage {
   typealias Storage = OrderedSetStorage<Member>
   typealias Header = HashedStorageHeader
 
@@ -31,12 +30,13 @@ internal final class OrderedSetStorage<Member:Hashable>: HashedStorage {
   /// Create a new storage instance.
   static func create(minimumCapacity: Int) -> OrderedSetStorage {
     let representedCapacity = round2(minimumCapacity)
-    let requiredCapacity = bytesForBucketMap(representedCapacity) + bytesForMembers(representedCapacity)
+    let requiredCapacity = bytesForBucketMap(representedCapacity)
+      + bytesForMembers(representedCapacity)
 
     let storage = super.create(minimumCapacity: requiredCapacity) {
       Header(capacity: $0.capacity,
              representedCapacity: representedCapacity,
-             bucketMapAddress: $0.withUnsafeMutablePointerToElements({pointerCast($0)}))
+             bucketMapAddress: $0.withUnsafeMutablePointerToElements { pointerCast($0) })
     }
 
     return storage as! Storage
@@ -46,40 +46,47 @@ internal final class OrderedSetStorage<Member:Hashable>: HashedStorage {
     let members = self.members
     for bucket in bucketMap { (members + bucket.offset).deinitialize(count: 1) }
     let bucketMapBytes = self.bucketMapBytes
-    withUnsafeMutablePointers { $1.deinitialize(count: bucketMapBytes); $0.deinitialize(count: 1) }
+    withUnsafeMutablePointers {
+      $1.deinitialize(count: bucketMapBytes)
+      $0.deinitialize(count: 1)
+    }
   }
 }
 
 // MARK: - OrderedSetBuffer
-fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
 
+private struct OrderedSetBuffer<Member: Hashable>: _DestructorSafeContainer {
   typealias Element = Member
   typealias _Element = Element
   typealias Buffer = OrderedSetBuffer<Member>
   typealias BufferSlice = OrderedSetBufferSlice<Member>
   typealias Storage = OrderedSetStorage<Member>
 
-  typealias PendingAssignments = [Bucket:Element]
+  typealias PendingAssignments = [Bucket: Element]
 
-  var indices: CountableRange<Int> { return CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex)) }
+  var indices: Range<Int> { startIndex..<endIndex }
 
   var storage: Storage
   let members: UnsafeMutablePointer<Member>
   let bucketMap: BucketMap
 
-  @inline(__always) mutating func isUniquelyReferenced() -> Bool { return Swift.isKnownUniquelyReferenced(&storage) }
+  @inline(__always)
+  mutating func isUniquelyReferenced() -> Bool {
+    Swift.isKnownUniquelyReferenced(&storage)
+  }
 
-  @inline(__always) mutating func requestUniqueBuffer(minimumCapacity: Int = 0) -> Buffer? {
+  @inline(__always)
+  mutating func requestUniqueBuffer(minimumCapacity: Int = 0) -> Buffer? {
     return isUniquelyReferenced() && capacity >= minimumCapacity ? self : nil
   }
 
-  var startIndex: Int { return 0 }
+  var startIndex: Int { 0 }
   var endIndex = 0
 
-  var count: Int { return endIndex }
+  var count: Int { endIndex }
 
-  var capacity: Int { return storage.header.representedCapacity }
-  var remainingCapacity: Int { return capacity &- count }
+  var capacity: Int { storage.header.representedCapacity }
+  var remainingCapacity: Int { capacity &- count }
 
   /// Returns the minimum capacity for storing `count` elements.
   @inline(__always)
@@ -89,7 +96,7 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     return x > y ? x : y
   }
 
-  var identity: UnsafeRawPointer { return bucketMap.identity }
+  var identity: UnsafeRawPointer { bucketMap.identity }
 
   init(storage: Storage) {
     self.storage = storage
@@ -119,40 +126,45 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
 
   /// Create a clone of `buffer`.
   init(buffer: Buffer) {
-
     let storage = Storage.create(minimumCapacity: buffer.capacity)
     storage.withUnsafeMutablePointers {
       newValue, newElements in
-        buffer.storage.withUnsafeMutablePointers {
-          bufferValue, bufferElements in
+      buffer.storage.withUnsafeMutablePointers {
+        bufferValue, bufferElements in
 
-          newElements.withMemoryRebound(to: Int.self, capacity: newValue.pointee.capacity) {
-            newBufferMapStorage in
+        newElements.withMemoryRebound(to: Int.self,
+                                      capacity: newValue.pointee.capacity) {
+          newBufferMapStorage in
 
-            bufferElements.withMemoryRebound(to: Int.self, capacity: bufferValue.pointee.capacity) {
-              sourceBufferMapStorage in
-                newBufferMapStorage.initialize(from: sourceBufferMapStorage, count: buffer.capacity * 2 + 1)
-            }
+          bufferElements.withMemoryRebound(to: Int.self,
+                                           capacity: bufferValue.pointee.capacity) {
+            sourceBufferMapStorage in
+            newBufferMapStorage.initialize(from: sourceBufferMapStorage,
+                                           count: buffer.capacity * 2 + 1)
           }
+        }
 
-          let newBucketMap = newValue.pointee.bucketMap
-          let bucketMapBytes = HashedStorage.bytesForBucketMap(buffer.capacity)
+        let newBucketMap = newValue.pointee.bucketMap
+        let bucketMapBytes = HashedStorage.bytesForBucketMap(buffer.capacity)
 
-          newElements.advanced(by: bucketMapBytes).withMemoryRebound(to: Member.self, capacity: newValue.pointee.capacity) {
+        newElements.advanced(by: bucketMapBytes)
+          .withMemoryRebound(to: Member.self, capacity: newValue.pointee.capacity) {
             newMemberStorage in
 
-            bufferElements.advanced(by: bucketMapBytes).withMemoryRebound(to: Member.self, capacity: bufferValue.pointee.capacity) {
-              sourceMemberStorage in
+            bufferElements.advanced(by: bucketMapBytes)
+              .withMemoryRebound(to: Member.self,
+                                 capacity: bufferValue.pointee.capacity) {
+                sourceMemberStorage in
 
-              for bucket in newBucketMap {
-                newMemberStorage.advanced(by: bucket.offset).initialize(to: sourceMemberStorage.advanced(by: bucket.offset).pointee)
+                for bucket in newBucketMap {
+                  newMemberStorage.advanced(by: bucket.offset)
+                    .initialize(to: sourceMemberStorage
+                      .advanced(by: bucket.offset).pointee)
+                }
               }
-
-            }
-
           }
 
-          newValue.pointee.count = bufferValue.pointee.count
+        newValue.pointee.count = bufferValue.pointee.count
       }
     }
 
@@ -160,9 +172,12 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
   }
 
   /// Returns whether `member` is present in the buffer.
-  @inline(__always) func contains(_ member: Member) -> Bool { let (_, found) = find(member); return found }
+  @inline(__always) func contains(_ member: Member) -> Bool {
+    let (_, found) = find(member); return found
+  }
 
-  /// Returns the public-facing index for `member`; returns `nil` when `member` is not found.
+  /// Returns the public-facing index for `member`; returns `nil` when `member`
+  /// is not found.
   @inline(__always) func index(for member: Member) -> Int? {
     let (bucket, found) = find(member)
     guard found, let index = bucketMap[bucket] else { return nil }
@@ -171,7 +186,7 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
 
   /// Returns the hash value of `member` squeezed into `capacity`
   @inline(__always) func idealBucket(for member: Member, capacity: Int) -> Bucket {
-    let offset = squeezeHashValue(hashValue: member.hashValue, 0..<capacity)
+    let offset = squeezeHashValue(member.hashValue, 0..<capacity)
     return Bucket(offset: offset,
                   capacity: capacity)
   }
@@ -182,8 +197,12 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     return found ? bucket : nil
   }
 
-  /// Returns an empty bucket suitable for holding `member` or `nil` if a bucket already contains `member`.
-  @inline(__always) func emptyBucket(for member: Member, pending: PendingAssignments? = nil) -> Bucket? {
+  /// Returns an empty bucket suitable for holding `member` or `nil` if a bucket
+  /// already contains `member`.
+  @inline(__always)
+  func emptyBucket(for member: Member,
+                   pending: PendingAssignments? = nil) -> Bucket?
+  {
     let (bucket, found) = find(member, pending: pending)
     return found ? nil : bucket
   }
@@ -207,7 +226,10 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     fatalError("failed to locate hole")
   }
 
-  func _find(member: Member, startBucket: Bucket, pending: PendingAssignments) -> (bucket: Bucket, found: Bool) {
+  func _find(member: Member,
+             startBucket: Bucket,
+             pending: PendingAssignments) -> (bucket: Bucket, found: Bool)
+  {
     var bucket = startBucket
     repeat {
       switch (bucketMap[bucket], pending[bucket]) {
@@ -223,15 +245,23 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
 
   /// Returns the current bucket for `member` and `true` when `member` is located;
   /// returns an open bucket for `member` and `false` otherwise
-  /// - parameter pending: Map of bucket to member assignments to be treated as if they have already been committed.
-  /// - requires: At least one empty bucket
-  @inline(__always) func find(_ member: Member, pending: PendingAssignments? = nil) -> (bucket: Bucket, found: Bool) {
+  ///
+  /// - Parameter pending: Map of bucket to member assignments to be treated as if
+  ///                      they have already been committed.
+  /// - Requires: At least one empty bucket
+  @inline(__always)
+  func find(_ member: Member,
+            pending: PendingAssignments? = nil) -> (bucket: Bucket, found: Bool)
+  {
     let startBucket = idealBucket(for: member, capacity: capacity)
-    guard let pending = pending else { return _find(member: member, startBucket: startBucket) }
+    guard let pending = pending else {
+      return _find(member: member, startBucket: startBucket)
+    }
     return _find(member: member, startBucket: startBucket, pending: pending)
   }
 
-  /// Initializes a fresh bucket with `member` at `position` unless `member` is a duplicate.
+  /// Initializes a fresh bucket with `member` at `position` unless `member`
+  /// is a duplicate.
   /// Returns `true` if a bucket was initialized and `false` otherwise.
   @discardableResult
   func initialize(member: Member, at position: Int) -> Bool {
@@ -250,7 +280,8 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     return oldMember
   }
 
-  /// Attempts to move the values of the buckets near `hole` into buckets nearer to their 'ideal' bucket
+  /// Attempts to move the values of the buckets near `hole` into buckets nearer to
+  /// their 'ideal' bucket
   func patch(hole: Bucket, idealBucket: Bucket) {
     var hole = hole
     var start = idealBucket
@@ -269,7 +300,9 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
         let bucket = self.idealBucket(for: member, capacity: capacity)
 
         switch (bucket >= start, bucket <= hole) {
-          case (true, true) where start <= hole, (true, _) where start > hole, (_, true) where start > hole:
+          case (true, true) where start <= hole,
+               (true, _) where start > hole,
+               (_, true) where start > hole:
             break FillHole
           default:
             last = last.advanced(by: -1)
@@ -281,7 +314,6 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
       bucketMap.replace(bucket: last, with: hole)
       hole = last
     }
-
   }
 
   mutating func remove(member: Member) -> Element? {
@@ -293,8 +325,9 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
   }
 
   /// Removes members common with `members`.
-  mutating func remove<Source:Sequence>(contentsOf sourceMembers: Source) where Source.Iterator.Element == Element {
-
+  mutating func remove<Source: Sequence>(contentsOf sourceMembers: Source)
+    where Source.Iterator.Element == Element
+  {
     var ranges = CountableRangeMap<Int>()
     for member in sourceMembers {
       guard let index = index(of: member) else { continue }
@@ -304,7 +337,6 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     guard ranges.count > 0 else { return }
 
     for range in ranges.reversed() { removeSubrange(range) }
-
   }
 
   mutating func destroy(bucket: Bucket) {
@@ -316,44 +348,55 @@ fileprivate struct OrderedSetBuffer<Member:Hashable>: _DestructorSafeContainer {
     patch(hole: bucket, idealBucket: idealBucket)
   }
 
-  /// Uninitializes the bucket for `position`, adjusts positions and `endIndex` and patches the hole.
+  /// Uninitializes the bucket for `position`, adjusts positions and
+  /// `endIndex` and patches the hole.
   mutating func destroy(at position: Index) { destroy(bucket: bucketMap[position]) }
-
 }
 
-// MARK: - RandomAccessCollection
+// MARK: RandomAccessCollection
+
 extension OrderedSetBuffer: RandomAccessCollection {
   typealias Index = Int
   typealias SubSequence = BufferSlice
 
-  func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-  func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
+  func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) {}
+  func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) {}
 
-  @inline(__always) func distance(from start: Int, to end: Int) -> Int { return end &- start }
+  @inline(__always) func distance(from start: Int, to end: Int) -> Int { end &- start }
 
-  @inline(__always) func index(after i: Int) -> Int { return i &+ 1 }
-  @inline(__always) func index(before i: Int) -> Int { return i &- 1 }
-  @inline(__always) func index(_ i: Int, offsetBy n: Int) -> Int { return i &+ n }
+  @inline(__always) func index(after i: Int) -> Int { i &+ 1 }
+  @inline(__always) func index(before i: Int) -> Int { i &- 1 }
+  @inline(__always) func index(_ i: Int, offsetBy n: Int) -> Int { i &+ n }
   @inline(__always) func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
     switch (i &+ n, n < 0) {
-      case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: return iʹ
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        return iʹ
       default: return nil
     }
   }
-  @inline(__always) func formIndex(after i: inout Int) { i = i &+ 1 }
-  @inline(__always) func formIndex(before i: inout Int) { i = i &- 1 }
-  @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
-  @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
+
+  @inline(__always)
+  func formIndex(after i: inout Int) { i = i &+ 1 }
+  @inline(__always)
+  func formIndex(before i: inout Int) { i = i &- 1 }
+  @inline(__always)
+  func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
+  @inline(__always)
+  func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
     switch (i &+ n, n < 0) {
-      case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: i = iʹ; return true
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        i = iʹ
+        return true
       default: return false
     }
   }
 }
 
-// MARK: - MutableCollection
-extension OrderedSetBuffer: MutableCollection {
+// MARK: MutableCollection
 
+extension OrderedSetBuffer: MutableCollection {
   subscript(index: Int) -> Member {
     get {
       precondition(index >= startIndex && index < endIndex, "invalid index '\(index)'")
@@ -371,17 +414,16 @@ extension OrderedSetBuffer: MutableCollection {
     get { return SubSequence(buffer: self, indices: subRange) }
     set { replaceSubrange(subRange, with: newValue) }
   }
-
 }
 
 // MARK: RangeReplaceableCollection
-extension OrderedSetBuffer/*: RangeReplaceableCollection */{
 
-
+extension OrderedSetBuffer /*: RangeReplaceableCollection */ {
   /// Create an empty instance.
   init() { self = Buffer(minimumCapacity: 0) }
 
-  mutating func replaceSubrange<Source:Collection>(_ subRange: Range<Int>, with newMembers: Source)
+  mutating func replaceSubrange<Source: Collection>(_ subRange: Range<Int>,
+                                                    with newMembers: Source)
     where Source.Iterator.Element == Member
   {
     removeSubrange(subRange)
@@ -389,11 +431,13 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   }
 
   /// Creates an instance that contains `members`.
-  init<Source:Sequence>(_ members: Source) where Source.Iterator.Element == Member {
+  init<Source: Sequence>(_ members: Source) where Source.Iterator.Element == Member {
     self = Buffer(Array(members))
   }
 
-  init<Source:Collection>(_ sourceMembers: Source) where Source.Iterator.Element == Member {
+  init<Source: Collection>(_ sourceMembers: Source)
+    where Source.Iterator.Element == Member
+  {
     let requiredCapacity = Buffer.minimumCapacityFor(numericCast(sourceMembers.count) + 1)
     storage = Storage.create(minimumCapacity: requiredCapacity)
     members = storage.members
@@ -421,14 +465,14 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
     storage.count = endIndex
   }
 
-
   /// Append the members of `newMembers` to `self`.
   ///
   /// - Complexity: O(*length of result*).
-  mutating func append<Source:Sequence>(contentsOf newMembers: Source) where Source.Iterator.Element == Member {
+  mutating func append<Source: Sequence>(contentsOf newMembers: Source)
+    where Source.Iterator.Element == Member
+  {
     for member in newMembers { append(member) }
   }
-
 
   /// Insert `newMember` at index `i`.
   ///
@@ -443,14 +487,14 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
     storage.count = endIndex
   }
 
-
   /// Insert `newMembers` at index `i`.
   ///
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count + newMembers.count`).
-  mutating func insert<S:Collection>(contentsOf newMembers: S, at i: Index) where S.Iterator.Element == Member {
-
+  mutating func insert<S: Collection>(contentsOf newMembers: S, at i: Index)
+    where S.Iterator.Element == Member
+  {
     // Insert new members, accumulating a list of their buckets
     var newMembersBuckets = [Bucket]()
     newMembersBuckets.reserveCapacity(numericCast(newMembers.count))
@@ -465,24 +509,25 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
     }
 
     // Adjust positions
-    bucketMap.insert(contentsOf: newMembersBuckets, at: i)  //replaceSubrange(index..<index, with: newMembersBuckets)
+    bucketMap.insert(contentsOf: newMembersBuckets, at: i)
 
     let 𝝙members = newMembersBuckets.count
 
     // Adjust count and endIndex
     endIndex = endIndex &+ 𝝙members
     storage.count = endIndex
-
   }
-
 
   /// Remove the member at index `i`.
   ///
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count`).
-  mutating func remove(at i: Index) -> Member { let result = self[i]; destroy(at: i); return result }
-
+  mutating func remove(at i: Index) -> Member {
+    let result = self[i]
+    destroy(at: i)
+    return result
+  }
 
   /// Remove the member at `startIndex` and return it.
   ///
@@ -490,13 +535,13 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   /// - Requires: `!self.isEmpty`.
   mutating func removeFirst() -> Member { return remove(at: startIndex) }
 
-
   /// Remove the first `n` members.
   ///
   /// - Complexity: O(`self.count`)
   /// - Requires: `n >= 0 && self.count >= n`.
-  mutating func removeFirst(_ n: Int) { removeSubrange(startIndex..<startIndex.advanced(by: n)) }
-
+  mutating func removeFirst(_ n: Int) {
+    removeSubrange(startIndex..<startIndex.advanced(by: n))
+  }
 
   /// Remove the indicated `subRange` of members.
   ///
@@ -507,27 +552,13 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
     switch subRange.count {
       case 0: return
       case 1: destroy(at: subRange.lowerBound)
-      default: //case let delta:
-//        var buckets: [Bucket] = [], idealBuckets: [Bucket] = []
-      //TODO: Come back to this once other crashes stop
+      default:
         var destroyed = 0
         for position in subRange {
           destroy(at: position &- destroyed)
           destroyed = destroyed &+ 1
-//          let bucket = bucketMap[offset(position: position)]
-//          buckets.append(bucket)
-//          let idealBucket = suggestBucket(forValue: storage.key(at: bucket.offset), capacity: manager.value.representedCapacity)
-//          idealBuckets.append(idealBucket)
-//          storage.destroy(at: bucket.offset)
-//          patch(hole: bucket, idealBucket: idealBucket)
         }
-//        for (bucket, idealBucket) in zip(buckets, idealBuckets) { patch(hole: bucket, idealBucket: idealBucket) }
-
-//        bucketMap.removeSubrange(Range(offset(position: subRange)))
-//        manager.value.count = manager.value.count &- delta
-//        endIndex = endIndex &- delta
     }
-
   }
 
   mutating func removeSubrange(_ subRange: ClosedRange<Index>) {
@@ -544,27 +575,26 @@ extension OrderedSetBuffer/*: RangeReplaceableCollection */{
   ///
   /// - Complexity: O(`self.count`).
   mutating func removeAll(keepingCapacity keepCapacity: Bool) {
-    guard keepCapacity else { self = Buffer.init(); return }
+    guard keepCapacity else { self = Buffer(); return }
     for bucket in bucketMap { (members + bucket.offset).deinitialize(count: 1) }
     bucketMap.initializeStorage()
     endIndex = 0
     storage.count = 0
   }
-
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
-extension OrderedSetBuffer: CustomStringConvertible, CustomDebugStringConvertible {
 
+extension OrderedSetBuffer: CustomStringConvertible, CustomDebugStringConvertible {
   var membersDescription: String {
     if count == 0 { return "[]" }
 
     var result = "["
     var first = true
-    for position in CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex)) {
+    for position in startIndex..<endIndex {
       if first { first = false } else { result += ", " }
       let bucket = bucketMap[position]
-      debugPrint(members[bucket.offset], terminator: "",   to: &result)
+      debugPrint(members[bucket.offset], terminator: "", to: &result)
     }
     result += "]"
     return result
@@ -594,20 +624,18 @@ extension OrderedSetBuffer: CustomStringConvertible, CustomDebugStringConvertibl
           "member = \(member)",
           "ideal bucket = \(idealBucket(for: member, capacity: capacity))",
           "position = \(position)\n"
-          ].joined(separator: ", ")
+        ].joined(separator: ", ")
       } else {
         result += "bucket \(bucket), empty\n"
       }
     }
     return result
   }
-
-
 }
 
 // MARK: - OrderedSetBufferSlice
-fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContainer {
 
+private struct OrderedSetBufferSlice<Member: Hashable>: _DestructorSafeContainer {
   typealias Element = Member
 
   typealias _Element = Element
@@ -615,13 +643,16 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
   typealias BufferSlice = OrderedSetBufferSlice<Member>
   typealias Storage = OrderedSetStorage<Member>
 
-  var indices: CountableRange<Int> { return CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex)) }
+  var indices: Range<Int> { startIndex..<endIndex }
 
   var storage: Storage
   let members: UnsafeMutablePointer<Member>
   let bucketMap: BucketMapSlice
 
-  @inline(__always) mutating func isUniquelyReferenced() -> Bool { return Swift.isKnownUniquelyReferenced(&storage) }
+  @inline(__always)
+  mutating func isUniquelyReferenced() -> Bool {
+    Swift.isKnownUniquelyReferenced(&storage)
+  }
 
   let startIndex: Int
   let endIndex: Int
@@ -647,9 +678,11 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
   }
 
   /// Returns whether `member` is present in the buffer.
-  @inline(__always) func contains(member: Member) -> Bool { let (_, found) = find(member); return found }
+  @inline(__always)
+  func contains(member: Member) -> Bool { let (_, found) = find(member); return found }
 
-  /// Returns the public-facing index for `member`; returns `nil` when `member` is not found.
+  /// Returns the public-facing index for `member`; returns `nil`
+  /// when `member` is not found.
   @inline(__always) func index(for member: Member) -> Int? {
     let (bucket, found) = find(member)
     guard found, let index = bucketMap[bucket] else { return nil }
@@ -668,7 +701,7 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
   @inline(__always) func idealBucket(for member: Member, capacity: Int) -> Bucket {
     let range = 0..<capacity
     let memberhash = member.hashValue
-    let offset: Int = squeezeHashValue(hashValue: memberhash, range)
+    let offset: Int = squeezeHashValue(memberhash, range)
     return Bucket(offset: offset, capacity: capacity)
   }
 
@@ -683,34 +716,41 @@ fileprivate struct OrderedSetBufferSlice<Member:Hashable>: _DestructorSafeContai
 
     fatalError("failed to locate hole")
   }
-
 }
 
-// MARK: - RandomAccessCollection
+// MARK: MutableCollection, RandomAccessCollection
+
 extension OrderedSetBufferSlice: MutableCollection, RandomAccessCollection {
   typealias Index = Int
   typealias SubSequence = BufferSlice
 
-  func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-  func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
+  func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) {}
+  func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) {}
 
-  @inline(__always) func distance(from start: Int, to end: Int) -> Int { return end &- start }
+  @inline(__always) func distance(from start: Int, to end: Int) -> Int { end &- start }
 
-  @inline(__always) func index(after i: Int) -> Int { return i &+ 1 }
-  @inline(__always) func index(before i: Int) -> Int { return i &- 1 }
-  @inline(__always) func index(_ i: Int, offsetBy n: Int) -> Int { return i &+ n }
+  @inline(__always) func index(after i: Int) -> Int { i &+ 1 }
+  @inline(__always) func index(before i: Int) -> Int { i &- 1 }
+  @inline(__always) func index(_ i: Int, offsetBy n: Int) -> Int { i &+ n }
   @inline(__always) func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
     switch (i &+ n, n < 0) {
-      case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: return iʹ
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        return iʹ
       default: return nil
     }
   }
+
   @inline(__always) func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
-  @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
+  @inline(__always)
+  func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
     switch (i &+ n, n < 0) {
-      case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: i = iʹ; return true
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        i = iʹ
+        return true
       default: return false
     }
   }
@@ -727,24 +767,24 @@ extension OrderedSetBufferSlice: MutableCollection, RandomAccessCollection {
   }
 
   subscript(subRange: Range<Int>) -> SubSequence {
-    precondition(subRange.lowerBound >= startIndex && subRange.upperBound <= endIndex, "invalid subRange '\(subRange)'")
+    precondition(subRange.lowerBound >= startIndex
+      && subRange.upperBound <= endIndex, "invalid subRange '\(subRange)'")
     return SubSequence(bufferSlice: self, indices: subRange)
   }
-
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
-extension OrderedSetBufferSlice: CustomStringConvertible, CustomDebugStringConvertible {
 
+extension OrderedSetBufferSlice: CustomStringConvertible, CustomDebugStringConvertible {
   var membersDescription: String {
     if count == 0 { return "[]" }
 
     var result = "["
     var first = true
-    for position in CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex)) {
+    for position in startIndex..<endIndex {
       if first { first = false } else { result += ", " }
       let bucket = bucketMap[position]
-      debugPrint(members[bucket.offset], terminator: "",   to: &result)
+      debugPrint(members[bucket.offset], terminator: "", to: &result)
     }
     result += "]"
     return result
@@ -759,15 +799,14 @@ extension OrderedSetBufferSlice: CustomStringConvertible, CustomDebugStringConve
     result += "count = \(count)\n"
     return result
   }
-
-
 }
 
 // MARK: - OrderedSet
 
 /// A hash-based set of elements that preserves element order.
-public struct OrderedSet<Member:Hashable>: RandomAccessCollection, _DestructorSafeContainer {
-
+public struct OrderedSet<Member: Hashable>: RandomAccessCollection,
+  _DestructorSafeContainer
+{
   fileprivate typealias Buffer = OrderedSetBuffer<Member>
   fileprivate typealias Storage = OrderedSetStorage<Member>
 
@@ -776,37 +815,38 @@ public struct OrderedSet<Member:Hashable>: RandomAccessCollection, _DestructorSa
   public typealias _Element = Element
   public typealias SubSequence = OrderedSetSlice<Member>
 
-  public var startIndex: Index {  return buffer.startIndex }
+  public var startIndex: Index { buffer.startIndex }
 
-  public var endIndex: Index {  return buffer.endIndex }
+  public var endIndex: Index { buffer.endIndex }
 
   public subscript(index: Index) -> Member {
-    get {  return buffer[index] }
+    get { buffer[index] }
     set {
-        _reserveCapacity(capacity)
+      _reserveCapacity(capacity)
       buffer[index] = newValue
     }
   }
 
   public subscript(subRange: Range<Int>) -> SubSequence {
-    get {  return SubSequence(buffer: buffer[subRange]) }
+    get { SubSequence(buffer: buffer[subRange]) }
     set { replaceSubrange(subRange, with: newValue) }
   }
 
   fileprivate var buffer: Buffer
 
   /// The current number of elements
-  public var count: Int {  return buffer.count }
+  public var count: Int { return buffer.count }
 
-  public var indices: CountableRange<Int> { return CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex)) }
+  public var indices: Range<Int> { startIndex..<endIndex }
 
   /// The number of elements this collection can hold without reallocating
-  public var capacity: Int {   return buffer.capacity }
+  public var capacity: Int { buffer.capacity }
 
+  public init(minimumCapacity: Int) {
+    self = OrderedSet(buffer: Buffer(minimumCapacity: minimumCapacity))
+  }
 
-  public init(minimumCapacity: Int) { self = OrderedSet(buffer: Buffer(minimumCapacity: minimumCapacity)) }
-
-  fileprivate init(buffer: Buffer) {  self.buffer = buffer }
+  fileprivate init(buffer: Buffer) { self.buffer = buffer }
 
   public func hash(into hasher: inout Hasher) {
     for element in self {
@@ -814,51 +854,64 @@ public struct OrderedSet<Member:Hashable>: RandomAccessCollection, _DestructorSa
     }
   }
 
+  public func _customContainsEquatableElement(_ member: Member) -> Bool? {
+    buffer.contains(member)
+  }
 
-  public func _customContainsEquatableElement(_ member: Member) -> Bool? { return buffer.contains(member) }
-  public func _customIndexOfEquatableElement(_ member: Member) -> Index?? { return Optional(buffer.index(of: member)) }
+  public func _customIndexOfEquatableElement(_ member: Member) -> Index?? {
+    Optional(buffer.index(of: member))
+  }
 
+  public func index(of member: Member) -> Index? { buffer.index(of: member) }
+  public func contains(_ member: Member) -> Bool { buffer.contains(member) }
 
-  public func index(of member: Member) -> Index? { return buffer.index(of: member) }
-  public func contains(_ member: Member) -> Bool { return buffer.contains(member) }
+  public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) {}
+  public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) {}
 
-  public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-  public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-
-  @inline(__always) public func distance(from start: Int, to end: Int) -> Int { return end &- start }
-  @inline(__always) public func index(after i: Int) -> Int { return i &+ 1 }
-  @inline(__always) public func index(before i: Int) -> Int { return i &- 1 }
-  @inline(__always) public func index(_ i: Int, offsetBy n: Int) -> Int { return i &+ n }
-  @inline(__always) public func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
+  @inline(__always)
+  public func distance(from start: Int, to end: Int) -> Int { end &- start }
+  @inline(__always) public func index(after i: Int) -> Int { i &+ 1 }
+  @inline(__always) public func index(before i: Int) -> Int { i &- 1 }
+  @inline(__always) public func index(_ i: Int, offsetBy n: Int) -> Int { i &+ n }
+  @inline(__always)
+  public func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
     switch (i &+ n, n < 0) {
-    case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: return iʹ
-    default: return nil
+      case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: return iʹ
+      default: return nil
     }
   }
+
   @inline(__always) public func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) public func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
-  @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
+  @inline(__always)
+  public func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
     switch (i &+ n, n < 0) {
-    case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: i = iʹ; return true
-    default: return false
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        i = iʹ
+        return true
+      default: return false
     }
   }
 
   fileprivate mutating func _reserveCapacity(_ minimumCapacity: Int) {
-    guard buffer.requestUniqueBuffer(minimumCapacity: minimumCapacity) == nil else { return }
+    guard buffer.requestUniqueBuffer(minimumCapacity: minimumCapacity) == nil else {
+      return
+    }
     buffer = buffer.capacity < minimumCapacity
       ? OrderedSetBuffer<Member>(buffer: buffer, withCapacity: minimumCapacity)
       : OrderedSetBuffer<Member>(buffer: buffer)
   }
-
 }
 
 // MARK: SetType
-extension OrderedSet: SetType {
 
+extension OrderedSet: SetType {
   @discardableResult
-  public mutating func insert(_ newMember: Member) -> (inserted: Bool, memberAfterInsert: Member) {
+  public mutating func insert(_ newMember: Member)
+    -> (inserted: Bool, memberAfterInsert: Member)
+  {
     guard !contains(newMember) else { return (false, newMember) }
     append(newMember)
     return (true, newMember)
@@ -878,7 +931,8 @@ extension OrderedSet: SetType {
 
   public var isEmpty: Bool { return count == 0 }
 
-  /// Removes and returns `element` from the collection, returns `nil` if `element` was not contained.
+  /// Removes and returns `member` from the collection,
+  /// returns `nil` if `member` was not contained.
   @discardableResult
   public mutating func remove(_ member: Member) -> Member? {
     guard let index = buffer.index(of: member) else { return nil }
@@ -887,19 +941,24 @@ extension OrderedSet: SetType {
   }
 
   /// Initialize with the unique members of `elements`.
-  public init<Source:Sequence>(_ elements: Source) where Source.Iterator.Element == Member {
+  public init<Source: Sequence>(_ elements: Source)
+    where Source.Iterator.Element == Member
+  {
     let buffer = Buffer(elements)
     let orderedSet = OrderedSet(buffer: buffer)
     self = orderedSet
   }
 
-  public init<Source:Collection>(_ elements: Source) where Source.Iterator.Element == Member {
+  public init<Source: Collection>(_ elements: Source)
+    where Source.Iterator.Element == Member
+  {
     let buffer = Buffer(elements)
     let orderedSet = OrderedSet(buffer: buffer)
     self = orderedSet
   }
 
-  fileprivate func result<Source:Sequence>(of query: (OrderedSet<Member>) -> Bool, downcasting sequence: Source) -> Bool
+  fileprivate func result<Source: Sequence>(of query: (OrderedSet<Member>) -> Bool,
+                                            downcasting sequence: Source) -> Bool
     where Source.Iterator.Element == Member
   {
     if let other = sequence as? OrderedSet<Member> { return query(other) }
@@ -908,110 +967,132 @@ extension OrderedSet: SetType {
 
   fileprivate func _isSubset(of other: OrderedSet<Member>) -> Bool {
     guard count <= other.count else { return false }
-    return first(where: {!other.contains($0)}) == nil
+    return first(where: { !other.contains($0) }) == nil
   }
 
   /// Returns true if the set is a subset of a finite sequence as a set.
-
-  public func isSubset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  public func isSubset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isSubset, downcasting: sequence)
   }
 
   public func isSubset(of other: OrderedSet<Member>) -> Bool { return _isSubset(of: other) }
 
-
   fileprivate func _isStrictSubset(of other: OrderedSet<Member>) -> Bool {
     guard count < other.count else { return false }
-    return first(where: {!other.contains($0)}) == nil
+    return first(where: { !other.contains($0) }) == nil
   }
 
   /// Returns true if the set is a subset of a finite sequence as a set but not equal.
-
-  public func isStrictSubset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  public func isStrictSubset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isStrictSubset, downcasting: sequence)
   }
 
-  public func isStrictSubset(of other: OrderedSet<Member>) -> Bool { return _isStrictSubset(of: other) }
-
+  public func isStrictSubset(of other: OrderedSet<Member>) -> Bool {
+    _isStrictSubset(of: other)
+  }
 
   fileprivate func _isSuperset(of other: OrderedSet<Member>) -> Bool {
     guard count >= other.count else { return false }
-    return other.first(where: {!contains($0)}) == nil
+    return other.first(where: { !contains($0) }) == nil
   }
 
   /// Returns true if the set is a superset of a finite sequence as a set.
-
-  public func isSuperset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  public func isSuperset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isSuperset, downcasting: sequence)
   }
 
-  public func isSuperset(of other: OrderedSet<Member>) -> Bool { return _isSuperset(of: other) }
+  public func isSuperset(of other: OrderedSet<Member>) -> Bool { _isSuperset(of: other) }
 
   fileprivate func _isStrictSuperset(of other: OrderedSet<Member>) -> Bool {
     guard count > other.count else { return false }
-    return other.first(where: {!contains($0)}) == nil
+    return other.first(where: { !contains($0) }) == nil
   }
 
   /// Returns true if the set is a superset of a finite sequence as a set but not equal.
-
-  public func isStrictSuperset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  public func isStrictSuperset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isStrictSuperset, downcasting: sequence)
   }
 
-  public func isStrictSuperset(of other: OrderedSet<Member>) -> Bool { return _isStrictSuperset(of: other) }
+  public func isStrictSuperset(of other: OrderedSet<Member>) -> Bool {
+    _isStrictSuperset(of: other)
+  }
 
   fileprivate func _isDisjoint(with other: OrderedSet<Member>) -> Bool {
-    return first(where: {other.contains($0)}) == nil && other.first(where: {contains($0)}) == nil
+    first(where: { other.contains($0) }) == nil
+      && other.first(where: { contains($0) }) == nil
   }
 
   /// Returns true if no members in the set are in a finite sequence as a set.
 
-  public func isDisjoint<Source:Sequence>(with sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  public func isDisjoint<Source: Sequence>(with sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isDisjoint, downcasting: sequence)
   }
 
-
-  public func isDisjoint(with other: OrderedSet<Member>) -> Bool { return _isDisjoint(with: other) }
+  public func isDisjoint(with other: OrderedSet<Member>) -> Bool {
+    _isDisjoint(with: other)
+  }
 
   /// Return a new `Set` with items in both this set and a finite sequence.
 
-  public func union<Source:Sequence>(_ sequence: Source) -> OrderedSet<Element> where Source.Iterator.Element == Member {
+  public func union<Source: Sequence>(_ sequence: Source) -> OrderedSet<Element>
+    where Source.Iterator.Element == Member
+  {
     var result = self
     result.formUnion(sequence)
     return result
   }
 
   /// Insert elements of a finite sequence into this set.
-  public mutating func formUnion<Source:Sequence>(_ sequence: Source) where Source.Iterator.Element == Member {
-    self.append(contentsOf: sequence)
+  public mutating func formUnion<Source: Sequence>(_ sequence: Source)
+    where Source.Iterator.Element == Member
+  {
+    append(contentsOf: sequence)
   }
 
   /// Insert elements of a finite collection into this set.
-  public mutating func formUnion<Source:Collection>(_ collection: Source) where Source.Iterator.Element == Member {
+  public mutating func formUnion<Source: Collection>(_ collection: Source)
+    where Source.Iterator.Element == Member
+  {
     append(contentsOf: collection)
   }
 
   /// Return a new set with elements in this set that do not occur in a finite sequence.
 
-  public func subtracting<Source:Sequence>(_ sequence: Source) -> OrderedSet<Element> where Source.Iterator.Element == Member {
+  public func subtracting<Source: Sequence>(_ s: Source) -> OrderedSet<Element>
+    where Source.Iterator.Element == Member
+  {
     var result = self
-    result.subtract(sequence)
+    result.subtract(s)
     return result
   }
 
   /// Remove all members in the set that occur in a finite sequence.
-  public mutating func subtract<Source:Sequence>(_ sequence: Source) where Source.Iterator.Element == Member {
-    let other = sequence as? OrderedSet<Member> ?? OrderedSet(sequence)
-    guard other.count > 0  && count > 0 else { return }
+  public mutating func subtract<Source: Sequence>(_ s: Source)
+    where Source.Iterator.Element == Member
+  {
+    let other = s as? OrderedSet<Member> ?? OrderedSet(s)
+    guard other.count > 0, count > 0 else { return }
     _reserveCapacity(capacity)
     buffer.remove(contentsOf: other)
   }
 
   /// Return a new set with elements common to this set and a finite sequence.
 
-  public func intersection<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member> where Source.Iterator.Element == Member {
+  public func intersection<Source: Sequence>(_ s: Source) -> OrderedSet<Member>
+    where Source.Iterator.Element == Member
+  {
     var result = self
-    result.formIntersection(sequence)
+    result.formIntersection(s)
     return result
   }
 
@@ -1028,21 +1109,24 @@ extension OrderedSet: SetType {
   }
 
   /// Remove any members of this set that aren't also in a finite sequence.
-  public mutating func formIntersection<Source:Sequence>(_ sequence: Source) where Source.Iterator.Element == Member {
-    formIntersection(sequence as? OrderedSet<Member> ?? OrderedSet<Member>(sequence))
+  public mutating func formIntersection<Source: Sequence>(_ s: Source)
+    where Source.Iterator.Element == Member
+  {
+    formIntersection(s as? OrderedSet<Member> ?? OrderedSet<Member>(s))
   }
 
-  /// Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
-
-  public func symmetricDifference<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member>
+  /// Return a new set with elements that are either in the set or a finite
+  /// sequence but do not occur in both.
+  public func symmetricDifference<Source: Sequence>(_ s: Source) -> OrderedSet<Member>
     where Source.Iterator.Element == Member
   {
     var result = self
-    result.formSymmetricDifference(sequence)
+    result.formSymmetricDifference(s)
     return result
   }
 
-  /// Modify collection to contain elements that are either in this set or `set` but do not occur in both.
+  /// Modify collection to contain elements that are either in this set or
+  /// `set` but do not occur in both.
   public mutating func formSymmetricDifference(_ orderedSet: OrderedSet<Member>) {
     var ranges = CountableRangeMap<Int>()
     var otherRanges = CountableRangeMap<Int>()
@@ -1051,7 +1135,10 @@ extension OrderedSet: SetType {
       ranges.insert(index)
       otherRanges.insert(otherIndex)
     }
-    otherRanges.invert(coverage: orderedSet.startIndex...orderedSet.index(before: orderedSet.endIndex))
+    otherRanges.invert(coverage:
+      orderedSet.startIndex
+        ...
+        orderedSet.index(before: orderedSet.endIndex))
     let removeCount = ranges.flattenedCount
     let addCount = otherRanges.flattenedCount
 
@@ -1064,22 +1151,22 @@ extension OrderedSet: SetType {
     for range in otherRanges { buffer.append(contentsOf: orderedSet[range]) }
   }
 
-  /// For each element of a finite sequence, remove it from the set if it is a common element, otherwise add it
-  /// to the set. Repeated elements of the sequence will be ignored.
-  public mutating func formSymmetricDifference<Source:Sequence>(_ sequence: Source)
+  /// For each element of a finite sequence, remove it from the set if it is a
+  /// common element, otherwise add it to the set. Repeated elements of the sequence
+  /// will be ignored.
+  public mutating func formSymmetricDifference<Source: Sequence>(_ sequence: Source)
     where Source.Iterator.Element == Element
   {
-    formSymmetricDifference(sequence as? OrderedSet<Element> ?? OrderedSet<Element>(sequence))
+    formSymmetricDifference(sequence as? OrderedSet<Element>
+      ?? OrderedSet<Element>(sequence))
   }
 }
 
 // MARK: RangeReplaceableCollectionType
-extension OrderedSet/*: RangeReplaceableCollection */{
 
-
-
+public extension OrderedSet /*: RangeReplaceableCollection */ {
   /// Create an empty instance.
-  public init() { self = OrderedSet(buffer: Buffer(minimumCapacity: 0)) }
+  init() { self = OrderedSet(buffer: Buffer(minimumCapacity: 0)) }
 
   /// A non-binding request to ensure `n` elements of available storage.
   ///
@@ -1087,7 +1174,9 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// linear data structures like `Array`.  Conforming types may
   /// reserve more than `n`, exactly `n`, less than `n` elements of
   /// storage, or even ignore the request completely.
-  public mutating func reserveCapacity(_ minimumCapacity: Int) { _reserveCapacity(minimumCapacity) }
+  mutating func reserveCapacity(_ minimumCapacity: Int) {
+    _reserveCapacity(minimumCapacity)
+  }
 
   /// Replace the given `subRange` of elements with `newElements`.
   ///
@@ -1096,7 +1185,8 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// - Complexity: O(`subRange.count`) if
   ///   `subRange.endIndex == self.endIndex` and `newElements.isEmpty`,
   ///   O(`self.count` + `newElements.count`) otherwise.
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: Range<Int>, with newElements: Source)
+  mutating func replaceSubrange<Source: Collection>(_ subRange: Range<Int>,
+                                                    with newElements: Source)
     where Source.Iterator.Element == Member
   {
     guard !(subRange.isEmpty && newElements.isEmpty) else { return }
@@ -1112,7 +1202,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// `self.endIndex`.
   ///
   /// - Complexity: Amortized O(1).
-  public mutating func append(_ member: Member) {
+  mutating func append(_ member: Member) {
     guard !contains(member) else { return }
     _reserveCapacity(Buffer.minimumCapacityFor(count &+ 1))
     buffer.append(member)
@@ -1121,7 +1211,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// Append the elements of `newElements` to `self`.
   ///
   /// - Complexity: O(*length of result*).
-  public mutating func append<Source:Sequence>(contentsOf newElements: Source)
+  mutating func append<Source: Sequence>(contentsOf newElements: Source)
     where Source.Iterator.Element == Member
   {
     append(contentsOf: Array(newElements))
@@ -1130,7 +1220,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// Append the elements of `newElements` to `self`.
   ///
   /// - Complexity: O(*length of result*).
-  public mutating func append<Source:Collection>(contentsOf newElements: Source)
+  mutating func append<Source: Collection>(contentsOf newElements: Source)
     where Source.Iterator.Element == Member
   {
     let newElementsCount: Int = numericCast(newElements.count)
@@ -1144,7 +1234,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count`).
-  public mutating func insert(_ newElement: Member, at index: Index) {
+  mutating func insert(_ newElement: Member, at index: Index) {
     guard !contains(newElement) else { return }
     _reserveCapacity(count + 1)
     buffer.insert(newElement, at: index)
@@ -1155,7 +1245,8 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count + newElements.count`).
-  public mutating func insert<Source:Collection>(contentsOf newElements: Source, at index: Index)
+  mutating func insert<Source: Collection>(contentsOf newElements: Source,
+                                           at index: Index)
     where Source.Iterator.Element == Member
   {
     _reserveCapacity(count + numericCast(newElements.count))
@@ -1168,7 +1259,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   ///
   /// - Complexity: O(`self.count`).
   @discardableResult
-  public mutating func remove(at index: Index) -> Member {
+  mutating func remove(at index: Index) -> Member {
     _reserveCapacity(capacity)
     return buffer.remove(at: index)
   }
@@ -1178,13 +1269,13 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// - Complexity: O(`self.count`)
   /// - Requires: `!self.isEmpty`.
   @discardableResult
-  public mutating func removeFirst() -> Member { return self.remove(at: startIndex) }
+  mutating func removeFirst() -> Member { return remove(at: startIndex) }
 
   /// Remove the first `n` elements.
   ///
   /// - Complexity: O(`self.count`)
   /// - Requires: `n >= 0 && self.count >= n`.
-  public mutating func removeFirst(_ n: Int) {
+  mutating func removeFirst(_ n: Int) {
     _reserveCapacity(capacity)
     buffer.removeFirst(n)
   }
@@ -1194,7 +1285,7 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count`).
-  public mutating func removeSubrange(_ subRange: Range<Index>) {
+  mutating func removeSubrange(_ subRange: Range<Index>) {
     guard subRange.count > 0 else { return }
     _reserveCapacity(capacity)
     buffer.removeSubrange(subRange)
@@ -1209,15 +1300,15 @@ extension OrderedSet/*: RangeReplaceableCollection */{
   ///    when `self` is going to be grown again.
   ///
   /// - Complexity: O(`self.count`).
-  public mutating func removeAll(keepingCapacity keepCapacity: Bool = false) {
+  mutating func removeAll(keepingCapacity keepCapacity: Bool = false) {
     guard count > 0 else { return }
     _reserveCapacity(capacity)
     buffer.removeAll(keepingCapacity: keepCapacity)
   }
-
 }
 
-// MARK: ArrayLiteralConvertible
+// MARK: ExpressibleByArrayLiteral
+
 extension OrderedSet: ExpressibleByArrayLiteral {
   public init(arrayLiteral elements: Member...) {
     self = OrderedSet(buffer: Buffer(elements))
@@ -1225,8 +1316,8 @@ extension OrderedSet: ExpressibleByArrayLiteral {
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
-extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
 
+extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
     guard count > 0 else { return "[]" }
 
@@ -1241,7 +1332,6 @@ extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
   }
 
   public var debugDescription: String {
-
     guard count > 0 else { return "[]" }
 
     var result = "["
@@ -1256,20 +1346,22 @@ extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 // MARK: Equatable
+
 extension OrderedSet: Equatable {
-  static public func ==(lhs: OrderedSet<Member>, rhs: OrderedSet<Member>) -> Bool {
-    guard !(lhs.buffer.identity == rhs.buffer.identity && lhs.count == rhs.count) else { return true }
+  public static func ==(lhs: OrderedSet<Member>, rhs: OrderedSet<Member>) -> Bool {
+    guard !(lhs.buffer.identity == rhs.buffer.identity
+      && lhs.count == rhs.count) else { return true }
     for (v1, v2) in zip(lhs, rhs) { guard v1 == v2 else { return false } }
     return true
   }
 }
 
-
 // MARK: - OrderedSetSlice
 
 /// A hash-based set of elements that preserves element order.
-public struct OrderedSetSlice<Member:Hashable>: RandomAccessCollection, _DestructorSafeContainer {
-
+public struct OrderedSetSlice<Member: Hashable>: RandomAccessCollection,
+  _DestructorSafeContainer
+{
   fileprivate typealias Buffer = OrderedSetBuffer<Member>
   fileprivate typealias BufferSlice = OrderedSetBufferSlice<Member>
   fileprivate typealias Storage = OrderedSetStorage<Member>
@@ -1279,29 +1371,30 @@ public struct OrderedSetSlice<Member:Hashable>: RandomAccessCollection, _Destruc
   public typealias _Element = Element
   public typealias SubSequence = OrderedSetSlice<Member>
 
-  public var startIndex: Index {  return buffer.startIndex }
+  public var startIndex: Index { buffer.startIndex }
 
-  public var endIndex: Index {  return buffer.endIndex }
+  public var endIndex: Index { buffer.endIndex }
 
-  public subscript(index: Index) -> Member { return buffer[index] }
+  public subscript(index: Index) -> Member { buffer[index] }
 
-  public subscript(subRange: Range<Int>) -> SubSequence { return SubSequence(buffer: buffer[subRange]) }
+  public subscript(subRange: Range<Int>) -> SubSequence {
+    SubSequence(buffer: buffer[subRange])
+  }
 
   fileprivate var buffer: BufferSlice
 
   /// The current number of elements
-  public var count: Int {  return buffer.count }
+  public var count: Int { buffer.count }
 
   public var indices: CountableRange<Int> {
     return CountableRange(uncheckedBounds: (lower: startIndex, upper: endIndex))
   }
 
-  fileprivate init(buffer: BufferSlice) {  self.buffer = buffer }
+  fileprivate init(buffer: BufferSlice) { self.buffer = buffer }
 
   public func hash(into hasher: inout Hasher) {
     for element in self { element.hash(into: &hasher) }
   }
-
 
   public func _customContainsEquatableElement(_ element: Member) -> Bool? {
     return buffer.contains(member: element)
@@ -1311,42 +1404,49 @@ public struct OrderedSetSlice<Member:Hashable>: RandomAccessCollection, _Destruc
     return Optional(buffer.index(of: element))
   }
 
+  public func index(of member: Member) -> Index? { buffer.index(of: member) }
+  public func contains(_ member: Member) -> Bool { buffer.contains(member: member) }
 
-  public func index(of member: Member) -> Index? { return buffer.index(of: member) }
-  public func contains(_ member: Member) -> Bool { return buffer.contains(member: member) }
+  public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) {}
+  public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) {}
 
-  public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-  public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
-
-  @inline(__always) public func distance(from start: Int, to end: Int) -> Int { return end &- start }
-  @inline(__always) public func index(after i: Int) -> Int { return i &+ 1 }
-  @inline(__always) public func index(before i: Int) -> Int { return i &- 1 }
-  @inline(__always) public func index(_ i: Int, offsetBy n: Int) -> Int { return i &+ n }
-  @inline(__always) public func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
+  @inline(__always)
+  public func distance(from start: Int, to end: Int) -> Int { end &- start }
+  @inline(__always) public func index(after i: Int) -> Int { i &+ 1 }
+  @inline(__always) public func index(before i: Int) -> Int { i &- 1 }
+  @inline(__always) public func index(_ i: Int, offsetBy n: Int) -> Int { i &+ n }
+  @inline(__always)
+  public func index(_ i: Int, offsetBy n: Int, limitedBy limit: Int) -> Int? {
     switch (i &+ n, n < 0) {
-    case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: return iʹ
-    default: return nil
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        return iʹ
+      default: return nil
     }
   }
+
   @inline(__always) public func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) public func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
-  @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
+  @inline(__always)
+  public func formIndex(_ i: inout Int, offsetBy n: Int, limitedBy limit: Int) -> Bool {
     switch (i &+ n, n < 0) {
-    case (let iʹ, true) where iʹ >= limit, (let iʹ, false) where iʹ <= limit: i = iʹ; return true
-    default: return false
+      case (let iʹ, true) where iʹ >= limit,
+           (let iʹ, false) where iʹ <= limit:
+        i = iʹ
+        return true
+      default: return false
     }
   }
-
 }
 
 // MARK: SetType
-extension OrderedSetSlice/*: SetType */ {
 
-  public var isEmpty: Bool { return count == 0 }
+public extension OrderedSetSlice /*: SetType */ {
+  var isEmpty: Bool { return count == 0 }
 
-  fileprivate func result<Source:Sequence>(of query: (OrderedSet<Member>) -> Bool,
-                          downcasting sequence: Source) -> Bool
+  fileprivate func result<Source: Sequence>(of query: (OrderedSet<Member>) -> Bool,
+                                            downcasting sequence: Source) -> Bool
     where Source.Iterator.Element == Member
   {
     if let other = sequence as? OrderedSet<Member> { return query(other) }
@@ -1354,117 +1454,124 @@ extension OrderedSetSlice/*: SetType */ {
   }
 
   fileprivate func _isSubset(of other: OrderedSet<Member>) -> Bool {
-    guard !(   other.buffer.identity == buffer.identity
-            && other.buffer.indices.contains(buffer.indices)) else { return true }
+    guard !(other.buffer.identity == buffer.identity
+      && other.buffer.indices.contains(buffer.indices)) else { return true }
     guard count <= other.count else { return false }
-    return first(where: {!other.contains($0)}) == nil
+    return first(where: { !other.contains($0) }) == nil
   }
 
   /// Returns true if the set is a subset of a finite sequence as a set.
 
-  public func isSubset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  func isSubset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isSubset, downcasting: sequence)
   }
 
-  public func isSubset(of other: OrderedSet<Member>) -> Bool { return _isSubset(of: other) }
-
+  func isSubset(of other: OrderedSet<Member>) -> Bool { return _isSubset(of: other) }
 
   fileprivate func _isStrictSubset(of other: OrderedSet<Member>) -> Bool {
-    guard !(   other.buffer.identity == buffer.identity
-            && other.buffer.indices.contains(buffer.indices)
-            && buffer.indices.count < other.buffer.indices.count) else { return true }
+    guard !(other.buffer.identity == buffer.identity
+      && other.buffer.indices.contains(buffer.indices)
+      && buffer.indices.count < other.buffer.indices.count) else { return true }
     guard count < other.count else { return false }
-    return first(where: {!other.contains($0)}) == nil
+    return first(where: { !other.contains($0) }) == nil
   }
 
   /// Returns true if the set is a subset of a finite sequence as a set but not equal.
 
-  public func isStrictSubset<Source:Sequence>(of sequence: Source) -> Bool
+  func isStrictSubset<Source: Sequence>(of sequence: Source) -> Bool
     where Source.Iterator.Element == Member
   {
     return result(of: _isStrictSubset, downcasting: sequence)
   }
 
-  public func isStrictSubset(of other: OrderedSet<Member>) -> Bool { return _isStrictSubset(of: other) }
-
+  func isStrictSubset(of other: OrderedSet<Member>) -> Bool { _isStrictSubset(of: other) }
 
   fileprivate func _isSuperset(of other: OrderedSet<Member>) -> Bool {
-    guard !(   other.buffer.identity == buffer.identity
-            && buffer.indices.contains(other.buffer.indices)) else { return true }
+    guard !(other.buffer.identity == buffer.identity
+      && buffer.indices.contains(other.buffer.indices)) else { return true }
     guard count >= other.count else { return false }
-    return other.first(where: {!contains($0)}) == nil
+    return other.first(where: { !contains($0) }) == nil
   }
 
   /// Returns true if the set is a superset of a finite sequence as a set.
 
-  public func isSuperset<Source:Sequence>(of sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  func isSuperset<Source: Sequence>(of sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isSuperset, downcasting: sequence)
   }
 
-  public func isSuperset(of other: OrderedSet<Member>) -> Bool { return _isSuperset(of: other) }
+  func isSuperset(of other: OrderedSet<Member>) -> Bool { return _isSuperset(of: other) }
 
   fileprivate func _isStrictSuperset(of other: OrderedSet<Member>) -> Bool {
-    guard !(   other.buffer.identity == buffer.identity
-            && buffer.indices.contains(other.buffer.indices)
-            && buffer.indices.count > other.buffer.indices.count) else { return true }
+    guard !(other.buffer.identity == buffer.identity
+      && buffer.indices.contains(other.buffer.indices)
+      && buffer.indices.count > other.buffer.indices.count) else { return true }
 
     guard count > other.count else { return false }
-    return other.first(where: {!contains($0)}) == nil
+    return other.first(where: { !contains($0) }) == nil
   }
 
   /// Returns true if the set is a superset of a finite sequence as a set but not equal.
 
-  public func isStrictSuperset<Source:Sequence>(of sequence: Source) -> Bool
+  func isStrictSuperset<Source: Sequence>(of sequence: Source) -> Bool
     where Source.Iterator.Element == Member
   {
-    return result(of: _isStrictSuperset, downcasting: sequence)
+    result(of: _isStrictSuperset, downcasting: sequence)
   }
 
-  public func isStrictSuperset(of other: OrderedSet<Member>) -> Bool { return _isStrictSuperset(of: other) }
+  func isStrictSuperset(of other: OrderedSet<Member>) -> Bool {
+    _isStrictSuperset(of: other)
+  }
 
   fileprivate func _isDisjoint(with other: OrderedSet<Member>) -> Bool {
-    guard other.buffer.identity != buffer.identity else { return !buffer.indices.overlaps(other.buffer.indices) }
-    return first(where: {other.contains($0)}) == nil && other.first(where: {contains($0)}) == nil
+    guard other.buffer.identity != buffer.identity else {
+      return !buffer.indices.overlaps(other.buffer.indices)
+    }
+    return first(where: { other.contains($0) }) == nil
+      && other.first(where: { contains($0) }) == nil
   }
 
   /// Returns true if no members in the set are in a finite sequence as a set.
 
-  public func isDisjoint<Source:Sequence>(with sequence: Source) -> Bool where Source.Iterator.Element == Member {
+  func isDisjoint<Source: Sequence>(with sequence: Source) -> Bool
+    where Source.Iterator.Element == Member
+  {
     return result(of: _isDisjoint, downcasting: sequence)
   }
 
+  func isDisjoint(with other: OrderedSet<Member>) -> Bool { return _isDisjoint(with: other) }
 
-  public func isDisjoint(with other: OrderedSet<Member>) -> Bool { return _isDisjoint(with: other) }
-
-  public func union<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member>
+  func union<Source: Sequence>(_ sequence: Source) -> OrderedSet<Member>
     where Source.Iterator.Element == Member
   {
     return OrderedSet(self).union(sequence)
   }
 
-  public func subtracting<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member>
+  func subtracting<Source: Sequence>(_ sequence: Source) -> OrderedSet<Member>
     where Source.Iterator.Element == Member
   {
     return OrderedSet(self).subtracting(sequence)
   }
 
-  public func intersection<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member>
+  func intersection<Source: Sequence>(_ sequence: Source) -> OrderedSet<Member>
     where Source.Iterator.Element == Member
   {
     return OrderedSet(self).intersection(sequence)
   }
 
-  public func symmetricDifference<Source:Sequence>(_ sequence: Source) -> OrderedSet<Member>
+  func symmetricDifference<Source: Sequence>(_ sequence: Source) -> OrderedSet<Member>
     where Source.Iterator.Element == Member
   {
     return OrderedSet(self).symmetricDifference(sequence)
   }
-
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
-extension OrderedSetSlice: CustomStringConvertible, CustomDebugStringConvertible {
 
+extension OrderedSetSlice: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
     guard count > 0 else { return "[]" }
 
@@ -1479,7 +1586,6 @@ extension OrderedSetSlice: CustomStringConvertible, CustomDebugStringConvertible
   }
 
   public var debugDescription: String {
-
     guard count > 0 else { return "[]" }
 
     var result = "["
@@ -1494,9 +1600,13 @@ extension OrderedSetSlice: CustomStringConvertible, CustomDebugStringConvertible
 }
 
 // MARK: Equatable
+
 extension OrderedSetSlice: Equatable {
-  public static func ==(lhs: OrderedSetSlice<Element>, rhs: OrderedSetSlice<Element>) -> Bool {
-    guard !(lhs.buffer.identity == rhs.buffer.identity && lhs.indices == rhs.indices) else { return true }
+  public static func ==(lhs: OrderedSetSlice<Element>,
+                        rhs: OrderedSetSlice<Element>) -> Bool
+  {
+    guard !(lhs.buffer.identity == rhs.buffer.identity
+      && lhs.indices == rhs.indices) else { return true }
     for (v1, v2) in zip(lhs, rhs) where v1 != v2 { return false }
     return lhs.count == rhs.count
   }

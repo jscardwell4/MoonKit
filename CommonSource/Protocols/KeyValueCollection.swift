@@ -8,18 +8,24 @@
 
 import Foundation
 
-public typealias KeyValuePair<Key:Hashable, Value> = (key: Key, value: Value)
+public typealias KeyValuePair<Key: Hashable, Value> = (key: Key, value: Value)
 
-public func keyValuePair<Key: Hashable, Value>(_ pair: (Key, Value)) -> KeyValuePair<Key, Value> {
+public func keyValuePair<Key: Hashable, Value>(
+  _ pair: (Key, Value)) -> KeyValuePair<Key, Value>
+{
   return (key: pair.0, value: pair.1)
 }
 
-public func unnamedKeyValuePair<Key: Hashable, Value>(_ pair: KeyValuePair<Key, Value>) -> (Key, Value) {
+public func unnamedKeyValuePair<Key: Hashable, Value>(
+  _ pair: KeyValuePair<Key, Value>) -> (Key, Value)
+{
   return (pair.key, pair.value)
 }
 
+// MARK: - KeyValueBase
+
 public protocol KeyValueBase: Collection {
-  associatedtype Key:Hashable
+  associatedtype Key: Hashable
   associatedtype Value
   associatedtype Element = KeyValuePair<Key, Value>
   associatedtype LazyKeys: LazyCollectionProtocol
@@ -35,14 +41,13 @@ public protocol KeyValueBase: Collection {
   var values: LazyValues { get }
 }
 
-extension KeyValueBase {
-  public var prettyDescription: String {
+public extension KeyValueBase {
+  var prettyDescription: String {
     var result = "["
 
     var first = true
 
     for (key, value) in zip(keys, values) {
-
       if first {
         first = false
         result += "\n  "
@@ -58,33 +63,35 @@ extension KeyValueBase {
       } else {
         result += "\(keyDescription): {\n\(valueDescription.indented(by: 4))\n  }"
       }
-
     }
 
     return result
   }
 }
 
-extension KeyValueBase where Self.Iterator.Element == KeyValuePair<Key, Value> {
-
-  public func formattedDescription(indent: Int = 0) -> String {
-
+public extension KeyValueBase where Self.Iterator.Element == KeyValuePair<Key, Value> {
+  func formattedDescription(indent: Int = 0) -> String {
     var components: [String] = []
     var keys: [Key] = []
     var values: [Value] = []
     for (key, value) in self { keys.append(key); values.append(value) }
 
     let keyDescriptions = keys.map { "\($0)" }
-    let maxKeyLength = keyDescriptions.reduce(0) { let n = $1.count; return $0 > n ? $0 : n }
+
+    let maxKeyLength = keyDescriptions.reduce(0) {
+      let n = $1.count
+      return $0 > n ? $0 : n
+    }
+
     let indentation = " " * (indent * 4)
     for (key, value) in zip(keyDescriptions, values) {
       let keyString = "\(indentation)\(key): "
       var valueString: String
-      var valueComponents = "\n".split("\(value)")
+      var valueComponents = "\n".split(~/"\(value)")
       if valueComponents.count > 0 {
         valueString = valueComponents.remove(at: 0)
         if valueComponents.count > 0 {
-          let spacer = "\t" * (Int(floor(Double((maxKeyLength+1))/4.0)) - 1)
+          let spacer = "\t" * (Int(floor(Double(maxKeyLength + 1) / 4.0)) - 1)
           let subIndentString = "\n\(indentation)\(spacer)"
           valueString += subIndentString + subIndentString.join(valueComponents)
         }
@@ -93,8 +100,9 @@ extension KeyValueBase where Self.Iterator.Element == KeyValuePair<Key, Value> {
     }
     return "\n".join(components)
   }
-
 }
+
+// MARK: - MutableKeyValueBase
 
 public protocol MutableKeyValueBase: KeyValueBase {
   subscript(key: Key) -> Value? { get set }
@@ -106,24 +114,28 @@ public protocol MutableKeyValueBase: KeyValueBase {
 
   @discardableResult mutating func updateValue(_ value: Value, forKey key: Key) -> Value?
 
-  init<S:Sequence>(_ elements: S) where S.Iterator.Element == Element
+  init<S: Sequence>(_ elements: S) where S.Iterator.Element == Element
 }
 
+// MARK: - KeyValueCollection
 
 public protocol KeyValueCollection: KeyValueBase {
   associatedtype LazyKeys = LazyMapCollection<Self, Key>
   associatedtype LazyValues = LazyMapCollection<Self, Value>
-
 }
 
-extension KeyValueCollection where Self.Iterator.Element == KeyValuePair<Key, Value> {
-
-  public var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
-  public var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
-
+public extension KeyValueCollection
+where Self.Iterator.Element == KeyValuePair<Key, Value>
+{
+  var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
+  var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
 }
+
+// MARK: - MutableKeyValueCollection
 
 public protocol MutableKeyValueCollection: MutableKeyValueBase, KeyValueCollection {}
+
+// MARK: - KeyValueBidirectionalCollection
 
 public protocol KeyValueBidirectionalCollection: KeyValueBase, BidirectionalCollection {
   associatedtype LazyKeys: BidirectionalCollection = LazyMapCollection<Self, Key>
@@ -132,12 +144,19 @@ public protocol KeyValueBidirectionalCollection: KeyValueBase, BidirectionalColl
   var values: LazyValues { get }
 }
 
-extension KeyValueBidirectionalCollection where Self.Iterator.Element == KeyValuePair<Key, Value> {
-  public var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
-  public var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
+public extension KeyValueBidirectionalCollection
+  where Self.Iterator.Element == KeyValuePair<Key, Value>
+{
+  var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
+  var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
 }
 
-public protocol MutableKeyValueBidirectionalCollection: MutableKeyValueBase, KeyValueBidirectionalCollection {}
+// MARK: - MutableKeyValueBidirectionalCollection
+
+public protocol MutableKeyValueBidirectionalCollection: MutableKeyValueBase,
+  KeyValueBidirectionalCollection {}
+
+// MARK: - KeyValueRandomAccessCollection
 
 public protocol KeyValueRandomAccessCollection: KeyValueBase, RandomAccessCollection {
   associatedtype LazyKeys: RandomAccessCollection = LazyMapCollection<Self, Key>
@@ -146,20 +165,36 @@ public protocol KeyValueRandomAccessCollection: KeyValueBase, RandomAccessCollec
   var values: LazyValues { get }
 }
 
-extension KeyValueRandomAccessCollection where Self.Iterator.Element == KeyValuePair<Key, Value> {
-  public var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
-  public var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
+public extension KeyValueRandomAccessCollection
+  where Self.Iterator.Element == KeyValuePair<Key, Value>
+{
+  var keys: LazyMapCollection<Self, Key> { return lazy.map { $0.key } }
+  var values: LazyMapCollection<Self, Value> { return lazy.map { $0.value } }
 }
 
-public protocol MutableKeyValueRandomAccessCollection: MutableKeyValueBase, KeyValueRandomAccessCollection {}
+// MARK: - MutableKeyValueRandomAccessCollection
+
+public protocol MutableKeyValueRandomAccessCollection: MutableKeyValueBase,
+  KeyValueRandomAccessCollection {}
+
+// MARK: - Dictionary + KeyValueCollection
 
 extension Dictionary: KeyValueCollection {}
 
+// MARK: - Dictionary + MutableKeyValueCollection
 
 extension Dictionary: MutableKeyValueCollection {
+  public init<S>(_ elements: S) where S : Sequence, Self.Element == S.Element {
+    self.init()
+    for (key, value) in elements {
+      self[key] = value
+    }
+  }
+  
   public mutating func insert(value: Value, forKey key: Key) {
     self[key] = value
   }
+
   public func value(forKey key: Key) -> Value? {
     return self[key]
   }

@@ -8,7 +8,7 @@
 import Foundation
 
 
-internal func squeezeHashValue(hashValue: Int, _ resultRange: Range<Int>) -> Int {
+internal func squeezeHashValue(_ hashValue: Int, _ resultRange: Range<Int>) -> Int {
   let resultCardinality = resultRange.endIndex - resultRange.startIndex
   if _isPowerOf2(resultCardinality) {
     return hashValue & (resultCardinality - 1)

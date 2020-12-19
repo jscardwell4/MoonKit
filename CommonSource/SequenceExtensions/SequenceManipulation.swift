@@ -1,6 +1,7 @@
 //
 //  SequenceManipulation.swift
-//  generate_midi_chords
+//  MoonKit
+
 //
 //  Created by Jason Cardwell on 12/7/17.
 //  Copyright © 2017 Moondeer Studios. All rights reserved.
