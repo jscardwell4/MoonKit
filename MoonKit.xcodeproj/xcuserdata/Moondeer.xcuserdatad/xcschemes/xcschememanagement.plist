@@ -7,12 +7,22 @@
 		<key>MoonCode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>38</integer>
+			<integer>37</integer>
 		</dict>
 		<key>MoonCodeApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>37</integer>
+			<integer>35</integer>
+		</dict>
+		<key>MoonKitTests copy.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>49</integer>
+		</dict>
+		<key>MoonKitTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>47</integer>
 		</dict>
 		<key>MoonKit_Mac.xcscheme</key>
 		<dict>
@@ -22,7 +32,7 @@
 		<key>MoonKit_Mac.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>35</integer>
+			<integer>39</integer>
 		</dict>
 		<key>MoonKit_iOS.xcscheme</key>
 		<dict>
@@ -32,7 +42,25 @@
 		<key>MoonKit_iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>40</integer>
+		</dict>
+		<key>MoonTestKit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>36</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>C29DBCE51FEC03C700A7EB56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2CCD705258EC5FB00E9923C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

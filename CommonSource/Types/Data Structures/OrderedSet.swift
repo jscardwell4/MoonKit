@@ -1305,6 +1305,15 @@ public extension OrderedSet /*: RangeReplaceableCollection */ {
     _reserveCapacity(capacity)
     buffer.removeAll(keepingCapacity: keepCapacity)
   }
+
+  mutating func removeLast(_ count: Int) {
+    removeSubrange(index(endIndex, offsetBy: -count)..<endIndex)
+  }
+
+  mutating func removeLast() -> Member {
+    _reserveCapacity(capacity)
+    return buffer.remove(at: buffer.index(before: buffer.endIndex))
+  }
 }
 
 // MARK: ExpressibleByArrayLiteral

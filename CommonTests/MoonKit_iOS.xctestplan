@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "18CFD901-530A-471C-B927-3CC18355C42B",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MoonKit.xcodeproj",
+        "identifier" : "C2CCD705258EC5FB00E9923C",
+        "name" : "MoonKitBehaviorTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MoonKit.xcodeproj",
+        "identifier" : "C2EDA71525900C5E008B542D",
+        "name" : "MoonKitPerformanceTests"
+      }
+    }
+  ],
+  "version" : 1
+}

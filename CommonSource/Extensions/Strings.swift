@@ -282,6 +282,10 @@ public extension String {
   func substitute(_ regex: RegularExpression, _ template: String) -> String {
     regex.substitute(matchesIn: self, using: template)
   }
+  func substitute(_ string: String, _ template: String) -> String {
+    substitute(~/string, template)
+  }
+
 
   /// Perform substitutions for matches against the specified regular expression.
   ///
@@ -293,6 +297,12 @@ public extension String {
                   _ block: (RegularExpression.Match) -> String) -> String
   {
     regex.substitute(matchesIn: self, using: block)
+  }
+
+  func substitute(_ string: String,
+                  _ block: (RegularExpression.Match) -> String) -> String
+  {
+    substitute(~/string, block)
   }
 
 }

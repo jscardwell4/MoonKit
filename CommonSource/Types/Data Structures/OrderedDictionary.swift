@@ -896,6 +896,14 @@ public struct OrderedDictionary<Key: Hashable, Value>: RandomAccessCollection,
     }
   }
 
+  public subscript(index index: Index) -> Element {
+    get { return buffer[index] }
+    set {
+      _reserveCapacity(capacity)
+      buffer[index] = newValue
+    }
+  }
+
   public subscript(subRange: Range<Index>) -> SubSequence {
     get { SubSequence(buffer: buffer[subRange.lowerBound..<subRange.upperBound]) }
     set { replaceSubrange(subRange, with: newValue) }
@@ -1044,7 +1052,7 @@ extension OrderedDictionary: MutableKeyValueRandomAccessCollection {
   ///
   /// - attention: Is there a conflict when `Key` = `Index` or do the differing return
   ///              types resolve ambiguity?
-  public subscript(key: Key) -> Value? {
+  public subscript(key key: Key) -> Value? {
     get { value(forKey: key) }
     set {
       switch (newValue, buffer.contains(key: key)) {
@@ -1061,6 +1069,10 @@ extension OrderedDictionary: MutableKeyValueRandomAccessCollection {
           break
       }
     }
+  }
+  public subscript(key: Key) -> Value? {
+    get { self[key: key] }
+    set { self[key: key] = newValue }
   }
 }
 
