@@ -5,13 +5,11 @@
 //  Created by Jason Cardwell on 3/19/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
-import XCTest
+@testable import MoonKit
 import Nimble
-import MoonKit
+import XCTest
 
 final class BitMapTests: XCTestCase {
-
   func setBitsInBitMap(_ bitMap: BitMap, count: Int) {
     assert(count > 0 && count < bitMap.count)
     var bits: Set<Int> = []
@@ -82,10 +80,12 @@ final class BitMapTests: XCTestCase {
     var currentBit = bitMap.firstSetBit
     expect(currentBit) == expectedNonZeroBits[0]
     for expected in expectedNonZeroBits.dropFirst() {
-      currentBit = bitMap.nextSetBit(currentBit!)
+      if currentBit != nil {
+        currentBit = bitMap.nextSetBit(currentBit!)
+      }
       expect(currentBit) == expected
     }
-    currentBit = bitMap.nextSetBit(currentBit!)
+    if currentBit != nil { currentBit = bitMap.nextSetBit(currentBit!) }
     expect(currentBit).to(beNil())
   }
 
@@ -106,7 +106,5 @@ final class BitMapTests: XCTestCase {
     }
     currentBit = bitMap.previousSetBit(currentBit!)
     expect(currentBit).to(beNil())
-
   }
-
 }

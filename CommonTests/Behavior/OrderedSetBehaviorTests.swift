@@ -5,18 +5,15 @@
 //  Created by Jason Cardwell on 3/14/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-import XCTest
-import Nimble
 @testable import MoonKit
-
+import Nimble
+import XCTest
 
 final class OrderedSetBehaviorTests: XCTestCase {
-
   static let integerLoadedSet = MoonKit.OrderedSet(xxSmallIntegers1)
   static let stringLoadedSet = MoonKit.OrderedSet(xxSmallStrings1)
 
   func testCreation() {
-
     var orderedSet1 = MoonKit.OrderedSet<Int>(minimumCapacity: 8)
     expect(orderedSet1.capacity) >= 8
     expect(orderedSet1).to(haveCount(0))
@@ -40,7 +37,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     orderedSet2 = MoonKit.OrderedSet(xxSmallStrings1)
     let set2 = Set(xxSmallStrings1)
     expect(orderedSet2).to(haveCount(set2.count))
-}
+  }
 
   func testInsertion() {
     var orderedSet1 = MoonKit.OrderedSet<Int>(minimumCapacity: 8)
@@ -138,7 +135,6 @@ final class OrderedSetBehaviorTests: XCTestCase {
     var orderedSet4 = MoonKit.OrderedSet<String>()
     for string in xxSmallStrings1 { orderedSet4.insert(string) }
     expect(orderedSet4).to(haveCount(Set(xxSmallStrings1).count))
-
   }
 
   func testResize() {
@@ -218,10 +214,10 @@ final class OrderedSetBehaviorTests: XCTestCase {
     orderedSet2.append(contentsOf: ["two", "three", "four", "five",
                                     "six", "seven", "eight", "nine", "ten"])
     expect(orderedSet2).to(equal(["one", "two", "three", "four", "five",
-                                        "six", "seven", "eight", "nine", "ten"]))
+                                  "six", "seven", "eight", "nine", "ten"]))
     orderedSet2.removeFirst(2)
     expect(orderedSet2).to(equal(["three", "four", "five",
-                                        "six", "seven", "eight", "nine", "ten"]))
+                                  "six", "seven", "eight", "nine", "ten"]))
     orderedSet2.removeLast(4)
     expect(orderedSet2).to(equal(["three", "four", "five", "six"]))
     orderedSet2.removeSubrange(1 ..< 3)
@@ -240,7 +236,6 @@ final class OrderedSetBehaviorTests: XCTestCase {
       orderedSet4.remove(at: Int(arc4random_uniform(numericCast(orderedSet4.count))))
     }
     expect(orderedSet4).to(beEmpty())
-
   }
 
   func testReplaceRange() {
@@ -253,10 +248,10 @@ final class OrderedSetBehaviorTests: XCTestCase {
     var orderedSet2: MoonKit.OrderedSet = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
     orderedSet2.replaceSubrange(0 ..< 5, with: ["five", "four", "three", "two", "one"])
     expect(orderedSet2).to(equal(["five", "four", "three", "two", "one",
-                                        "six", "seven", "eight", "nine", "ten"]))
+                                  "six", "seven", "eight", "nine", "ten"]))
     orderedSet2.replaceSubrange(5 ..< 10, with: ["zero"])
     expect(orderedSet2) == ["five", "four", "three", "two", "one", "zero"]
-}
+  }
 
   func testCOW() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -272,7 +267,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
 
     orderedSet4.insert("four")
     expect(orderedSet3) != orderedSet4
-}
+  }
 
   func testSubscriptIndexAccessors() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -284,7 +279,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     expect(orderedSet2[0]).to(equal("one"))
     expect(orderedSet2[1]).to(equal("two"))
     expect(orderedSet2[2]) == "three"
-}
+  }
 
   func testSubscriptRangeAccessors() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -304,7 +299,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
 //    expect(orderedSet2).to(equal(["one", "two", "three"]))
 //    orderedSet2[1 ... 2] = slice2
 //    expect(orderedSet2).to(equal(["one", "two", "three", "four"]))
-}
+  }
 
   func testSubsetOf() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -316,7 +311,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     expect(orderedSet2).to(beSubsetOf(["one", "two", "three"]))
     expect(orderedSet2).to(beSubsetOf(["one", "two", "three", "four"]))
     expect(orderedSet2).toNot(beSubsetOf(["one", "two", "four"]))
-}
+  }
 
   func testStrictSubsetOf() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -340,7 +335,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     expect(orderedSet2.isStrictSubset(of: AnySequence(["one", "two", "three"]))) == false
     expect(orderedSet2.isStrictSubset(of: AnySequence(["one", "two", "three", "four"]))) == true
     expect(orderedSet2.isStrictSubset(of: AnySequence(["one", "two", "four"]))) == false
-}
+  }
 
   func testSupersetOf() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -352,7 +347,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     expect(orderedSet2).to(beSupersetOf(["one", "two", "three"]))
     expect(orderedSet2).to(beSupersetOf(["one", "two"]))
     expect(orderedSet2).toNot(beSupersetOf(["one", "two", "four"]))
-}
+  }
 
   func testStrictSupersetOf() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
@@ -376,18 +371,18 @@ final class OrderedSetBehaviorTests: XCTestCase {
     expect(orderedSet2.isStrictSuperset(of: AnySequence(["one", "two", "three"]))) == false
     expect(orderedSet2.isStrictSuperset(of: AnySequence(["one", "two"]))) == true
     expect(orderedSet2.isStrictSuperset(of: AnySequence(["one", "two", "four"]))) == false
-}
+  }
 
   func testDisjointWith() {
     let orderedSet1: MoonKit.OrderedSet = [1, 2, 3]
-    expect(orderedSet1).toNot(beDisjointWith([1, 4, 5] as Array<Int>))
-    expect(orderedSet1).to(beDisjointWith([4, 5] as Array<Int>))
-    expect(orderedSet1).toNot(beDisjointWith([1, 2, 3, 4, 5] as Array<Int>))
+    expect(orderedSet1).toNot(beDisjointWith([1, 4, 5] as [Int]))
+    expect(orderedSet1).to(beDisjointWith([4, 5] as [Int]))
+    expect(orderedSet1).toNot(beDisjointWith([1, 2, 3, 4, 5] as [Int]))
 
     let orderedSet2: MoonKit.OrderedSet = ["one", "two", "three"]
-    expect(orderedSet2).toNot(beDisjointWith(["one", "four", "five"] as Array<String>))
-    expect(orderedSet2).to(beDisjointWith(["four", "five"] as Array<String>))
-    expect(orderedSet2).toNot(beDisjointWith(["one", "two", "three", "four", "five"] as Array<String>))
+    expect(orderedSet2).toNot(beDisjointWith(["one", "four", "five"] as [String]))
+    expect(orderedSet2).to(beDisjointWith(["four", "five"] as [String]))
+    expect(orderedSet2).toNot(beDisjointWith(["one", "two", "three", "four", "five"] as [String]))
 
     let evenIntegers = evenNumbers(range: 0 ..< 500)
     let oddIntegers = oddNumbers(range: 0 ..< 500)
@@ -400,7 +395,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     let orderedSet4 = MoonKit.OrderedSet(evenStrings)
     expect(orderedSet4).to(beDisjointWith(oddStrings))
     expect(orderedSet4).toNot(beDisjointWith(evenStrings))
-}
+  }
 
   func testUnion() {
     var orderedSet1 = MoonKit.OrderedSet(xxSmallIntegers1)
@@ -414,7 +409,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     var set2 = Set(xxSmallStrings1)
     set2.formUnion(xxSmallStrings2)
     expect(orderedSet2).to(haveCount(set2.count))
-}
+  }
 
   func testIntersection() {
     var orderedSet1 = MoonKit.OrderedSet(xxSmallIntegers1)
@@ -428,7 +423,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     var set2 = Set(xxSmallStrings1)
     set2.formIntersection(xxSmallStrings2)
     expect(orderedSet2).to(haveCount(set2.count))
-}
+  }
 
   func testSubtract() {
     var orderedSet1 = MoonKit.OrderedSet(xxSmallIntegers1)
@@ -442,7 +437,7 @@ final class OrderedSetBehaviorTests: XCTestCase {
     var set2 = Set(xxSmallStrings1)
     set2.subtract(xxSmallStrings2)
     expect(orderedSet2).to(haveCount(set2.count))
-}
+  }
 
   func testSymmetricDifference() {
     var orderedSet1 = MoonKit.OrderedSet(xxSmallIntegers1)

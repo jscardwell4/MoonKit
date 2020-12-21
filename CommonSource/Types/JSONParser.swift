@@ -78,7 +78,7 @@ public final class JSONParser {
   public var string: String { return scanner.string }
   public let allowFragment: Bool
   public let ignoreExcess: Bool
-  public var idx: Int { get { return scanner.scanLocation } set { scanner.scanLocation = newValue } }
+  public var idx: String.Index { get { scanner.currentIndex } set { scanner.currentIndex = newValue } }
 
   fileprivate var contextStack: Stack<Context>   = []
   fileprivate var objectStack:  Stack<JSONValue> = []
@@ -117,7 +117,7 @@ public final class JSONParser {
   {
 
       // Create the info dictionary for our new error object
-      var info = [AnyHashable:Any]()
+      var info = [String:Any]()
 
       // Check if we have been provided with an underlying error
       if let providedUnderlyingError = underlyingError {
@@ -180,7 +180,7 @@ public final class JSONParser {
     print("contextStack[\(contextStack.count)]: " + ", ".join(contextStack.map{$0.rawValue}))
     print("objectStack[\(objectStack.count)]:\n" + "\n".join(objectStack.map{String(describing: $0)}))
     if error != nil {
-      print("error: \(detailedDescriptionForError(error!, depth: 0))")
+      print("error: \(error!))")
     }
   }
 
@@ -221,8 +221,6 @@ public final class JSONParser {
     discardingComments: Bool = true,
               skipping skipCharacters: CharacterSet = CharacterSet.whitespacesAndNewlines) -> Bool
   {
-    var success = false
-
     if discardingComments { do { try scanComment() } catch {} }
 
     let currentSkipCharacters = scanner.charactersToBeSkipped
@@ -232,36 +230,27 @@ public final class JSONParser {
     switch type {
 
     case .charactersFromSet(let set):
-      var scannedString: NSString?
-      success = scanner.scanCharacters(from: set, into: &scannedString)
-      if success { object = scannedString }
+      object = scanner.scanCharacters(from: set) as AnyObject?
 
     case .upToCharactersFromSet(let set):
-      var scannedString: NSString?
-      success = scanner.scanUpToCharacters(from: set, into: &scannedString)
-      if success { object = scannedString }
+      object = scanner.scanUpToCharacters(from: set) as AnyObject?
 
     case .text (let text):
-      var scannedString: NSString?
-      success = scanner.scanString(text, into: &scannedString)
-      if success { object = scannedString }
+      object = scanner.scanString(text) as AnyObject?
 
     case .upToText(let text):
-      var scannedString: NSString?
-      success = scanner.scanUpTo(text, into: &scannedString)
-      if success { object = scannedString }
+      object = scanner.scanUpToString(text) as AnyObject?
 
     case .number:
-      var scannedNumber: Double = 0
-      success = scanner.scanDouble(&scannedNumber)
-      if success { object = NSNumber(value: scannedNumber) }
+      object = scanner.scanDouble() as AnyObject?
 
     }
 
 //    scanner.charactersToBeSkipped = currentSkipCharacters
     if discardingComments { do { try scanComment() } catch {} }
 
-    return success
+    return object != nil
+    
   }
 
   /** scanComment */

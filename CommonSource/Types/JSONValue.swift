@@ -49,18 +49,18 @@ public enum JSONValue {
     self = .null
   }
 
-  public init(_ dictionary: NSDictionary) {
-    self = dictionary.jsonValue
-  }
+//  public init(_ dictionary: NSDictionary) {
+//    self = dictionary.jsonValue
+//  }
 
   /// Initialize to case `Array` using a `JSONValueConvertible` sequence
   public init<S:Sequence>(_ sequence: S) where S.Iterator.Element:JSONValueConvertible {
     self = .array(Array(sequence).map({$0.jsonValue}))
   }
 
-  public init(_ array: NSArray) {
-    self = array.jsonValue
-  }
+//  public init(_ array: NSArray) {
+//    self = array.jsonValue
+//  }
 
   /// Initialize to case `Object` using a key-value collection
   public init<C:KeyValueCollection>(_ collection: C)
@@ -84,7 +84,7 @@ public enum JSONValue {
   }
 
   /// Initialize to case `Object` using a dictionary literal
-  public init(dictionary: DictionaryLiteral<StringValueConvertible,JSONValueConvertible>) {
+  public init(dictionary: KeyValuePairs<StringValueConvertible,JSONValueConvertible>) {
     var objectValue: OrderedDictionary<String, JSONValue> = [:]
     for (k, v) in dictionary { objectValue[k.stringValue] = v.jsonValue }
     self = .object(objectValue)
@@ -120,10 +120,7 @@ public enum JSONValue {
 
   fileprivate func stringValueWithDepth(_ depth: Int) -> String {
     switch self {
-      case .boolean(_),
-           .null(_),
-           .number(_),
-           .string(_):
+      case .boolean, .null, .number, .string:
         return rawValue
 
       case .array(let a):
@@ -200,13 +197,13 @@ public enum JSONValue {
   public var floatValue: Float? { return numberValue?.floatValue }
   public var CGFloatValue: CGFloat? { if let d = doubleValue { return CGFloat(d) } else { return nil } }
   public var doubleValue: Double? { return numberValue?.doubleValue }
-  public var CGSizeValue: CGSize? { return CGSize(stringValue) }
-  public var UIEdgeInsetsValue: UIEdgeInsets? { return UIEdgeInsets(stringValue) }
-  public var CGRectValue: CGRect? { return CGRect(stringValue) }
-  public var CGPointValue: CGPoint? { return CGPoint(stringValue) }
-  public var CGVectorValue: CGVector? { return CGVector(stringValue) }
-  public var UIOffsetValue: UIOffset? { return UIOffset(stringValue) }
-  public var CGAffineTransformValue: CGAffineTransform? { return CGAffineTransform(stringValue) }
+  public var CGSizeValue: CGSize? { stringValue == nil ? nil : NSCoder.cgSize(for: stringValue!) }
+  public var UIEdgeInsetsValue: UIEdgeInsets? { stringValue == nil ? nil : NSCoder.uiEdgeInsets(for: stringValue!) }
+  public var CGRectValue: CGRect? { stringValue == nil ? nil : NSCoder.cgRect(for: stringValue!) }
+  public var CGPointValue: CGPoint? { stringValue == nil ? nil : NSCoder.cgPoint(for: stringValue!) }
+  public var CGVectorValue: CGVector? { stringValue == nil ? nil : NSCoder.cgVector(for: stringValue!) }
+  public var UIOffsetValue: UIOffset? { stringValue == nil ? nil : NSCoder.uiOffset(for: stringValue!) }
+  public var CGAffineTransformValue: CGAffineTransform? { stringValue == nil ? nil : NSCoder.cgAffineTransform(for: stringValue!) }
 
   public var objectValue: ObjectValue? { switch self { case .object(let o):  return o; default: return nil } }
   public var mappedObjectValue: AnyMappedObjectValue? {
@@ -237,7 +234,7 @@ public enum JSONValue {
         // Enumerate the list inflating each key
         for key in Array(o.keys.filter({$0 ~= "(?:\\w\\.)+\\w"})) {
 
-          let keyComponents = ".".split(key)
+          let keyComponents = key.split(separator: ".").map(String.init)
           let firstKey = keyComponents.first!
           let lastKey = keyComponents.last!
           let keyPath = Stack(keyComponents.dropFirst().dropLast())
@@ -266,7 +263,7 @@ public enum JSONValue {
   public subscript(idx: Int) -> JSONValue? {
     switch self {
       case .array(let a) where a.count > idx: return a[idx]
-      case .object(let o) where o.count > idx: return o[OrderedDictionaryIndex(idx)].1
+      case .object(let o) where o.count > idx: return o[idx].1
       default: return nil
     }
   }
@@ -288,18 +285,18 @@ extension JSONValue: RawRepresentable {
       case .boolean(let b): return String(describing: b)
       case .null:           return "null"
       case .number(let n):  return String(describing: n)
-      case .string(let s):  return "\"".wrap(s)
+      case .string(let s):  return "\"\(s)\""
       case .array(let a):   return "[" + ",".join(a.map({$0.rawValue})) + "]"
       case .object(let o):  return "{" + ",".join(o.map({"\"\($0)\":\($1.rawValue)"})) + "}"
     }
   }
   public init?(rawValue: String) {
-    guard rawValue.characters.count > 0 else { return nil }
+    guard rawValue.count > 0 else { return nil }
     let parser = JSONParser(string: rawValue, allowFragment: true)
     do {
       self = try parser.parse()
     } catch {
-      Log.error(error)
+      loge("\(#fileID) \(#function) error: \(error)")
       return nil
     }
   }
@@ -321,7 +318,7 @@ public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
       return true
     case (.object(let lo), .object(let ro)) where lo.count == ro.count && lo.keys.elementsEqual(ro.keys):
       let keys = Array(lo.keys)
-      return keys.flatMap({lo[$0]}) == keys.flatMap({ro[$0]})
+      return keys.compactMap({lo[$0]}) == keys.compactMap({ro[$0]})
     default:
       return false
   }

@@ -328,6 +328,8 @@ public struct RegularExpression {
     /// The content of the capture.
     public let substring: Substring
 
+    public let range: Range<String.Index>
+
     /// Initialize with a group, a string and the range of a substring within the string.
     /// The initializer will return `nil` when `range.location == NSNotFound`.
     ///
@@ -339,6 +341,8 @@ public struct RegularExpression {
     public init?(group: Int, range: NSRange, string: String) {
       // Ensure that `range` specifies a match or return `nil`.
       guard let range = Range(range, in: string) else { return nil }
+
+      self.range = range
 
       // Initialize the group property.
       self.group = group

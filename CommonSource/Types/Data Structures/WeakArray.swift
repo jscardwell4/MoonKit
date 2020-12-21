@@ -35,7 +35,7 @@ fileprivate final class WeakArrayStorage<WeakElement:AnyObject>: ManagedBuffer<(
   deinit {
     withUnsafeMutablePointers {
       $1.deinitialize(count: $0.pointee.count)
-      $0.deinitialize()
+      $0.deinitialize(count: 1)
     }
   }
 }
@@ -81,14 +81,17 @@ fileprivate struct WeakArrayBuffer<WeakElement:AnyObject>: _DestructorSafeContai
 
   init<Source:Collection>(_ elements: Source) where Source.Iterator.Element == StorageElement {
     let storage = Storage.create(minimumCapacity: numericCast(elements.count))
-    storage.elements.initialize(from: elements)
+    _ = UnsafeMutableBufferPointer(start: storage.elements,
+                                   count: elements.count).initialize(from: elements)
     storage.header.count = numericCast(elements.count)
     self = Buffer(storage: storage)
   }
 
   mutating func destroy(at i: Int) {
-    if i + 1 == endIndex { (elements + i).deinitialize() }
-    else { (elements + i).assign(from: (elements + i + 1), count: endIndex - i - 1); (elements + endIndex - 1).deinitialize() }
+    if i + 1 == endIndex { (elements + i).deinitialize(count: 1) }
+    else {
+      (elements + i).assign(from: (elements + i + 1), count: endIndex - i - 1)
+      (elements + endIndex - 1).deinitialize(count: 1) }
     endIndex = endIndex &- 1
   }
 
@@ -108,8 +111,11 @@ fileprivate struct WeakArrayBuffer<WeakElement:AnyObject>: _DestructorSafeContai
   mutating func append(_ element: StorageElement) { (elements + endIndex).initialize(to: element); endIndex = endIndex &+ 1 }
 
 
-  mutating func append<Source:Collection>(contentsOf newElements: Source) where Source.Iterator.Element == StorageElement {
-    (elements + endIndex).initialize(from: newElements)
+  mutating func append<Source:Collection>(contentsOf newElements: Source)
+  where Source.Iterator.Element == StorageElement
+  {
+    _ = UnsafeMutableBufferPointer(start: (elements + endIndex),
+                                   count: newElements.count).initialize(from: newElements)
     endIndex = endIndex &+ numericCast(newElements.count)
   }
 
@@ -126,7 +132,8 @@ fileprivate struct WeakArrayBuffer<WeakElement:AnyObject>: _DestructorSafeContai
     let 𝝙elements: Int = numericCast(newElements.count)
 
     (elements + (i &+ 𝝙elements)).moveInitialize(from: elements + i, count: endIndex &- i)
-    (elements + i).initialize(from: newElements)
+    _ = UnsafeMutableBufferPointer(start: elements + i,
+                                   count: newElements.count).initialize(from: newElements)
     endIndex = endIndex &+ 𝝙elements
   }
 
@@ -144,9 +151,8 @@ fileprivate struct WeakArrayBuffer<WeakElement:AnyObject>: _DestructorSafeContai
     }
   }
 
-  subscript(index: Int) -> Element { get { return elements[index].reference } set { elements[index] = Weak(newValue) } }
-  subscript(subRange: Range<Int>) -> SubSequence { return self[CountableRange(subRange)] }
-  subscript(subRange: CountableRange<Int>) -> SubSequence { return SubSequence(buffer: self, indices: subRange) }
+  subscript(index: Int) -> Element { get { elements[index].reference } set { elements[index] = Weak(newValue) } }
+  subscript(subRange: Range<Int>) -> SubSequence { return SubSequence(buffer: self, indices: subRange) }
 
 }
 
@@ -255,8 +261,7 @@ extension WeakArrayBufferSlice: RandomAccessCollection {
 
   subscript(index: Int) -> Element { return elements[index].reference }
 
-  subscript(subRange: Range<Int>) -> SubSequence { return self[CountableRange(subRange)] }
-  subscript(subRange: CountableRange<Int>) -> SubSequence { return SubSequence(bufferSlice: self, indices: subRange) }
+  subscript(subRange: Range<Int>) -> SubSequence { SubSequence(bufferSlice: self, indices: subRange) }
 
 }
 
@@ -269,7 +274,6 @@ extension WeakArrayBufferSlice: CustomStringConvertible, CustomDebugStringConver
 // MARK: - WeakArray
 
 /// A hash-based set of elements that preserves element order.
-@_fixed_layout
 public struct WeakArray<WeakElement:AnyObject>: RandomAccessCollection, _DestructorSafeContainer {
 
   fileprivate typealias Buffer = WeakArrayBuffer<WeakElement>
@@ -291,12 +295,8 @@ public struct WeakArray<WeakElement:AnyObject>: RandomAccessCollection, _Destruc
     set { _reserveCapacity(capacity); buffer[index] = newValue }
   }
 
-  public subscript(subRange: Range<Int>) -> SubSequence {
-    get { return self[CountableRange(subRange)] }
-    set { self[CountableRange(subRange)] = newValue }
-  }
 
-  public subscript(subRange: CountableRange<Int>) -> SubSequence {
+  public subscript(subRange: Range<Int>) -> SubSequence {
     get { return SubSequence(buffer: buffer[subRange]) }
     set { replaceSubrange(subRange, with: newValue) }
   }
@@ -366,12 +366,6 @@ extension WeakArray: RangeReplaceableCollection {
   public mutating func replaceSubrange<Source:Collection>(_ subRange: Range<Int>, with newElements: Source)
     where Source.Iterator.Element == Element
   {
-    replaceSubrange(CountableRange(subRange), with: newElements)
-  }
-
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: CountableRange<Int>, with newElements: Source)
-    where Source.Iterator.Element == Element
-  {
     let newElements = newElements.map(Weak.init)
     guard !(subRange.isEmpty && newElements.isEmpty) else { return }
     _reserveCapacity(count - subRange.count + numericCast(newElements.count))
@@ -417,9 +411,7 @@ extension WeakArray: RangeReplaceableCollection {
 
   public mutating func removeLast(_ n: Int) { removeSubrange(endIndex-n..<endIndex) }
 
-  public mutating func removeSubrange(_ subRange: Range<Index>) { removeSubrange(CountableRange(subRange)) }
-
-  public mutating func removeSubrange(_ subRange: CountableRange<Index>) {
+  public mutating func removeSubrange(_ subRange: Range<Index>) {
     _reserveCapacity(capacity)
     buffer.removeSubrange(subRange)
   }
@@ -454,8 +446,11 @@ extension WeakArray: Equatable {
 // MARK: - WeakArraySlice
 
 /// A hash-based set of elements that preserves element order.
-@_fixed_layout
-public struct WeakArraySlice<WeakElement:AnyObject>: RandomAccessCollection, _DestructorSafeContainer {
+public struct WeakArraySlice<WeakElement:AnyObject>: RangeReplaceableCollection, RandomAccessCollection, _DestructorSafeContainer {
+  public init() {
+    fatalError("\(#fileID) \(#function) Unexpected invocation.")
+  }
+
 
   fileprivate typealias Buffer = WeakArrayBuffer<WeakElement>
   fileprivate typealias BufferSlice = WeakArrayBufferSlice<WeakElement>
@@ -473,8 +468,7 @@ public struct WeakArraySlice<WeakElement:AnyObject>: RandomAccessCollection, _De
 
   public subscript(index: Index) -> Element { return buffer[index] }
 
-  public subscript(subRange: Range<Int>) -> SubSequence { return self[CountableRange(subRange)] }
-  public subscript(subRange: CountableRange<Int>) -> SubSequence { return SubSequence(buffer: buffer[subRange]) }
+  public subscript(subRange: Range<Int>) -> SubSequence { return SubSequence(buffer: buffer[subRange]) }
 
   fileprivate var buffer: BufferSlice
 

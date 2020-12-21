@@ -14,6 +14,9 @@
   "testTargets" : [
     {
       "parallelizable" : true,
+      "skippedTests" : [
+        "OrderedDictionaryPerformanceTests"
+      ],
       "target" : {
         "containerPath" : "container:MoonKit.xcodeproj",
         "identifier" : "C2CCD705258EC5FB00E9923C",
@@ -21,6 +24,7 @@
       }
     },
     {
+      "enabled" : false,
       "target" : {
         "containerPath" : "container:MoonKit.xcodeproj",
         "identifier" : "C2EDA71525900C5E008B542D",

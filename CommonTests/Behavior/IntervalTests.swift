@@ -5,13 +5,11 @@
 //  Created by Jason Cardwell on 12/4/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
+@testable import MoonKit
+import Nimble
 import XCTest
-import MoonKitTest
-import MoonKit
 
 final class IntervalTests: XCTestCase {
-
   let closedClosedInterval = 【7.9..8.6】
   let closedOpenInterval = 【7.9..8.6〗
   let openClosedInterval = 〖7.9..8.6】
@@ -21,7 +19,6 @@ final class IntervalTests: XCTestCase {
   let emptyInterval = 【8.6..8.6〗
 
   func testDirectedIntervalComparable() {
-
     expect(【0.5) < 【1.0
     expect(〖0.5) < 【1.0
     expect(【0.5) < 〖1.0
@@ -48,11 +45,9 @@ final class IntervalTests: XCTestCase {
     expect(〖1.0) < 1.0】
 
     expect(1.0〗) < 1.0】
-
   }
 
   func testIntervalComparison() {
-
     expect((【3.0..4.0】).compare(to: 【3.0..3.0〗)) == IntervalComparisonResult.undefined
     expect((【3.0..3.0〗).compare(to: 【3.0..4.0】)) == IntervalComparisonResult.undefined
     expect((【3.0..3.0〗).compare(to: 【4.0..3.0】)) == IntervalComparisonResult.undefined
@@ -70,11 +65,9 @@ final class IntervalTests: XCTestCase {
 
     expect(self.openClosedInterval.compare(to: 【6.3..7.9〗)) == IntervalComparisonResult.descending
     expect(self.closedClosedInterval.compare(to: 【7.9..8.0】)) == IntervalComparisonResult.ascendingContainment
-
   }
 
   func testCreation() {
-
     expect(self.closedClosedInterval.lower.value) == 7.9
     expect(self.closedClosedInterval.upper.value) == 8.6
     expect(self.closedClosedInterval.leastElement) == 7.9
@@ -93,7 +86,6 @@ final class IntervalTests: XCTestCase {
     expect(self.closedOpenInterval.isDegenerate) == false
     expect(self.closedOpenInterval.isEmpty) == false
 
-
     expect(self.openClosedInterval.lower.value) == 7.9
     expect(self.openClosedInterval.upper.value) == 8.6
     expect(self.openClosedInterval.leastElement).to(beNil())
@@ -102,7 +94,6 @@ final class IntervalTests: XCTestCase {
     expect(self.openClosedInterval.upper.kind) == IntervalEndpointKind.closed
     expect(self.openClosedInterval.isDegenerate) == false
     expect(self.openClosedInterval.isEmpty) == false
-
 
     expect(self.openOpenInterval.lower.value) == 7.9
     expect(self.openOpenInterval.upper.value) == 8.6
@@ -139,11 +130,9 @@ final class IntervalTests: XCTestCase {
     expect(self.emptyInterval.upper.kind) == IntervalEndpointKind.open
     expect(self.emptyInterval.isDegenerate) == false
     expect(self.emptyInterval.isEmpty) == true
-
   }
 
   func testContainsBound() {
-
     expect(self.closedClosedInterval.contains(6.9)) == false
     expect(self.closedClosedInterval.contains(7.9)) == true
     expect(self.closedClosedInterval.contains(8.0)) == true
@@ -185,11 +174,9 @@ final class IntervalTests: XCTestCase {
     expect(self.emptyInterval.contains(8.0)) == false
     expect(self.emptyInterval.contains(8.6)) == false
     expect(self.emptyInterval.contains(8.9)) == false
-
   }
 
   func testContainsInterval() {
-
     expect(self.closedClosedInterval.contains(【7.9..8.0】)) == true
     expect(self.closedClosedInterval.contains(【6.3..7.9】)) == false
     expect(self.closedClosedInterval.contains(【8.0..8.0】)) == true
@@ -413,11 +400,9 @@ final class IntervalTests: XCTestCase {
     expect(self.emptyInterval.contains(〖8.3..8.6〗)) == false
     expect(self.emptyInterval.contains(〖8.9..9.9〗)) == false
     expect(self.emptyInterval.contains(〖6.3..9.9〗)) == false
-
   }
 
   func testOverlaps() {
-
     expect(self.closedClosedInterval.overlaps(【6.3..6.9】)) == false
     expect(self.closedClosedInterval.overlaps(【6.3..7.9】)) == true
     expect(self.closedClosedInterval.overlaps(【6.3..8.0】)) == true
@@ -654,7 +639,6 @@ final class IntervalTests: XCTestCase {
   }
 
   func testUnion() {
-
     expect(self.closedClosedInterval.union(【7.9..8.0】)) == closedClosedInterval
     expect(self.closedClosedInterval.union(【6.3..7.9】)) == 【6.3..8.6】
     expect(self.closedClosedInterval.union(【8.0..8.0】)) == closedClosedInterval
@@ -930,7 +914,7 @@ final class IntervalTests: XCTestCase {
     expect(self.backwardInterval.intersection(【6.3..9.9】).isEmpty) == true
 
     expect(self.emptyInterval.intersection(【7.9..8.0】).isEmpty) == true
-    expect(self.emptyInterval.intersection( 【6.3..7.9】).isEmpty) == true
+    expect(self.emptyInterval.intersection(【6.3..7.9】).isEmpty) == true
     expect(self.emptyInterval.intersection(【8.0..8.0】).isEmpty) == true
     expect(self.emptyInterval.intersection(【8.3..8.5】).isEmpty) == true
     expect(self.emptyInterval.intersection(【8.3..8.6】).isEmpty) == true
@@ -1107,13 +1091,11 @@ final class IntervalTests: XCTestCase {
   }
 
   func testFullWidthRangeConversions() {
-
-    expect(Interval(7.9...8.6)) == closedClosedInterval
-    expect(Interval(7.9..<8.6)) == closedOpenInterval
-    expect(Interval(8.6...8.6)) == degenerateInterval
-    expect(Interval(8.6..<8.6).isEmpty) == true
-    expect(Interval<Int>(CountableRange<Int>(4 ..< 6))) == 【4..6〗
-    expect(Interval<Int>(CountableClosedRange<Int>(4 ... 6))) == 【4..6】
-
+    expect(Interval(7.9 ... 8.6)) == closedClosedInterval
+    expect(Interval(7.9 ..< 8.6)) == closedOpenInterval
+    expect(Interval(8.6 ... 8.6)) == degenerateInterval
+    expect(Interval(8.6 ..< 8.6).isEmpty) == true
+    expect(Interval<Int>(4 ..< 6)) == 【4..6〗
+    expect(Interval<Int>(4 ... 6)) == 【4..6】
   }
 }

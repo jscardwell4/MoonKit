@@ -35,8 +35,9 @@ internal class JSONIncludeDirective {
 
     assert(match?.captures.count == 3, "unexpected number of capture groups for regular expression")
 
-    _parameters = match?.captures[2]?.string
-    if let fileName = match?.captures[1]?.string, let includeFile = IncludeFile(URL(fileURLWithPath: "\(directory)/\(fileName)")) {
+    let possibleParameters = match?.captures[2]?.substring
+    _parameters = possibleParameters == nil ? nil : String(possibleParameters!)
+    if let fileName = match?.captures[1]?.substring, let includeFile = IncludeFile(URL(fileURLWithPath: "\(directory)/\(fileName)")) {
       file = includeFile
       subdirectives = JSONIncludeDirective._parseDirectives(in: file.content, directory: directory)
     } else { return nil }
@@ -62,12 +63,12 @@ internal class JSONIncludeDirective {
   {
     let regex = ~/"(<@include[^>]+>)"
     let matches = regex.match(string: string)
-    let ranges = matches.flatMap { $0.captures[1]?.range }
-    let directives: [JSONIncludeDirective] = ranges.flatMap {
+    let ranges = matches.compactMap { $0.captures[1]?.range }
+    let directives: [JSONIncludeDirective] = ranges.compactMap {
       let start = $0.lowerBound.samePosition(in: string)!
       let end = $0.upperBound.samePosition(in: string)!
       let subrange = start ..< end
-      return JSONIncludeDirective(string[subrange], location: subrange, directory: directory)
+      return JSONIncludeDirective(String(string[subrange]), location: subrange, directory: directory)
     }
     return directives
   }
@@ -91,7 +92,7 @@ internal class JSONIncludeDirective {
     }
     var result: String = ""
     let fileContent = file.content
-    if subdirectives.count == 0 { result = String(fileContent)! }
+    if subdirectives.count == 0 { result = fileContent }
     else {
       var i = fileContent.startIndex
       for subdirective in subdirectives.sorted(by: {$0.location.lowerBound < $1.location.lowerBound}) {
@@ -141,10 +142,20 @@ internal class JSONIncludeDirective {
     let content: String
 
     fileprivate(set) lazy var parameters: Set<String> = {
-      let regex = ~/"<#([A-Z]+)#>"
+      let regex = ~/"([A-Z]+)"
       let matches = regex.match(string: self.content)
-      let strings = matches.flatMap { match in match.captures.flatMap { $0?.string } }
-      return Set(strings)
+      let strings = matches.compactMap { (match: RegularExpression.Match) -> [String]? in
+        match.captures.compactMap { (capture:RegularExpression.Capture?) -> String? in
+          if let substring = capture?.substring {
+            return String(substring)
+          } else {
+            return nil
+          }
+        }
+      }
+
+
+      return Set(strings.joined())
     }()
 
     init?(_ url: URL) {

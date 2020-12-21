@@ -11,7 +11,8 @@ import Foundation
 
 /// A hash-based mapping from `Key` to `Value` instances that preserves elment order.
 public struct SortedDictionary<Key: Hashable & Comparable, Value>: RandomAccessCollection,
-                                                                   _DestructorSafeContainer {
+                                                                   _DestructorSafeContainer
+{
   fileprivate typealias Storage = OrderedDictionaryStorage<Key, Value>
   fileprivate typealias Buffer = OrderedDictionaryBuffer<Key, Value>
 

@@ -126,7 +126,7 @@ public struct PseudoConstraint: Equatable, CustomStringConvertible, CustomDebugS
     for u in string {
 
       if u.isWhitespace { result.append("_") }
-      else if u.isLetter { result.append(u) }
+      else if u.isLetter || u.isWholeNumber { result.append(u) }
 
     }
 

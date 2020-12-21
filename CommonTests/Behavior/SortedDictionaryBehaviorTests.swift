@@ -138,7 +138,7 @@ final class SortedDictionaryBehaviorTests: XCTestCase {
     expect(sortedDictionary2.values) == ["one", "two", "three", "four", "five"]
 
     var sortedDictionary3 = SortedDictionary<String, Int>()
-    for (key, value) in SortedDictionaryBehaviorTests.elements0 {
+    for (key, value) in xxSmallStringsIntegers0 {
       sortedDictionary3.updateValue(value, forKey: key)
     }
   }
@@ -179,7 +179,7 @@ final class SortedDictionaryBehaviorTests: XCTestCase {
     expect(sortedDictionary2.values) == ["one", "two", "three"]
 
     var sortedDictionary3 = SortedDictionaryBehaviorTests.loadedDictionary
-    for (key, _) in SortedDictionaryBehaviorTests.elements0 {
+    for (key, _) in xxSmallStringsIntegers0 {
       sortedDictionary3.removeValue(forKey: key)
     }
 
@@ -269,7 +269,7 @@ final class SortedDictionaryBehaviorTests: XCTestCase {
     expect(sortedDictionary2.value(forKey: 2)) == "four"
 
     var sortedDictionary3 = SortedDictionaryBehaviorTests.loadedDictionary
-    for (key, value) in SortedDictionaryBehaviorTests.elements1 {
+    for (key, value) in xxSmallStringsIntegers1 {
       sortedDictionary3.updateValue(value, forKey: key)
     }
   }

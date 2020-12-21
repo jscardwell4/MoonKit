@@ -15,12 +15,12 @@ public struct BitMap: Collection {
   public typealias _Element = Element
 
   public let buffer: UnsafeMutableBufferPointer<UInt>
-  public static func wordIndex(_ i: Int) -> Int { return i / Int(UInt._sizeInBits) }
+  public static func wordIndex(_ i: Int) -> Int { return i / Int(UInt.bitWidth) }
 
-  public static func bitIndex(_ i: Int) -> Int { return i % Int(UInt._sizeInBits) }
+  public static func bitIndex(_ i: Int) -> Int { return i % Int(UInt.bitWidth) }
 
   public static func wordsFor(_ bitCount: Int) -> Int {
-    let totalWords = (bitCount + Int._sizeInBits - 1) / Int._sizeInBits
+    let totalWords = (bitCount + Int.bitWidth - 1) / Int.bitWidth
     return totalWords
   }
 
@@ -30,7 +30,7 @@ public struct BitMap: Collection {
     defer { _fixLifetime(self) }
     var result = 0
     for word in buffer where word > 0 {
-      for bit in 0 ..< UInt._sizeInBits where word & (1 << bit) != 0 {
+      for bit in 0 ..< UInt.bitWidth where word & (1 << bit) != 0 {
         result += 1
       }
     }
@@ -58,7 +58,7 @@ public struct BitMap: Collection {
   public func nextSetBit(_ start: Int) -> Int? {
     defer { _fixLifetime(self) }
     let numberOfWords = self.numberOfWords
-    let bitsPerWord = Int(UInt._sizeInBits)
+    let bitsPerWord = Int(UInt.bitWidth)
     var bitIndex: Int, wordIndex: Int
 
     switch start {
@@ -89,7 +89,7 @@ public struct BitMap: Collection {
 
   public func previousSetBit(_ start: Int) -> Int? {
     defer { _fixLifetime(self) }
-    let bitsPerWord = Int(UInt._sizeInBits)
+    let bitsPerWord = Int(UInt.bitWidth)
     var bitIndex: Int, wordIndex: Int
 
     switch start {
@@ -119,7 +119,7 @@ public struct BitMap: Collection {
   public var nonZeroBits: [Int] {
     defer { _fixLifetime(self) }
     var result: [Int] = []
-    let bitsPerWord = Int(UInt._sizeInBits)
+    let bitsPerWord = Int(UInt.bitWidth)
     for (wordIndex, word) in buffer.enumerated() where word > 0 {
       let bitRange = 0 ..< (bitsPerWord - countLeadingZeros(word))
       for bitIndex in bitRange where self[wordIndex * bitsPerWord + bitIndex] {

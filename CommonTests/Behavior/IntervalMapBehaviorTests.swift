@@ -5,15 +5,12 @@
 //  Created by Jason Cardwell on 12/4/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
+@testable import MoonKit
+import Nimble
 import XCTest
-import MoonKitTest
-import MoonKit
 
 final class IntervalMapBehaviorTests: XCTestCase {
-
   func testCreation() {
-
     let map1 = IntervalMap<Double>()
     expect(map1).to(haveCount(0))
     expect(map1).to(beEmpty())
@@ -31,7 +28,7 @@ final class IntervalMapBehaviorTests: XCTestCase {
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
     expect(map4).to(haveCount(4))
     expect(map4).toNot(beEmpty())
 
@@ -43,49 +40,43 @@ final class IntervalMapBehaviorTests: XCTestCase {
     ]
     expect(map5).to(haveCount(4))
     expect(map5).toNot(beEmpty())
-
   }
 
   func testMinAndMax() {
-
     let map1 = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
     expect(map1.min()) == 〖4.9..8.2】
     expect(map1.max()) == 〖44.3..56.2〗
 
     let map2 = IntervalMap<Double>()
     expect(map2.min()).to(beNil())
     expect(map2.max()).to(beNil())
-
   }
 
   func testCoverage() {
-
     let map1 = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
     expect(map1.coverage) == 〖4.9..56.2〗
 
     let map2 = IntervalMap<Double>()
     expect(map2.coverage).to(beNil())
-
   }
 
   func testContainsElement() {
-
     let map = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
 
     expect(map.contains(4.9)) == false
     expect(map.contains(5.0)) == true
@@ -102,17 +93,15 @@ final class IntervalMapBehaviorTests: XCTestCase {
     expect(map.contains(56.0)) == true
     expect(map.contains(56.2)) == false
     expect(map.contains(64.1)) == false
-
   }
 
   func testContainsInterval() {
-
     let map = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
 
     expect(map.contains(【4.9..5.0】)) == false
     expect(map.contains(〖4.9..5.0】)) == true
@@ -129,17 +118,15 @@ final class IntervalMapBehaviorTests: XCTestCase {
     expect(map.contains(【56.0..56.2】)) == false
     expect(map.contains(【50.2..56.2〗)) == true
     expect(map.contains(〖64.1..32.2】)) == false
-
   }
 
   func testIndexFor() {
-
     let map = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
 
     expect(map.index(of: 2.9)).to(beNil())
     expect(map.index(of: 4.9)).to(beNil())
@@ -166,11 +153,9 @@ final class IntervalMapBehaviorTests: XCTestCase {
     expect(map.index(of: 【9.1..24.6〗)) == 1
     expect(map.index(of: 【28.3..33.2〗)) == 2
     expect(map.index(of: 〖44.3..56.2】)).to(beNil())
-
   }
 
   func testInsert() {
-
     var map: IntervalMap<Double> = []
 
     expect(map).to(beEmpty())
@@ -231,7 +216,7 @@ final class IntervalMapBehaviorTests: XCTestCase {
 
     map.insert(【43.7..54.6】)
     expect(map) == [〖4.6..10.1】, 【11.4..39.0】, 〖41.0..62.2〗, 〖64.4..72.1〗]
-    
+
     map.insert(〖40.0..63.2〗)
     expect(map) == [〖4.6..10.1】, 【11.4..39.0】, 〖40.0..63.2〗, 〖64.4..72.1〗]
 
@@ -339,11 +324,9 @@ final class IntervalMapBehaviorTests: XCTestCase {
 
     map.insert(〖300.1..421.1〗)
     expect(map) == [【3.1..223.9〗, 〖232.4..270.0】, 【280.4..453.2〗]
-
   }
 
   func testRemove() {
-
     var map: IntervalMap<Double> = [
       〖0.3..0.7〗, 【1.6..2.4】, 【5.9..6.6〗, 〖7.6..12.5〗, 〖15.2..15.9】, 〖16.4..18.0】, 〖20.5..21.2】, 【22.2..22.9】,
       【26.1..26.6〗, 〖27.0..27.3】, 【28.6..29.3】, 〖29.9..30.0】, 【30.3..30.5〗, 【30.7..31.9〗, 【32.7..33.8】,
@@ -667,7 +650,6 @@ final class IntervalMapBehaviorTests: XCTestCase {
       〖76.2..77.5〗, 【78.8..81.9〗, 【88.4..88.5〗, 〖88.6..89.1】, 【96.0..98.3】
     ]
 
-
     map.remove(〖36.0..37.0】)
     expect(map) == [
       〖0.3..0.7〗, 【1.6..2.4】, 〖7.6..9.1】, 【26.1..26.6〗, 【32.7..33.8】,
@@ -677,19 +659,15 @@ final class IntervalMapBehaviorTests: XCTestCase {
 
     map.remove(【0.0..100.0】)
     expect(map).to(beEmpty())
-
   }
 
   func testInvert() {
-
     expect(IntervalMap([
       〖4.4..8.2】, 【9.9..14.7】, 【18.1..24.2〗, 〖36.6..45.0〗
-      ]).inverted(coverage: 【0.0..50.0】)) == [【0.0..4.4】, 〖8.2..9.9〗, 〖14.7..18.1〗, 【24.2..36.6】, 【45.0..50.0】]
-
+    ]).inverted(coverage: 【0.0..50.0】)) == [【0.0..4.4】, 〖8.2..9.9〗, 〖14.7..18.1〗, 【24.2..36.6】, 【45.0..50.0】]
   }
 
   func testEquatable() {
-
     let intervals = [
       〖4.9..8.2】,
       【9.1..24.6】,
@@ -698,41 +676,34 @@ final class IntervalMapBehaviorTests: XCTestCase {
     ]
 
     expect(IntervalMap<Double>(intervals).elementsEqual(intervals)) == true
-
   }
 
   func testSubscriptIndexAccessor() {
-
     let map = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
 
     expect(map[0]) == 〖4.9..8.2】
     expect(map[1]) == 【9.1..24.6】
     expect(map[2]) == 【26.3..39.2〗
     expect(map[3]) == 〖44.3..56.2〗
-
   }
 
   func testSubscriptRangeAccessor() {
-
     let map = IntervalMap<Double>([
       〖4.9..8.2】,
       【9.1..24.6】,
       【26.3..39.2〗,
       〖44.3..56.2〗
-      ])
+    ])
 
-    expect(map[0..<2].elementsEqual([〖4.9..8.2】, 【9.1..24.6】])) == true //FAIL
-    expect(map[0..<3].elementsEqual([〖4.9..8.2】, 【9.1..24.6】, 【26.3..39.2〗])) == true //FAIL
-    expect(map[2..<4].elementsEqual([【26.3..39.2〗, 〖44.3..56.2〗])) == true //FAIL
-    expect(map[3..<4].elementsEqual([〖44.3..56.2〗])) == true //FAIL
+    expect(map[0..<2].elementsEqual([〖4.9..8.2】, 【9.1..24.6】])) == true // FAIL
+    expect(map[0..<3].elementsEqual([〖4.9..8.2】, 【9.1..24.6】, 【26.3..39.2〗])) == true // FAIL
+    expect(map[2..<4].elementsEqual([【26.3..39.2〗, 〖44.3..56.2〗])) == true // FAIL
+    expect(map[3..<4].elementsEqual([〖44.3..56.2〗])) == true // FAIL
     expect(map[3..<3].isEmpty) == true
-
   }
-
 }
-

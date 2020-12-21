@@ -1305,9 +1305,9 @@ public extension OrderedDictionary where Value: Equatable {
 public struct OrderedDictionarySlice<Key: Hashable, Value>: RandomAccessCollection,
   _DestructorSafeContainer
 {
-  fileprivate typealias Storage = OrderedDictionaryStorage<Key, Value>
-  fileprivate typealias Buffer = OrderedDictionaryBuffer<Key, Value>
-  fileprivate typealias BufferSlice = OrderedDictionaryBufferSlice<Key, Value>
+  internal typealias Storage = OrderedDictionaryStorage<Key, Value>
+  internal typealias Buffer = OrderedDictionaryBuffer<Key, Value>
+  internal typealias BufferSlice = OrderedDictionaryBufferSlice<Key, Value>
 
   public typealias Index = Int
   public typealias Element = (key: Key, value: Value)
@@ -1323,9 +1323,9 @@ public struct OrderedDictionarySlice<Key: Hashable, Value>: RandomAccessCollecti
     SubSequence(buffer: buffer[subRange])
   }
 
-  fileprivate var buffer: BufferSlice
+  internal var buffer: BufferSlice
 
-  fileprivate init(buffer: BufferSlice) { self.buffer = buffer }
+  internal init(buffer: BufferSlice) { self.buffer = buffer }
 
   public var indices: Range<Index> { startIndex..<endIndex }
 

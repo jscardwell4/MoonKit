@@ -8,30 +8,6 @@
 
 import Foundation
 
-// MARK: - Supporting enumerations
-
-private enum SearchIndex: Comparable {
-  case exact(Int)       /// The target was found at this index.
-  case predecessor(Int) /// The target was not found but would belong just after this index.
-  case successor(Int)   /// The target was not found but would belong just before this index.
-
-  var index: Int {
-    switch self { case .exact(let index), .predecessor(let index), .successor(let index): return index }
-  }
-
-  static func ==(lhs: SearchIndex, rhs: SearchIndex) -> Bool {
-    switch (lhs, rhs) {
-      case (.exact(let index1),       .exact(let index2)),
-           (.predecessor(let index1), .predecessor(let index2)),
-           (.successor(let index1),   .successor(let index2)):
-        return index1 == index2
-      default:
-        return false
-    }
-  }
-
-  static func <(lhs: SearchIndex, rhs: SearchIndex) -> Bool { return lhs.index < rhs.index }
-}
 
 // MARK: - Storage
 

@@ -10,35 +10,35 @@ import Foundation
 import Swift
 
 fileprivate protocol _BCDInteger: FixedWidthInteger {
-  associatedtype Base: UnsignedInteger, BitShifting, BitwiseOperations, ExpressibleByIntegerLiteral
+  associatedtype Base: UnsignedInteger, BitShifting
   var _value: Base { get }
   init(bitPattern: Base)
   init(_ value: Base)
-  func toUIntMax() -> UIntMax
+  func toUInt() -> UInt
   func toBase() -> Base
   static prefix func ~(value: Self) -> Self
 }
 
 extension _BCDInteger {
 
-  func _addingWithOverflow(_ rhs: Self, adjustMSB: Bool = false) -> (partialValue: Self, overflow: ArithmeticOverflow) {
+  func _addingWithOverflow(_ rhs: Self, adjustMSB: Bool = false) -> (partialValue: Self, overflow: Bool) {
     let (partialValue, overflow) = _add(_value, rhs._value, bitWidth: bitWidth, adjustMSB: adjustMSB)
     return (Self(bitPattern: partialValue), overflow)
   }
 
-  func _subtractingWithOverflow(_ rhs: Self) -> (partialValue: Self, overflow: ArithmeticOverflow) {
+  func _subtractingWithOverflow(_ rhs: Self) -> (partialValue: Self, overflow: Bool) {
     let (partialValue, _) = _add(_value, (~rhs)._value, bitWidth: bitWidth, adjustMSB: false)
-    return (Self(bitPattern: partialValue), .none)
+    return (Self(bitPattern: partialValue), false)
   }
 
-  func _multipliedWithOverflow(by rhs: Self) -> (partialValue: Self, overflow: ArithmeticOverflow) {
-    guard _value != 0 && rhs._value != 0 else { return (0, .none) }
+  func _multipliedWithOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    guard _value != 0 && rhs._value != 0 else { return (0, false) }
     var a = _value, n = rhs.toBase()
-    var overflow: ArithmeticOverflow = .none
+    var overflow: Bool = false
 
     func add(_ x: Base, _ y: Base) -> Base {
       let result = _add(x, y, bitWidth: bitWidth, adjustMSB: true)
-      if case .overflow = result.overflow, case .none = overflow { overflow = .overflow }
+      if result.overflow { overflow = true }
       return result.partialValue
     }
 
@@ -64,11 +64,11 @@ extension _BCDInteger {
     //TODO: Implement actual double width multiply
     guard lhs._value != 0 && rhs._value != 0 else { return (0, 0) }
     var a = lhs._value, n = rhs.toBase()
-    var overflow: ArithmeticOverflow = .none
+    var overflow: Bool = false
 
     func add(_ x: Base, _ y: Base) -> Base {
       let result = _add(x, y, bitWidth: bitWidth, adjustMSB: true)
-      if case .overflow = result.overflow, case .none = overflow { overflow = .overflow }
+      if result.overflow { overflow = true }
       return result.partialValue
     }
 
@@ -90,13 +90,13 @@ extension _BCDInteger {
     }
   }
 
-  func _dividedWithOverflow(by rhs: Self) -> (partialValue: Self, overflow: ArithmeticOverflow) {
-    let (partialValue, overflow) = Base.divideWithOverflow(Base(toUIntMax()), Base(rhs.toUIntMax()))
+  func _dividedWithOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    let (partialValue, overflow) = Base.dividedReportingOverflow(Base(toUInt()), Base(rhs.toUInt()))
     return (Self(partialValue), overflow ? .overflow : .none)
   }
 
-  var _popcount: Int { return Int(_countOnes(self).toUIntMax()) }
-  var _leadingZeros: Int { return Int(_countLeadingZeros(self).toUIntMax()) }
+  var _popcount: Int { return Int(_countOnes(self).toUInt()) }
+  var _leadingZeros: Int { return Int(_countLeadingZeros(self).toUInt()) }
   func _maskingShiftLeft(_ amount: Base) -> Self { return Self.init(bitPattern: _value << (amount * 4)) }
   func _maskingShiftRight(_ amount: Base) -> Self { return Self.init(bitPattern: _value >> (amount * 4)) }
   func _bitwiseOr(_ rhs: Self) -> Self { return Self.init(bitPattern: _value | rhs._value) }
@@ -140,7 +140,7 @@ fileprivate func _countOnes<I:_BCDInteger>(_ value: I) -> I.Base {
 }
 
 fileprivate func _countLeadingZeros<I>(of value: I, bitWidth: Int) -> I
-  where I:UnsignedInteger, I:BitShifting, I:BitwiseOperations, I:ExpressibleByIntegerLiteral
+  where I:UnsignedInteger, I:BitShifting
 {
   var result = value
   switch bitWidth {
@@ -179,7 +179,7 @@ fileprivate func _add<U:UnsignedInteger>(
   _ lhs: U,
   _ rhs: U,
   bitWidth: Int,
-  adjustMSB: Bool = false) -> (partialValue: U, overflow: ArithmeticOverflow)
+  adjustMSB: Bool = false) -> (partialValue: U, overflow: Bool)
   where U:BitShifting, U:BitwiseOperations, U:ExpressibleByIntegerLiteral
 {
   let a1: U, a2: U
@@ -195,7 +195,7 @@ fileprivate func _add<U:UnsignedInteger>(
   var t2: U
   (t2, overflow) = U.addWithOverflow(t1, rhs)
   if overflow && adjustMSB {
-    let shift = U(UIntMax(bitWidth - 4))
+    let shift = U(UInt(bitWidth - 4))
     t2 = ((((t2 >> shift) + 0x10) % 10) << shift) | ((t2 << 4) >> 4)
   }
   let t3 = t1 ^ rhs
@@ -229,7 +229,7 @@ public struct BCD8: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
   fileprivate func toBase() -> UInt8 { return UInt8(self) }
 
   fileprivate init(bitPattern: Base) { _value = bitPattern }
-  fileprivate func toUIntMax() -> UIntMax { return UIntMax(UInt8(self)) }
+  fileprivate func toUInt() -> UInt { return UInt(UInt8(self)) }
   public static var isSigned: Bool { return false }
 
   public var magnitude: BCD8 { return self }
@@ -301,19 +301,19 @@ public struct BCD8: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
 
   public var description: String { return _describe(self) }
 
-  public func addingWithOverflow(_ rhs: BCD8) -> (partialValue: BCD8, overflow: ArithmeticOverflow) {
+  public func addingWithOverflow(_ rhs: BCD8) -> (partialValue: BCD8, overflow: Bool) {
     return _addingWithOverflow(rhs, adjustMSB: true)
   }
 
-  public func dividedWithOverflow(by rhs: BCD8) -> (partialValue: BCD8, overflow: ArithmeticOverflow) {
+  public func dividedWithOverflow(by rhs: BCD8) -> (partialValue: BCD8, overflow: Bool) {
     return _dividedWithOverflow(by: rhs)
   }
 
-  public func multipliedWithOverflow(by rhs: BCD8) -> (partialValue: BCD8, overflow: ArithmeticOverflow) {
+  public func multipliedWithOverflow(by rhs: BCD8) -> (partialValue: BCD8, overflow: Bool) {
     return _multipliedWithOverflow(by: rhs)
   }
 
-  public func subtractingWithOverflow(_ rhs: BCD8) -> (partialValue: BCD8, overflow: ArithmeticOverflow) {
+  public func subtractingWithOverflow(_ rhs: BCD8) -> (partialValue: BCD8, overflow: Bool) {
     return _subtractingWithOverflow(rhs)
   }
 
@@ -364,7 +364,7 @@ public struct BCD16: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
   fileprivate func toBase() -> UInt16 { return UInt16(self) }
 
   fileprivate init(bitPattern: Base) { _value = bitPattern }
-  fileprivate func toUIntMax() -> UIntMax { return UIntMax(UInt16(self)) }
+  fileprivate func toUInt() -> UInt { return UInt(UInt16(self)) }
 
   public static var isSigned: Bool { return false }
 
@@ -455,19 +455,19 @@ public struct BCD16: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
 
   public var description: String { return _describe(self) }
 
-  public func addingWithOverflow(_ rhs: BCD16) -> (partialValue: BCD16, overflow: ArithmeticOverflow) {
+  public func addingWithOverflow(_ rhs: BCD16) -> (partialValue: BCD16, overflow: Bool) {
     return _addingWithOverflow(rhs, adjustMSB: true)
   }
 
-  public func dividedWithOverflow(by rhs: BCD16) -> (partialValue: BCD16, overflow: ArithmeticOverflow) {
+  public func dividedWithOverflow(by rhs: BCD16) -> (partialValue: BCD16, overflow: Bool) {
     return _dividedWithOverflow(by: rhs)
   }
 
-  public func multipliedWithOverflow(by rhs: BCD16) -> (partialValue: BCD16, overflow: ArithmeticOverflow) {
+  public func multipliedWithOverflow(by rhs: BCD16) -> (partialValue: BCD16, overflow: Bool) {
     return _multipliedWithOverflow(by: rhs)
   }
 
-  public func subtractingWithOverflow(_ rhs: BCD16) -> (partialValue: BCD16, overflow: ArithmeticOverflow) {
+  public func subtractingWithOverflow(_ rhs: BCD16) -> (partialValue: BCD16, overflow: Bool) {
     return _subtractingWithOverflow(rhs)
   }
 
@@ -528,7 +528,7 @@ public struct BCD32: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
   fileprivate func toBase() -> UInt32 { return UInt32(self) }
 
   fileprivate init(bitPattern: Base) { _value = bitPattern }
-  fileprivate func toUIntMax() -> UIntMax { return UIntMax(UInt32(self)) }
+  fileprivate func toUInt() -> UInt { return UInt(UInt32(self)) }
 
   public static var isSigned: Bool { return false }
 
@@ -669,19 +669,19 @@ public struct BCD32: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
 
   public var description: String { return _describe(self) }
 
-  public func addingWithOverflow(_ rhs: BCD32) -> (partialValue: BCD32, overflow: ArithmeticOverflow) {
+  public func addingWithOverflow(_ rhs: BCD32) -> (partialValue: BCD32, overflow: Bool) {
     return _addingWithOverflow(rhs, adjustMSB: true)
   }
 
-  public func dividedWithOverflow(by rhs: BCD32) -> (partialValue: BCD32, overflow: ArithmeticOverflow) {
+  public func dividedWithOverflow(by rhs: BCD32) -> (partialValue: BCD32, overflow: Bool) {
     return _dividedWithOverflow(by: rhs)
   }
 
-  public func multipliedWithOverflow(by rhs: BCD32) -> (partialValue: BCD32, overflow: ArithmeticOverflow) {
+  public func multipliedWithOverflow(by rhs: BCD32) -> (partialValue: BCD32, overflow: Bool) {
     return _multipliedWithOverflow(by: rhs)
   }
 
-  public func subtractingWithOverflow(_ rhs: BCD32) -> (partialValue: BCD32, overflow: ArithmeticOverflow) {
+  public func subtractingWithOverflow(_ rhs: BCD32) -> (partialValue: BCD32, overflow: Bool) {
     return _subtractingWithOverflow(rhs)
   }
 
@@ -742,7 +742,7 @@ public struct BCD64: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
   fileprivate func toBase() -> UInt64 { return UInt64(self) }
 
   fileprivate init(bitPattern: Base) { _value = bitPattern }
-  fileprivate func toUIntMax() -> UIntMax { return UIntMax(UInt64(self)) }
+  fileprivate func toUInt() -> UInt { return UInt(UInt64(self)) }
 
   public static var isSigned: Bool { return false }
 
@@ -775,7 +775,7 @@ public struct BCD64: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
   public static var min: BCD64 { return BCD64(bitPattern: 0b0000000000000000000000000000000000000000000000000000000000000000) }
 
   
-  public init<T:BinaryInteger>(_ source: T) { self = BCD64(Base(source.word(at: 0))) }
+  public init<T:BinaryInteger>(_ source: T) { self = BCD64(Base(source.words[0])) }
   public init<T:FloatingPoint>(_ source: T) {
     switch source {
       case let f as Float: self = BCD64(Base(f))
@@ -983,19 +983,19 @@ public struct BCD64: CustomStringConvertible, FixedWidthInteger, _BCDInteger {
 
   public var description: String { return _describe(self) }
 
-  public func addingWithOverflow(_ rhs: BCD64) -> (partialValue: BCD64, overflow: ArithmeticOverflow) {
+  public func addingWithOverflow(_ rhs: BCD64) -> (partialValue: BCD64, overflow: Bool) {
     return _addingWithOverflow(rhs, adjustMSB: true)
   }
 
-  public func dividedWithOverflow(by rhs: BCD64) -> (partialValue: BCD64, overflow: ArithmeticOverflow) {
+  public func dividedWithOverflow(by rhs: BCD64) -> (partialValue: BCD64, overflow: Bool) {
     return _dividedWithOverflow(by: rhs)
   }
 
-  public func multipliedWithOverflow(by rhs: BCD64) -> (partialValue: BCD64, overflow: ArithmeticOverflow) {
+  public func multipliedWithOverflow(by rhs: BCD64) -> (partialValue: BCD64, overflow: Bool) {
     return _multipliedWithOverflow(by: rhs)
   }
 
-  public func subtractingWithOverflow(_ rhs: BCD64) -> (partialValue: BCD64, overflow: ArithmeticOverflow) {
+  public func subtractingWithOverflow(_ rhs: BCD64) -> (partialValue: BCD64, overflow: Bool) {
     return _subtractingWithOverflow(rhs)
   }
 
@@ -1023,7 +1023,7 @@ extension BCD64 {
   public static prefix func ~ (value: BCD64) -> BCD64 {
     let t1 = 0xF999999999999999 - value._value
     let t2 = t1 + 0x0666666666666666
-    let t3 = Base.addWithOverflow(t2, 0x01).0
+    let t3 = t2.addingReportingOverflow(0x01).0
     let t4 = t2 ^ 0x0000000000000001
     let t5 = t3 ^ t4
     let t6 = ~t5 & 0x1111111111111110

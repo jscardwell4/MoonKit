@@ -31,7 +31,7 @@ extension String: JSONValueInitializable {
   }
 }
 
-extension DictionaryLiteral: JSONValueConvertible {
+extension KeyValuePairs: JSONValueConvertible {
   public var jsonValue: JSONValue {
     var dict = OrderedDictionary<String, JSONValue>()
     for (key: key, value: value) in self {
@@ -133,14 +133,14 @@ extension Double: JSONValueInitializable {
 }
 
 extension CGSize: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .string(NSStringFromCGSize(self)) }
+  public var jsonValue: JSONValue { return .string(NSCoder.string(for: self)) }
 }
 extension CGSize: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) { if let s = jsonValue?.CGSizeValue { self = s } else { return nil } }
 }
 
 extension CGRect: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .string(NSStringFromCGRect(self)) }
+  public var jsonValue: JSONValue { return .string(NSCoder.string(for: self)) }
 }
 extension CGRect: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) { if let s = jsonValue?.CGRectValue { self = s } else { return nil } }
@@ -170,14 +170,14 @@ extension Optional: JSONValueConvertible {
 //}
 
 extension UIOffset: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .string(NSStringFromUIOffset(self)) }
+  public var jsonValue: JSONValue { return .string(NSCoder.string(for: self)) }
 }
 extension UIOffset: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) { if let s = jsonValue?.UIOffsetValue { self = s } else { return nil } }
 }
 
 extension CGAffineTransform: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .string(NSStringFromCGAffineTransform(self)) }
+  public var jsonValue: JSONValue { return .string(NSCoder.string(for: self)) }
 }
 extension CGAffineTransform: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
@@ -186,7 +186,7 @@ extension CGAffineTransform: JSONValueInitializable {
 }
 
 extension UIEdgeInsets: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .string(NSStringFromUIEdgeInsets(self)) }
+  public var jsonValue: JSONValue { return .string(NSCoder.string(for: self)) }
 }
 extension UIEdgeInsets: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {

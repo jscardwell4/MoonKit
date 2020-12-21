@@ -105,6 +105,26 @@ internal enum SearchIndex {
 
 }
 
+extension SearchIndex: Comparable {
+
+  var index: Int {
+    switch self { case .exact(let index), .predecessor(let index), .successor(let index): return index }
+  }
+
+  static func ==(lhs: SearchIndex, rhs: SearchIndex) -> Bool {
+    switch (lhs, rhs) {
+      case (.exact(let index1),       .exact(let index2)),
+           (.predecessor(let index1), .predecessor(let index2)),
+           (.successor(let index1),   .successor(let index2)):
+        return index1 == index2
+      default:
+        return false
+    }
+  }
+
+  static func <(lhs: SearchIndex, rhs: SearchIndex) -> Bool { return lhs.index < rhs.index }
+}
+
 /// Buffer backing instances of `CountableRangeMap`.
 internal struct CountableRangeMapBuffer< Bound:Strideable>: _DestructorSafeContainer
   where Bound.Stride:SignedInteger

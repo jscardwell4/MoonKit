@@ -5,10 +5,9 @@
 //  Created by Jason Cardwell on 7/19/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
 import XCTest
-import MoonKitTest
-import MoonKit
+import Nimble
+@testable import MoonKit
 
 final class SortedArrayBehaviorTests: XCTestCase {
     

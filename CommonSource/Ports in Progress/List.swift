@@ -56,7 +56,7 @@ public struct List<Element>: Collection {
   }
 }
 
-extension List: ArrayLiteralConvertible {
+extension List: ExpressibleByArrayLiteral {
 
   public init<S: Sequence>(_ seq: S) where S.Iterator.Element == Element {
     startIndex = ListIndex(node: seq.reversed().reduce(.end) { $0.cons($1) })

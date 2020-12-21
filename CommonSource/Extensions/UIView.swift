@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-fileprivate let identifierKey: UnsafeRawPointer? = nil
+private var identifierKey: Void?
 
 public extension UIView {
 
@@ -26,8 +26,8 @@ public extension UIView {
   }
 
   @IBInspectable var identifier: String? {
-    get { return objc_getAssociatedObject(self, identifierKey!) as? String ?? accessibilityIdentifier }
-    set { objc_setAssociatedObject(self, identifierKey!, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC) }
+    get { return objc_getAssociatedObject(self, &identifierKey) as? String ?? accessibilityIdentifier }
+    set { objc_setAssociatedObject(self, &identifierKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC) }
   }
 
   var snapshot: UIImage {

@@ -10,7 +10,10 @@ import Foundation
 
 public struct HashableTuple<H1:Hashable,H2:Hashable>: Hashable {
   public let elements: (H1, H2)
-  public var hashValue: Int { return elements.0.hashValue ^ elements.1.hashValue }
+  public func hash(into hasher: inout Hasher) {
+    elements.0.hash(into: &hasher)
+    elements.1.hash(into: &hasher)
+  }
   public init(_ elements: (H1, H2)) { self.elements = elements }
 
   public static func ==(lhs: HashableTuple, rhs: HashableTuple) -> Bool {
