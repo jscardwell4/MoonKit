@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C2258A5625910D0600A4BED4 /* SortedDictionaryBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA632258FC1F5008B542D /* SortedDictionaryBehaviorTests.swift */; };
+		C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
+		C2258A6425910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
+		C2258A6B2591114300A4BED4 /* SortedArrayBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA684258FE17C008B542D /* SortedArrayBehaviorTests.swift */; };
+		C2258A722591127200A4BED4 /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationType.swift */; };
+		C2258A792591127300A4BED4 /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationType.swift */; };
+		C2258A80259112EB00A4BED4 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC94258D1AD4000AA924 /* Tree.swift */; };
+		C2258A87259112EC00A4BED4 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC94258D1AD4000AA924 /* Tree.swift */; };
+		C2258A8E2591140500A4BED4 /* Point3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC85258D1AD3000AA924 /* Point3D.swift */; };
+		C2258A952591146000A4BED4 /* Point3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC85258D1AD3000AA924 /* Point3D.swift */; };
+		C2258A9C2591148100A4BED4 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8A258D1AD3000AA924 /* List.swift */; };
+		C2258AA32591148200A4BED4 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8A258D1AD3000AA924 /* List.swift */; };
+		C2258AAA259116DE00A4BED4 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC96258D1AD4000AA924 /* UInt128.swift */; };
+		C2258AB1259116DF00A4BED4 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC96258D1AD4000AA924 /* UInt128.swift */; };
+		C2258AB82591291B00A4BED4 /* UInt128Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA68D258FE17D008B542D /* UInt128Tests.swift */; };
 		C228E128258E5FB40060E476 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E127258E5FB40060E476 /* Cocoa.framework */; };
 		C228E12A258E5FB40060E476 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
 		C228E12D258E5FB40060E476 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E12C258E5FB40060E476 /* SourceEditorExtension.swift */; };
@@ -300,11 +315,8 @@
 		C29DBD591FEC0CE900A7EB56 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		C2A6964B258C06F5009CB31F /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		C2A6964C258C06F5009CB31F /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
-		C2A6964D258C06F5009CB31F /* ObjectJSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectJSONValue.swift; sourceTree = "<group>"; };
-		C2A6964E258C06F5009CB31F /* BoxedJSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxedJSONValue.swift; sourceTree = "<group>"; };
 		C2A6964F258C06F5009CB31F /* JSONValueRelatedExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValueRelatedExtensions.swift; sourceTree = "<group>"; };
 		C2A69650258C06F5009CB31F /* JSONIncludeDirective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONIncludeDirective.swift; sourceTree = "<group>"; };
-		C2A69651258C06F5009CB31F /* ArrayJSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayJSONValue.swift; sourceTree = "<group>"; };
 		C2A69652258C06F5009CB31F /* NotificationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		C2A69653258C06F5009CB31F /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CircularBuffer+AudioBufferList.swift"; sourceTree = "<group>"; };
@@ -561,8 +573,6 @@
 				C29DBD451FEC072E00A7EB56 /* Protocols */,
 				C29DBD3B1FEC06EB00A7EB56 /* Extensions */,
 				C29DBD3A1FEC06E300A7EB56 /* Types */,
-				C29DBD271FEC065700A7EB56 /* SequenceExtensions */,
-				C29DBD261FEC063000A7EB56 /* CollectionExtensions */,
 				C250064020C83149005A1BEB /* Helpers.swift */,
 				C250064620C831F0005A1BEB /* DebugConsoleView.swift */,
 				C250064320C831A5005A1BEB /* Logging.swift */,
@@ -609,16 +619,16 @@
 		C29DBD3A1FEC06E300A7EB56 /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				C2E3FD1D258D3001000AA924 /* Data Structures */,
 				C2A6964B258C06F5009CB31F /* JSONValue.swift */,
 				C2A6964C258C06F5009CB31F /* JSONSerialization.swift */,
 				C2A6964F258C06F5009CB31F /* JSONValueRelatedExtensions.swift */,
 				C2A69650258C06F5009CB31F /* JSONIncludeDirective.swift */,
 				C2A69653258C06F5009CB31F /* JSONParser.swift */,
-				C2E3FC8C258D1AD3000AA924 /* AnyComparable.swift */,
+				C2CCD610258E79DC00E9923C /* SortedDictionary.swift */,
 				C2E3FC88258D1AD3000AA924 /* Any2DIndex.swift */,
 				C2EDA6E0258FE5D9008B542D /* Identifier.swift */,
 				C2EDA6B9258FE46C008B542D /* PseudoConstraint.swift */,
-				C2E3FD1D258D3001000AA924 /* Data Structures */,
 				C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */,
 				C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */,
 				C2E3FC91258D1AD4000AA924 /* RepeatingSequence.swift */,
@@ -634,6 +644,8 @@
 		C29DBD3B1FEC06EB00A7EB56 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C29DBD261FEC063000A7EB56 /* CollectionExtensions */,
+				C29DBD271FEC065700A7EB56 /* SequenceExtensions */,
 				C2EDA6FD258FE6AB008B542D /* NSLayoutConstraint.swift */,
 				C2EDA84A2590358F008B542D /* Array.swift */,
 				C2EDA6C1258FE4EC008B542D /* UIView.swift */,
@@ -648,6 +660,7 @@
 		C29DBD451FEC072E00A7EB56 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				C2A69652258C06F5009CB31F /* NotificationType.swift */,
 				C2E3FC87258D1AD3000AA924 /* KeyValueCollection.swift */,
 				C2E3FD02258D21DD000AA924 /* Packing.swift */,
 				C2E3FCFD258D20D6000AA924 /* Protocols.swift */,
@@ -669,19 +682,9 @@
 			isa = PBXGroup;
 			children = (
 				C2E3FC8B258D1AD3000AA924 /* BCD.swift */,
-				C2E3FC8A258D1AD3000AA924 /* List.swift */,
-				C2E3FC85258D1AD3000AA924 /* Point3D.swift */,
-				C2E3FC94258D1AD4000AA924 /* Tree.swift */,
 				C2E3FC97258D1AD4000AA924 /* UIntBig.swift */,
-				C2E3FC90258D1AD4000AA924 /* SortedArray.swift */,
-				C2A6964D258C06F5009CB31F /* ObjectJSONValue.swift */,
-				C2A6964E258C06F5009CB31F /* BoxedJSONValue.swift */,
-				C2A69651258C06F5009CB31F /* ArrayJSONValue.swift */,
 				C2731712258D530500554FB2 /* Fraction.swift */,
-				C2A69652258C06F5009CB31F /* NotificationType.swift */,
 				C2E3FD18258D2AAA000AA924 /* Ratio.swift */,
-				C2CCD610258E79DC00E9923C /* SortedDictionary.swift */,
-				C2E3FC96258D1AD4000AA924 /* UInt128.swift */,
 			);
 			path = "Ports in Progress";
 			sourceTree = "<group>";
@@ -689,6 +692,12 @@
 		C2E3FD1D258D3001000AA924 /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				C2E3FC96258D1AD4000AA924 /* UInt128.swift */,
+				C2E3FC8A258D1AD3000AA924 /* List.swift */,
+				C2E3FC85258D1AD3000AA924 /* Point3D.swift */,
+				C2E3FC94258D1AD4000AA924 /* Tree.swift */,
+				C2E3FC90258D1AD4000AA924 /* SortedArray.swift */,
+				C2E3FC8C258D1AD3000AA924 /* AnyComparable.swift */,
 				C2E3FC99258D1AD4000AA924 /* WeakArray.swift */,
 				C2EDA81F25902673008B542D /* Weak.swift */,
 				C2E3FC83258D1AD3000AA924 /* Interval.swift */,
@@ -1070,13 +1079,16 @@
 				C2731724258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C2EDA6A0258FE258008B542D /* RawOptionSetFunctions.swift in Sources */,
 				C2EDA83C259031F6008B542D /* JSONValueRelatedExtensions.swift in Sources */,
+				C2258A9C2591148100A4BED4 /* List.swift in Sources */,
 				C2EDA6BA258FE46C008B542D /* PseudoConstraint.swift in Sources */,
 				C2E3FD54258D372A000AA924 /* Packing.swift in Sources */,
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C2EDA82E259031A9008B542D /* JSONValue.swift in Sources */,
+				C2258AAA259116DE00A4BED4 /* UInt128.swift in Sources */,
 				C2EDA853259036C7008B542D /* JSONParser.swift in Sources */,
 				C2E3FD44258D36FE000AA924 /* Math.swift in Sources */,
+				C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */,
 				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C2EDA7A525901F56008B542D /* BitMap.swift in Sources */,
 				C2E3FD3A258D328A000AA924 /* Range.swift in Sources */,
@@ -1087,17 +1099,20 @@
 				C2EDA7C72590210D008B542D /* Heap.swift in Sources */,
 				C273173A258D665000554FB2 /* RepeatingSequence.swift in Sources */,
 				C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
+				C2258A80259112EB00A4BED4 /* Tree.swift in Sources */,
 				C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */,
 				C2EDA6A2258FE258008B542D /* Dispatch.swift in Sources */,
 				C29DBD381FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C2E3FD41258D36FE000AA924 /* Operators.swift in Sources */,
+				C2258A722591127200A4BED4 /* NotificationType.swift in Sources */,
 				C2EDA8F42590F9C2008B542D /* SortedDictionary.swift in Sources */,
 				C2EDA86D25904214008B542D /* JSONSerialization.swift in Sources */,
 				C2EDA7772590107A008B542D /* AnyComparable.swift in Sources */,
 				C273172A258D5F7A00554FB2 /* SetType.swift in Sources */,
 				C250064120C8314A005A1BEB /* Helpers.swift in Sources */,
 				C2EDA7B925902069008B542D /* HashableTuple.swift in Sources */,
+				C2258A8E2591140500A4BED4 /* Point3D.swift in Sources */,
 				C29DBD361FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C2EDA6A4258FE258008B542D /* FunctionManipulation.swift in Sources */,
 				C2EDA659258FCA1A008B542D /* CollectionManipulations.swift in Sources */,
@@ -1140,13 +1155,16 @@
 				C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C29DBD491FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2EDA843259031FA008B542D /* JSONValueRelatedExtensions.swift in Sources */,
+				C2258AA32591148200A4BED4 /* List.swift in Sources */,
 				C2731763258D6E2400554FB2 /* CountableRangeMap.swift in Sources */,
 				C2EDA65A258FCA1A008B542D /* CollectionManipulations.swift in Sources */,
 				C2731725258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C2EDA835259031AA008B542D /* JSONValue.swift in Sources */,
+				C2258AB1259116DF00A4BED4 /* UInt128.swift in Sources */,
 				C2EDA85A259036C7008B542D /* JSONParser.swift in Sources */,
 				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
+				C2258A6425910D7300A4BED4 /* SortedArray.swift in Sources */,
 				C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */,
 				C2EDA7AC25901F58008B542D /* BitMap.swift in Sources */,
 				C273172D258D5F7C00554FB2 /* SetType.swift in Sources */,
@@ -1157,17 +1175,20 @@
 				C2EDA7CE2590210E008B542D /* Heap.swift in Sources */,
 				C29DBD391FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
 				C2E3FD3D258D328B000AA924 /* Range.swift in Sources */,
+				C2258A87259112EC00A4BED4 /* Tree.swift in Sources */,
 				C2CCD60B258E74FA00E9923C /* OrderedDictionary.swift in Sources */,
 				C2E3FD47258D36FF000AA924 /* Operators.swift in Sources */,
 				C2E3FD37258D322A000AA924 /* HashedStorage.swift in Sources */,
 				C29DBD371FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C2E3FD53258D372A000AA924 /* Packing.swift in Sources */,
+				C2258A792591127300A4BED4 /* NotificationType.swift in Sources */,
 				C2EDA8FB2590F9C3008B542D /* SortedDictionary.swift in Sources */,
 				C2EDA87425904215008B542D /* JSONSerialization.swift in Sources */,
 				C2EDA77E2590107B008B542D /* AnyComparable.swift in Sources */,
 				C29DBD3E1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C250064820C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C2EDA7C02590206A008B542D /* HashableTuple.swift in Sources */,
+				C2258A952591146000A4BED4 /* Point3D.swift in Sources */,
 				C2E3FD58258D3884000AA924 /* Stack.swift in Sources */,
 				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C2EDA69F258FE258008B542D /* MappingOperations.swift in Sources */,
@@ -1193,11 +1214,14 @@
 				C2EDA8DF2590F79B008B542D /* WeakArrayBehaviorTests.swift in Sources */,
 				C2EDA651258FC919008B542D /* OrderedSetBehaviorTests.swift in Sources */,
 				C2EDA8ED2590F7B2008B542D /* IntervalMapBehaviorTests.swift in Sources */,
+				C2258A5625910D0600A4BED4 /* SortedDictionaryBehaviorTests.swift in Sources */,
 				C2EDA8D82590F78A008B542D /* IntervalTests.swift in Sources */,
 				C2EDA664258FD198008B542D /* StackBehaviorTests.swift in Sources */,
 				C2EDA61C258FB347008B542D /* NimbleMatchers.swift in Sources */,
+				C2258AB82591291B00A4BED4 /* UInt128Tests.swift in Sources */,
 				C2EDA8E62590F7AC008B542D /* PseudoConstraintTests.swift in Sources */,
 				C2EDA8D12590F785008B542D /* BitMapTests.swift in Sources */,
+				C2258A6B2591114300A4BED4 /* SortedArrayBehaviorTests.swift in Sources */,
 				C2EDA8CA2590F77D008B542D /* CountableRangeMapBehaviorTests.swift in Sources */,
 				C2EDA666258FD198008B542D /* QueueBehaviorTests.swift in Sources */,
 				C2CCD7D1258ED03600E9923C /* OrderedDictionaryBehaviorTests.swift in Sources */,

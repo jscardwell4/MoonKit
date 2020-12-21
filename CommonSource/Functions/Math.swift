@@ -139,7 +139,7 @@ public func quotientRemainder<T>(_ a: T, _ b: T) -> (quotient: T, remainder: T)
   guard a >= b else { return (0, a) }
   var c: T = largestDoubling(a, b), a = a - c, n: T = 1
   while c != b {
-    c = half(c)
+    c >>= 1
     n = n + n
     if c <= a {
       a = a - c

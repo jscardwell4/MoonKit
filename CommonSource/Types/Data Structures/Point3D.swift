@@ -5,9 +5,13 @@
 //  Created by Jason Cardwell on 11/24/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
 import Foundation
+
+#if os(iOS)
 import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 public struct Point3D {
 

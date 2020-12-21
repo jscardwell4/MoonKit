@@ -108,7 +108,7 @@ public struct Tree<Element: Comparable> {
   */
   public mutating func replace(_ element1: Element, with element2: Element) {
     var elements = Array(self)
-    guard let idx = elements.index(of: element1) else { return }
+    guard let idx = elements.firstIndex(of: element1) else { return }
     elements[idx] = element2
     self = Tree(elements)
   }
@@ -133,7 +133,7 @@ public struct Tree<Element: Comparable> {
   public mutating func remove(_ element: Element) {
     // TODO: Remove without using an Array
     var elements = Array(self)
-    guard let idx = elements.index(of: element) else { return }
+    guard let idx = elements.firstIndex(of: element) else { return }
     elements.remove(at: idx)
     self = Tree(elements)
   }
@@ -313,8 +313,8 @@ public struct Tree<Element: Comparable> {
   - parameter element: Element
   */
   public mutating func dropAfter(_ element: Element) {
-    var elements = Array(self)
-    guard let idx = elements.index(of: element) else { return }
+    let elements = Array(self)
+    guard let idx = elements.firstIndex(of: element) else { return }
     self = Tree(elements[elements.startIndex ... idx])
   }
 
@@ -324,8 +324,8 @@ public struct Tree<Element: Comparable> {
   - parameter element: Element
   */
   public mutating func dropBefore(_ element: Element) {
-    var elements = Array(self)
-    guard let idx = elements.index(of: element) else { return }
+    let elements = Array(self)
+    guard let idx = elements.firstIndex(of: element) else { return }
     self = Tree(elements[idx ..< elements.endIndex])
   }
 
@@ -343,7 +343,7 @@ extension Tree: Sequence {
     // stack-based iterative inorder traversal to make it easy to use with anyGenerator
     var stack: [Node<Element>] = []
     var current: Node<Element> = root
-    return AnyIterator { _ -> Element? in
+    return AnyIterator { 
       repeat {
         switch current {
           case .some(_, let left, _, _): 
@@ -394,7 +394,7 @@ extension Tree: CustomDebugStringConvertible {
     var result = ""
     func describeNode(_ node: Node<Element>, _ height: Int, _ kind: String ) {
         let indent = "  " * height
-        let heightString = "[" + String(height).pad(" ", count: 2, type: .prefix) + "\(kind)]"
+      let heightString = "[" + String(height).padded(to: 2, alignment: .left, padCharacter: " ") + "\(kind)]"
       switch node {
         case .none:
           result += "\(indent)\(heightString) <\(Color.black)> nil\n"

@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate func describe<Element>(_ elements: UnsafePointer<Element>, count: Int, debug: Bool) -> String {
+private func describe<Element>(_ elements: UnsafePointer<Element>, count: Int, debug: Bool) -> String {
   guard count > 0 else { return "[]" }
   var result = "["
   var first = true
@@ -22,13 +22,17 @@ fileprivate func describe<Element>(_ elements: UnsafePointer<Element>, count: In
   return result
 }
 
-fileprivate struct SortedArrayStorageHeader {
+// MARK: - SortedArrayStorageHeader
+
+private struct SortedArrayStorageHeader {
   var count = 0
   let capacity: Int
   init(capacity: Int) { self.capacity = capacity }
 }
 
-fileprivate final class SortedArrayStorage<Element:Comparable>: ManagedBuffer<SortedArrayStorageHeader, Element> {
+// MARK: - SortedArrayStorage
+
+private final class SortedArrayStorage<Element: Comparable>: ManagedBuffer<SortedArrayStorageHeader, Element> {
   typealias Header = SortedArrayStorageHeader
 
   class func create(minimumCapacity: Int) -> SortedArrayStorage {
@@ -46,14 +50,16 @@ fileprivate final class SortedArrayStorage<Element:Comparable>: ManagedBuffer<So
   deinit {
     withUnsafeMutablePointers {
       $1.deinitialize(count: $0.pointee.count)
-      $0.deinitialize()
+      $0.deinitialize(count: 1)
     }
   }
 
-  var elements: UnsafeMutablePointer<Element> { return withUnsafeMutablePointerToElements {$0} }
+  var elements: UnsafeMutablePointer<Element> { return withUnsafeMutablePointerToElements { $0 } }
 }
 
-fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContainer {
+// MARK: - SortedArrayBuffer
+
+private struct SortedArrayBuffer<Element: Comparable>: _DestructorSafeContainer {
   typealias _Element = Element
   typealias Buffer = SortedArrayBuffer<Element>
   typealias BufferSlice = SortedArrayBufferSlice<Element>
@@ -98,9 +104,10 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
   /// Create a clone of `buffer`.
   init(buffer: Buffer) { self = Buffer(buffer: buffer, withCapacity: buffer.capacity) }
 
-  init<Source:Collection>(_ elements: Source) where Source.Iterator.Element == Element {
+  init<Source: Collection>(_ elements: Source) where Source.Iterator.Element == Element {
     let storage = Storage.create(minimumCapacity: numericCast(elements.count))
-    storage.elements.initialize(from: elements)
+    _ = UnsafeMutableBufferPointer(start: storage.elements,
+                                   count: elements.count).initialize(from: elements)
     storage.header.count = numericCast(elements.count)
     storage.sort()
     self = Buffer(storage: storage)
@@ -108,10 +115,10 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
 
   mutating func destroy(at i: Int) {
     if i &+ 1 == endIndex {
-      (elements + i).deinitialize()
+      (elements + i).deinitialize(count: 1)
     } else {
-      (elements + i).assign(from: (elements + (i &+ 1)), count: endIndex &- i &- 1)
-      (elements + (endIndex &- 1)).deinitialize()
+      (elements + i).assign(from: elements + (i &+ 1), count: endIndex &- i &- 1)
+      (elements + (endIndex &- 1)).deinitialize(count: 1)
     }
     endIndex = endIndex &- 1
   }
@@ -131,7 +138,7 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
     return Optional(indices.contains(i) && elements[i] == element ? i : nil)
   }
 
-  init<Source:Sequence>(_ elements: Source) where Source.Iterator.Element == Element {
+  init<Source: Sequence>(_ elements: Source) where Source.Iterator.Element == Element {
     var buffer = Buffer(minimumCapacity: elements.underestimatedCount)
     for element in elements {
       if buffer.capacity == buffer.count { buffer = Buffer(buffer: buffer, withCapacity: buffer.count * 2) }
@@ -140,7 +147,7 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
     self = buffer
   }
 
-  mutating func replaceSubrange<Source:Collection>(_ subRange: CountableRange<Int>, with newElements: Source)
+  mutating func replaceSubrange<Source: Collection>(_ subRange: CountableRange<Int>, with newElements: Source)
     where Source.Iterator.Element == Element
   {
     removeSubrange(subRange)
@@ -148,24 +155,21 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
   }
 
   mutating func _append(element: Element, possiblyAt requestedIndex: Int? = nil) {
-
     let i: Int
 
     switch (count, requestedIndex) {
+    case (0, _),
+         (_, 0) where elements[0] > element:
+      i = 0
 
-      case (0, _),
-           (_, 0) where elements[0] > element:
-        i = 0
+    case let (n, requestedIndex?) where requestedIndex == n && elements[n &- 1] <= element,
+         let (n, requestedIndex?) where n > 2 && (1 ..< n &- 2).contains(requestedIndex)
+           && elements[requestedIndex &- 1] <= element
+           && elements[requestedIndex &+ 1] >= element:
+      i = requestedIndex // FIXME: coverage 0
 
-      case let (n, requestedIndex?) where requestedIndex == n && elements[n &- 1] <= element,
-           let (n, requestedIndex?) where n > 2 && (1 ..< n &- 2).contains(requestedIndex)
-                                          && elements[requestedIndex &- 1] <= element
-                                          && elements[requestedIndex &+ 1] >= element:
-        i = requestedIndex   //FIXME: coverage 0
-
-      default:
-        i = index(forInserting: element)
-
+    default:
+      i = index(forInserting: element)
     }
 
     (elements + (i &+ 1)).moveInitialize(from: elements + i, count: endIndex &- i)
@@ -175,10 +179,11 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
 
   mutating func append(_ element: Element) { _append(element: element) }
 
-  mutating func append<Source:Collection>(contentsOf newElements: Source)
+  mutating func append<Source: Collection>(contentsOf newElements: Source)
     where Source.Iterator.Element == Element
   {
-    (elements + endIndex).initialize(from: newElements)
+    _ = UnsafeMutableBufferPointer(start: elements + endIndex,
+                                   count: newElements.count).initialize(from: newElements)
     let 𝝙count: Int = numericCast(newElements.count)
     endIndex = endIndex &+ 𝝙count
     storage.sort()
@@ -187,17 +192,15 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
   func index(forInserting element: Element) -> Int {
     // Test for an edge value
     switch count {
+    case 0,
+         _ where elements[0] > element:
+      return 0
 
-      case 0,
-           _ where elements[0] > element:
-        return 0
+    case let n where elements[n &- 1] <= element:
+      return n
 
-      case let n where elements[n &- 1] <= element:
-        return n
-
-      default:
-        break
-
+    default:
+      break
     }
 
     // Helper for recursive binary search
@@ -223,20 +226,21 @@ fileprivate struct SortedArrayBuffer<Element:Comparable>: _DestructorSafeContain
 
   mutating func removeSubrange(_ subRange: CountableRange<Index>) {
     switch subRange.count {
-      case 0: return
-      case 1: destroy(at: subRange.lowerBound)
-      case let delta:
-        (elements + subRange.lowerBound).deinitialize(count: delta)
-        if endIndex &- subRange.upperBound > 0 {
-          (elements + subRange.lowerBound).moveInitialize(from: elements + subRange.upperBound,
-                                                          count: endIndex &- subRange.upperBound)
-        }
-        endIndex = endIndex &- delta
+    case 0: return
+    case 1: destroy(at: subRange.lowerBound)
+    case let delta:
+      (elements + subRange.lowerBound).deinitialize(count: delta)
+      if endIndex &- subRange.upperBound > 0 {
+        (elements + subRange.lowerBound).moveInitialize(from: elements + subRange.upperBound,
+                                                        count: endIndex &- subRange.upperBound)
+      }
+      endIndex = endIndex &- delta
     }
   }
 }
 
-// MARK: - RandomAccessCollection
+// MARK: RandomAccessCollection
+
 extension SortedArrayBuffer: RandomAccessCollection {
   typealias Index = Int
   typealias SubSequence = BufferSlice
@@ -255,6 +259,7 @@ extension SortedArrayBuffer: RandomAccessCollection {
     default: return nil
     }
   }
+
   @inline(__always) func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
@@ -266,42 +271,44 @@ extension SortedArrayBuffer: RandomAccessCollection {
   }
 }
 
-// MARK: - Collection
-extension SortedArrayBuffer: Collection {
+// MARK: Collection
 
+extension SortedArrayBuffer: Collection {
   subscript(index: Int) -> Element {
     get {
       return elements[index]
     }
     set {
       elements[index] = newValue
-      guard count > 1 else { return }  //FIXME: coverage 0
+      guard count > 1 else { return } // FIXME: coverage 0
 
       switch (index &- 1, index, index &+ 1) {
-      case let (l, i, u) where i == 0 && elements[1] >= newValue,
-           let(l, i, u) where u == endIndex && elements[l] <= newValue,
-           let (l, i, u) where (2..<endIndex).contains(u) && (elements[l]...elements[u]).contains(newValue):
-        return   //FIXME: coverage 0
+        case let (_, i, _) where i == 0 && elements[1] >= newValue:
+          return
+        case let (l, _, u) where u == endIndex && elements[l] <= newValue:
+          return
+        case let (l, _, u) where (2 ..< endIndex).contains(u)
+              && (elements[l] ... elements[u]).contains(newValue):
+        return
       default:
         storage.sort()
       }
     }
   }
 
-  subscript(subRange: Range<Int>) -> SubSequence { return self[CountableRange(subRange)] }
-
-  subscript(subRange: CountableRange<Int>) -> SubSequence { return SubSequence(buffer: self, indices: subRange) }
-
+  subscript(subRange: Range<Int>) -> SubSequence { SubSequence(buffer: self, indices: subRange) }
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
+
 extension SortedArrayBuffer: CustomStringConvertible, CustomDebugStringConvertible {
   var description: String { return describe(elements, count: count, debug: false) }
   var debugDescription: String { return describe(elements, count: count, debug: true) }
 }
 
 // MARK: - SortedArrayBufferSlice
-fileprivate struct SortedArrayBufferSlice<Element:Comparable>: _DestructorSafeContainer {
+
+private struct SortedArrayBufferSlice<Element: Comparable>: _DestructorSafeContainer {
   typealias _Element = Element
   typealias Buffer = SortedArrayBuffer<Element>
   typealias BufferSlice = SortedArrayBufferSlice<Element>
@@ -331,10 +338,10 @@ fileprivate struct SortedArrayBufferSlice<Element:Comparable>: _DestructorSafeCo
     startIndex = indices.lowerBound
     endIndex = indices.upperBound
   }
-
 }
 
-// MARK: - RandomAccessCollection
+// MARK: RandomAccessCollection
+
 extension SortedArrayBufferSlice: RandomAccessCollection {
   typealias Index = Int
   typealias SubSequence = BufferSlice
@@ -353,6 +360,7 @@ extension SortedArrayBufferSlice: RandomAccessCollection {
     default: return nil
     }
   }
+
   @inline(__always) func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
@@ -363,22 +371,21 @@ extension SortedArrayBufferSlice: RandomAccessCollection {
     }
   }
 
-  subscript(index: Int) -> Element { return elements[index] }
+  subscript(index: Int) -> Element { elements[index] }
 
-  subscript(subRange: Range<Int>) -> SubSequence { return self[CountableRange(subRange)] }
-  subscript(subRange: CountableRange<Int>) -> SubSequence { return SubSequence(bufferSlice: self, indices: subRange) }
-
+  subscript(subRange: Range<Int>) -> SubSequence { SubSequence(bufferSlice: self, indices: subRange) }
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
+
 extension SortedArrayBufferSlice: CustomStringConvertible, CustomDebugStringConvertible {
-  var description: String { return describe(elements.advanced(by: startIndex), count: count, debug: false) }
-  var debugDescription: String { return describe(elements.advanced(by: startIndex), count: count, debug: true) }
+  var description: String { describe(elements.advanced(by: startIndex), count: count, debug: false) }
+  var debugDescription: String { describe(elements.advanced(by: startIndex), count: count, debug: true) }
 }
 
-@_fixed_layout
-public struct SortedArray<Element:Comparable>: RandomAccessCollection, _DestructorSafeContainer {
+// MARK: - SortedArray
 
+public struct SortedArray<Element: Comparable>: RandomAccessCollection, _DestructorSafeContainer {
   fileprivate typealias Buffer = SortedArrayBuffer<Element>
   fileprivate typealias Storage = SortedArrayStorage<Element>
 
@@ -389,10 +396,10 @@ public struct SortedArray<Element:Comparable>: RandomAccessCollection, _Destruct
 
   public var startIndex: Index { return 0 }
 
-  public var endIndex: Index {  return buffer.endIndex }
+  public var endIndex: Index { return buffer.endIndex }
 
   public subscript(index: Index) -> Element {
-    get {  return buffer[index] }
+    get { return buffer[index] }
     set { ensureUnique(); buffer[index] = newValue }
   }
 
@@ -405,30 +412,30 @@ public struct SortedArray<Element:Comparable>: RandomAccessCollection, _Destruct
 
   fileprivate mutating func ensureUnique(withCapacity minimumCapacity: Int? = nil) {
     guard !(minimumCapacity == nil
-              ? buffer.isUniquelyReferenced()
-              : buffer.isUniquelyReferencedWithCapacity(minimumCapacity!)) else { return }
+      ? buffer.isUniquelyReferenced()
+      : buffer.isUniquelyReferencedWithCapacity(minimumCapacity!)) else { return }
     buffer = minimumCapacity == nil
-               ? Buffer(buffer: buffer)
-               : Buffer(buffer: buffer, withCapacity: Swift.max(buffer.count * 2, minimumCapacity!))
+      ? Buffer(buffer: buffer)
+      : Buffer(buffer: buffer, withCapacity: Swift.max(buffer.count * 2, minimumCapacity!))
   }
 
   /// The current number of elements
-  public var count: Int {  return buffer.count }
+  public var count: Int { return buffer.count }
 
   /// The number of elements this collection can hold without reallocating
   public var capacity: Int { return buffer.capacity }
 
   public init(minimumCapacity: Int) { buffer = Buffer(minimumCapacity: minimumCapacity) }
 
-  public init<Source:Sequence>(_ sourceElements: Source) where Source.Iterator.Element == Element {
+  public init<Source: Sequence>(_ sourceElements: Source) where Source.Iterator.Element == Element {
     buffer = Buffer(sourceElements)
   }
 
-  public init<Source:Collection>(_ sourceElements: Source) where Source.Iterator.Element == Element {
+  public init<Source: Collection>(_ sourceElements: Source) where Source.Iterator.Element == Element {
     buffer = Buffer(sourceElements)
   }
 
-  fileprivate init(buffer: Buffer) {  self.buffer = buffer }
+  fileprivate init(buffer: Buffer) { self.buffer = buffer }
 
   public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
   public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
@@ -443,6 +450,7 @@ public struct SortedArray<Element:Comparable>: RandomAccessCollection, _Destruct
     default: return nil
     }
   }
+
   @inline(__always) public func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) public func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
@@ -452,10 +460,10 @@ public struct SortedArray<Element:Comparable>: RandomAccessCollection, _Destruct
     default: return false
     }
   }
-
 }
 
 // MARK: RangeReplaceableCollection
+
 extension SortedArray: RangeReplaceableCollection {
 
   /// Create an empty instance.
@@ -469,32 +477,20 @@ extension SortedArray: RangeReplaceableCollection {
   /// storage, or even ignore the request completely.
   public mutating func reserveCapacity(_ minimumCapacity: Int) { ensureUnique(withCapacity: minimumCapacity) }
 
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: ClosedRange<Int>, with newElements: Source)
+  public mutating func replaceSubrange<Source: Collection>(_ subRange: ClosedRange<Int>, with newElements: Source)
     where Source.Iterator.Element == Element
   {
-    replaceSubrange(CountableRange(subRange), with: newElements)
+    replaceSubrange(Range(subRange), with: newElements)
   }
 
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: CountableClosedRange<Int>, with newElements: Source)
+  public mutating func replaceSubrange<Source: Collection>(_ subRange: Range<Int>, with newElements: Source)
     where Source.Iterator.Element == Element
   {
-    replaceSubrange(CountableRange(subRange), with: newElements)
-  }
+    guard !(subRange.isEmpty && newElements.isEmpty) else { return }
+    ensureUnique(withCapacity: count - subRange.count + numericCast(newElements.count))
 
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: Range<Int>, with newElements: Source)
-    where Source.Iterator.Element == Element
-  {
-    replaceSubrange(CountableRange(subRange), with: newElements)
-  }
-
-  public mutating func replaceSubrange<Source:Collection>(_ subRange: CountableRange<Int>, with newElements: Source)
-    where Source.Iterator.Element == Element
-  {
-      guard !(subRange.isEmpty && newElements.isEmpty) else { return }
-      ensureUnique(withCapacity: count - subRange.count + numericCast(newElements.count))
-
-      // Replace with uniqued collection
-      buffer.replaceSubrange(subRange, with: newElements)
+    // Replace with uniqued collection
+    buffer.replaceSubrange(subRange, with: newElements)
   }
 
   /// Append `element` to `self`.
@@ -505,13 +501,19 @@ extension SortedArray: RangeReplaceableCollection {
   /// - Complexity: Amortized O(1).
   public mutating func append(_ element: Element) { ensureUnique(withCapacity: count &+ 1); buffer.append(element) }
 
+  public mutating func append<Source: Sequence>(contentsOf newElements: Source)
+    where Source.Iterator.Element == Element
+  {
+    append(contentsOf: Array(newElements))
+  }
+
   /// Append the elements of `newElements` to `self`.
   ///
   /// - Complexity: O(*length of result*).
-  public mutating func append<Source:Collection>(contentsOf newElements: Source)
+  public mutating func append<Source: Collection>(contentsOf newElements: Source)
     where Source.Iterator.Element == Element
   {
-    let 𝝙count: Int = numericCast(newElements.count)
+    let 𝝙count = newElements.count
     guard 𝝙count > 0 else { return }
     ensureUnique(withCapacity: count &+ 𝝙count)
     buffer.append(contentsOf: newElements)
@@ -527,13 +529,12 @@ extension SortedArray: RangeReplaceableCollection {
     buffer.insert(newElement, at: index)
   }
 
-
   /// Insert `newElements` at index `i`.
   ///
   /// Invalidates all indices with respect to `self`.
   ///
   /// - Complexity: O(`self.count + newElements.count`).
-  public mutating func insert<Source:Collection>(contentsOf newElements: Source, at index: Index)
+  public mutating func insert<Source: Collection>(contentsOf newElements: Source, at index: Index)
     where Source.Iterator.Element == Element
   {
     ensureUnique(withCapacity: count &+ numericCast(newElements.count))
@@ -563,17 +564,15 @@ extension SortedArray: RangeReplaceableCollection {
   ///
   /// - Complexity: O(`self.count`)
   /// - Requires: `n >= 0 && self.count >= n`.
-  public mutating func removeFirst(_ n: Int) { removeSubrange(0..<n) }
+  public mutating func removeFirst(_ n: Int) { removeSubrange(0 ..< n) }
 
   @discardableResult public mutating func removeLast() -> Element { return remove(at: endIndex - 1) }
 
-  public mutating func removeLast(_ n: Int) { removeSubrange(endIndex-n..<endIndex) }
+  public mutating func removeLast(_ n: Int) { removeSubrange(endIndex - n ..< endIndex) }
 
-  public mutating func removeSubrange(_ subRange: Range<Index>) { removeSubrange(CountableRange(subRange)) }
-  public mutating func removeSubrange(_ subRange: ClosedRange<Index>) { removeSubrange(CountableRange(subRange)) }
-  public mutating func removeSubrange(_ subRange: CountableClosedRange<Index>) { removeSubrange(CountableRange(subRange)) }
+  public mutating func removeSubrange(_ subRange: ClosedRange<Index>) { removeSubrange(Range(subRange)) }
 
-  public mutating func removeSubrange(_ subRange: CountableRange<Index>) {
+  public mutating func removeSubrange(_ subRange: Range<Index>) {
     guard !subRange.isEmpty else { return }
     ensureUnique()
     buffer.removeSubrange(subRange)
@@ -584,21 +583,23 @@ extension SortedArray: RangeReplaceableCollection {
     guard buffer.isUniquelyReferenced() else { buffer = Buffer(minimumCapacity: capacity); return }
     buffer.destroyAll()
   }
-
 }
 
-// MARK: ArrayLiteralConvertible
+// MARK: ExpressibleByArrayLiteral
+
 extension SortedArray: ExpressibleByArrayLiteral {
   public init(arrayLiteral elements: Element...) { buffer = Buffer(elements) }
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
+
 extension SortedArray: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String { return buffer.description }
   public var debugDescription: String { return buffer.debugDescription }
 }
 
 // MARK: Equatable
+
 extension SortedArray: Equatable {
   public static func ==(lhs: SortedArray<Element>, rhs: SortedArray<Element>) -> Bool {
     guard !(lhs.buffer.identity == rhs.buffer.identity && lhs.count == rhs.count) else { return true }
@@ -610,8 +611,10 @@ extension SortedArray: Equatable {
 // MARK: - SortedArraySlice
 
 /// A hash-based set of elements that preserves element order.
-@_fixed_layout
-public struct SortedArraySlice<Element:Comparable>: RandomAccessCollection, _DestructorSafeContainer {
+public struct SortedArraySlice<Element: Comparable>: RangeReplaceableCollection, RandomAccessCollection, _DestructorSafeContainer {
+  public init() {
+    fatalError("\(#fileID) \(#function) Unexpected invocation.")
+  }
 
   fileprivate typealias Buffer = SortedArrayBuffer<Element>
   fileprivate typealias BufferSlice = SortedArrayBufferSlice<Element>
@@ -621,9 +624,9 @@ public struct SortedArraySlice<Element:Comparable>: RandomAccessCollection, _Des
   public typealias _Element = Element
   public typealias SubSequence = SortedArraySlice<Element>
 
-  public var startIndex: Index {  return buffer.startIndex }
+  public var startIndex: Index { return buffer.startIndex }
 
-  public var endIndex: Index {  return buffer.endIndex }
+  public var endIndex: Index { return buffer.endIndex }
 
   public subscript(index: Index) -> Element { return buffer[index] }
 
@@ -632,11 +635,11 @@ public struct SortedArraySlice<Element:Comparable>: RandomAccessCollection, _Des
   fileprivate var buffer: BufferSlice
 
   /// The current number of elements
-  public var count: Int {  return buffer.count }
+  public var count: Int { return buffer.count }
 
   public var indices: CountableRange<Int> { return buffer.indices }
 
-  fileprivate init(buffer: BufferSlice) {  self.buffer = buffer }
+  fileprivate init(buffer: BufferSlice) { self.buffer = buffer }
 
   public func _failEarlyRangeCheck(_ index: Int, bounds: Range<Int>) { /* no-op for performance reasons. */ }
   public func _failEarlyRangeCheck(_ range: Range<Int>, bounds: Range<Int>) { /* no-op for performance reasons. */ }
@@ -651,6 +654,7 @@ public struct SortedArraySlice<Element:Comparable>: RandomAccessCollection, _Des
     default: return nil
     }
   }
+
   @inline(__always) public func formIndex(after i: inout Int) { i = i &+ 1 }
   @inline(__always) public func formIndex(before i: inout Int) { i = i &- 1 }
   @inline(__always) public func formIndex(_ i: inout Int, offsetBy n: Int) { i = i &+ n }
@@ -660,22 +664,21 @@ public struct SortedArraySlice<Element:Comparable>: RandomAccessCollection, _Des
     default: return false
     }
   }
-
 }
 
 // MARK: CustomStringConvertible, CustomDebugStringConvertible
+
 extension SortedArraySlice: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String { return buffer.description }
   public var debugDescription: String { return buffer.debugDescription }
 }
 
 // MARK: Equatable
-extension SortedArraySlice: Equatable {
 
+extension SortedArraySlice: Equatable {
   public static func ==(lhs: SortedArraySlice<Element>, rhs: SortedArraySlice<Element>) -> Bool {
     guard !(lhs.buffer.identity == rhs.buffer.identity && lhs.indices == rhs.indices) else { return true }
     for (v1, v2) in zip(lhs, rhs) where v1 != v2 { return false }
     return lhs.count == rhs.count
   }
-
 }

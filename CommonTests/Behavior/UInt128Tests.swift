@@ -5,12 +5,11 @@
 //  Created by Jason Cardwell on 8/23/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
+@testable import MoonKit
+import Nimble
 import XCTest
-import MoonKitTest
-import MoonKit
 
 final class UInt128Tests: XCTestCase {
-
   func testDescription() {
     expect(UInt128(1).description) == "1"
     expect(UInt128(12).description) == "12"
@@ -30,115 +29,114 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(high: 0xcf31029a1b0b213e,
                    low: 0x41a230cc06319617).description) == "275404670447871577180648434354736961047"
     expect(UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617).debugDescription) == "275404670447871577180648434354736961047 {high: 0xcf31029a1b0b213e; low: 0x41a230cc06319617}"
-
   }
 
   func testAddition() {
-    expect(UInt128(     17317387770).addingWithOverflow(      95644713)) == (     17413032483, .none)
-    expect(UInt128(       157992089).addingWithOverflow(     110807234)) == (       268799323, .none)
-    expect(UInt128(  17592290566382).addingWithOverflow( 2199172283062)) == (  19791462849444, .none)
-    expect(UInt128(  17592232875943).addingWithOverflow(    2278409876)) == (  17594511285819, .none)
-    expect(UInt128(1125899927981303).addingWithOverflow(     152575985)) == (1125900080557288, .none)
-    expect(UInt128(   8796127282511).addingWithOverflow(     166345501)) == (   8796293628012, .none)
-    expect(UInt128( 562949987683944).addingWithOverflow(35184388735771)) == ( 598134376419715, .none)
-    expect(UInt128(     17289744515).addingWithOverflow(     137909942)) == (     17427654457, .none)
-    expect(UInt128(       161460981).addingWithOverflow(     140805976)) == (       302266957, .none)
-    expect(UInt128(  70368832575119).addingWithOverflow(   68856751909)) == (  70437689327028, .none)
-    expect(UInt128(    549863367103).addingWithOverflow(     136507454)) == (    549999874557, .none)
-    expect(UInt128( 281475003458622).addingWithOverflow( 1099566706172)) == ( 282574570164794, .none)
-    expect(UInt128(2251799923124430).addingWithOverflow(      26198162)) == (2251799949322592, .none)
-    expect(UInt128(   2199082992705).addingWithOverflow(   68827427936)) == (   2267910420641, .none)
-    expect(UInt128(      4454628945).addingWithOverflow(      70894583)) == (      4525523528, .none)
-    expect(UInt128(1125900014063717).addingWithOverflow(  137461356800)) == (1126037475420517, .none)
-    expect(UInt128(     34510348538).addingWithOverflow(    2193527085)) == (     36703875623, .none)
-    expect(UInt128(   8796195360888).addingWithOverflow(     129378430)) == (   8796324739318, .none)
-    expect(UInt128(      1217152688).addingWithOverflow(      23466926)) == (      1240619614, .none)
-    expect(UInt128(      2287743245).addingWithOverflow(     115580675)) == (      2403323920, .none)
-    expect(UInt128.max.addingWithOverflow(UInt128.max)) == (UInt128(high: 0xffffffffffffffff, low: 0xfffffffffffffffe), .overflow)
+    expect(UInt128(17317387770).addingReportingOverflow(95644713)) == (17413032483, false)
+    expect(UInt128(157992089).addingReportingOverflow(110807234)) == (268799323, false)
+    expect(UInt128(17592290566382).addingReportingOverflow(2199172283062)) == (19791462849444, false)
+    expect(UInt128(17592232875943).addingReportingOverflow(2278409876)) == (17594511285819, false)
+    expect(UInt128(1125899927981303).addingReportingOverflow(152575985)) == (1125900080557288, false)
+    expect(UInt128(8796127282511).addingReportingOverflow(166345501)) == (8796293628012, false)
+    expect(UInt128(562949987683944).addingReportingOverflow(35184388735771)) == (598134376419715, false)
+    expect(UInt128(17289744515).addingReportingOverflow(137909942)) == (17427654457, false)
+    expect(UInt128(161460981).addingReportingOverflow(140805976)) == (302266957, false)
+    expect(UInt128(70368832575119).addingReportingOverflow(68856751909)) == (70437689327028, false)
+    expect(UInt128(549863367103).addingReportingOverflow(136507454)) == (549999874557, false)
+    expect(UInt128(281475003458622).addingReportingOverflow(1099566706172)) == (282574570164794, false)
+    expect(UInt128(2251799923124430).addingReportingOverflow(26198162)) == (2251799949322592, false)
+    expect(UInt128(2199082992705).addingReportingOverflow(68827427936)) == (2267910420641, false)
+    expect(UInt128(4454628945).addingReportingOverflow(70894583)) == (4525523528, false)
+    expect(UInt128(1125900014063717).addingReportingOverflow(137461356800)) == (1126037475420517, false)
+    expect(UInt128(34510348538).addingReportingOverflow(2193527085)) == (36703875623, false)
+    expect(UInt128(8796195360888).addingReportingOverflow(129378430)) == (8796324739318, false)
+    expect(UInt128(1217152688).addingReportingOverflow(23466926)) == (1240619614, false)
+    expect(UInt128(2287743245).addingReportingOverflow(115580675)) == (2403323920, false)
+    expect(UInt128.max.addingReportingOverflow(UInt128.max)) == (UInt128(high: 0xffffffffffffffff, low: 0xfffffffffffffffe), true)
     expect(UInt128(high: 0xcf31029a1b0b213e,
-                   low: 0x41a230cc06319617).addingWithOverflow(UInt128(high: 0x2216a1420bf34521,
+                   low: 0x41a230cc06319617).addingReportingOverflow(UInt128(high: 0x2216a1420bf34521,
                                                                        low: 0x801d64ae10c5361d))) == (UInt128(high: 0xf147a3dc26fe665f,
-                                                                                                              low: 0xc1bf957a16f6cc34), .none)
+                                                                                                              low: 0xc1bf957a16f6cc34), false)
   }
 
   func testSubtraction() {
-    expect(UInt128(     17317387770).subtractingWithOverflow(      95644713)) == (     17221743057, .none)
-    expect(UInt128(       157992089).subtractingWithOverflow(     110807234)) == (        47184855, .none)
-    expect(UInt128(  17592290566382).subtractingWithOverflow( 2199172283062)) == (  15393118283320, .none)
-    expect(UInt128(  17592232875943).subtractingWithOverflow(    2278409876)) == (  17589954466067, .none)
-    expect(UInt128(1125899927981303).subtractingWithOverflow(     152575985)) == (1125899775405318, .none)
-    expect(UInt128(   8796127282511).subtractingWithOverflow(     166345501)) == (   8795960937010, .none)
-    expect(UInt128( 562949987683944).subtractingWithOverflow(35184388735771)) == ( 527765598948173, .none)
-    expect(UInt128(     17289744515).subtractingWithOverflow(     137909942)) == (     17151834573, .none)
-    expect(UInt128(       161460981).subtractingWithOverflow(     140805976)) == (        20655005, .none)
-    expect(UInt128(  70368832575119).subtractingWithOverflow(   68856751909)) == (  70299975823210, .none)
-    expect(UInt128(    549863367103).subtractingWithOverflow(     136507454)) == (    549726859649, .none)
-    expect(UInt128( 281475003458622).subtractingWithOverflow( 1099566706172)) == ( 280375436752450, .none)
-    expect(UInt128(2251799923124430).subtractingWithOverflow(      26198162)) == (2251799896926268, .none)
-    expect(UInt128(   2199082992705).subtractingWithOverflow(   68827427936)) == (   2130255564769, .none)
-    expect(UInt128(      4454628945).subtractingWithOverflow(      70894583)) == (      4383734362, .none)
-    expect(UInt128(1125900014063717).subtractingWithOverflow(  137461356800)) == (1125762552706917, .none)
-    expect(UInt128(     34510348538).subtractingWithOverflow(    2193527085)) == (     32316821453, .none)
-    expect(UInt128(   8796195360888).subtractingWithOverflow(     129378430)) == (   8796065982458, .none)
-    expect(UInt128(      1217152688).subtractingWithOverflow(      23466926)) == (      1193685762, .none)
-    expect(UInt128(      2287743245).subtractingWithOverflow(     115580675)) == (      2172162570, .none)
+    expect(UInt128(17317387770).subtractingReportingOverflow(95644713)) == (17221743057, false)
+    expect(UInt128(157992089).subtractingReportingOverflow(110807234)) == (47184855, false)
+    expect(UInt128(17592290566382).subtractingReportingOverflow(2199172283062)) == (15393118283320, false)
+    expect(UInt128(17592232875943).subtractingReportingOverflow(2278409876)) == (17589954466067, false)
+    expect(UInt128(1125899927981303).subtractingReportingOverflow(152575985)) == (1125899775405318, false)
+    expect(UInt128(8796127282511).subtractingReportingOverflow(166345501)) == (8795960937010, false)
+    expect(UInt128(562949987683944).subtractingReportingOverflow(35184388735771)) == (527765598948173, false)
+    expect(UInt128(17289744515).subtractingReportingOverflow(137909942)) == (17151834573, false)
+    expect(UInt128(161460981).subtractingReportingOverflow(140805976)) == (20655005, false)
+    expect(UInt128(70368832575119).subtractingReportingOverflow(68856751909)) == (70299975823210, false)
+    expect(UInt128(549863367103).subtractingReportingOverflow(136507454)) == (549726859649, false)
+    expect(UInt128(281475003458622).subtractingReportingOverflow(1099566706172)) == (280375436752450, false)
+    expect(UInt128(2251799923124430).subtractingReportingOverflow(26198162)) == (2251799896926268, false)
+    expect(UInt128(2199082992705).subtractingReportingOverflow(68827427936)) == (2130255564769, false)
+    expect(UInt128(4454628945).subtractingReportingOverflow(70894583)) == (4383734362, false)
+    expect(UInt128(1125900014063717).subtractingReportingOverflow(137461356800)) == (1125762552706917, false)
+    expect(UInt128(34510348538).subtractingReportingOverflow(2193527085)) == (32316821453, false)
+    expect(UInt128(8796195360888).subtractingReportingOverflow(129378430)) == (8796065982458, false)
+    expect(UInt128(1217152688).subtractingReportingOverflow(23466926)) == (1193685762, false)
+    expect(UInt128(2287743245).subtractingReportingOverflow(115580675)) == (2172162570, false)
     expect(UInt128(high: 0xcf31029a1b0b213e,
-                   low: 0x41a230cc06319617).subtractingWithOverflow(UInt128(high: 0x2216a1420bf34521,
+                   low: 0x41a230cc06319617).subtractingReportingOverflow(UInt128(high: 0x2216a1420bf34521,
                                                                             low: 0x801d64ae10c5361d))) == (UInt128(high: 0xad1a61580f17dc1c,
-                                                                                                                   low: 0xc184cc1df56c5ffa), .none)
+                                                                                                                   low: 0xc184cc1df56c5ffa), false)
   }
 
   func testMultiplication() {
-    expect(UInt128( 137518590).multipliedWithOverflow(by: 11758638)) == (  1617031318080420, .none)
-    expect(UInt128( 157992089).multipliedWithOverflow(by: 10143944)) == (  1602662903259016, .none)
-    expect(UInt128( 104526062).multipliedWithOverflow(by: 14940862)) == (  1561709467745444, .none)
-    expect(UInt128(  46835623).multipliedWithOverflow(by: 13485851)) == (   631618233270173, .none)
-    expect(UInt128(  21400823).multipliedWithOverflow(by:  1581050)) == (    33835771204150, .none)
-    expect(UInt128(  34262351).multipliedWithOverflow(by: 15350566)) == (   525946480340666, .none)
-    expect(UInt128(  34393704).multipliedWithOverflow(by:  1966876)) == (    67648150948704, .none)
-    expect(UInt128( 109875335).multipliedWithOverflow(by:  3692222)) == (   405684129144370, .none)
-    expect(UInt128( 161460981).multipliedWithOverflow(by:  6588256)) == (  1063746276839136, .none)
-    expect(UInt128(  88413839).multipliedWithOverflow(by:  3061549)) == (   270683300376611, .none)
-    expect(UInt128( 107553343).multipliedWithOverflow(by:  2289734)) == (   246268546280762, .none)
-    expect(UInt128(  26813502).multipliedWithOverflow(by:  4812287)) == (   129034267099074, .none)
-    expect(UInt128( 109963470).multipliedWithOverflow(by:  9420947)) == (  1035960022806090, .none)
-    expect(UInt128(  59737665).multipliedWithOverflow(by:  7292006)) == (   435607411605990, .none)
-    expect(UInt128( 159661650).multipliedWithOverflow(by:  3785723)) == (   604434780622950, .none)
-    expect(UInt128( 107483237).multipliedWithOverflow(by:  5634305)) == (   605593339645285, .none)
-    expect(UInt128( 150610178).multipliedWithOverflow(by: 12489135)) == (  1880990845416030, .none)
-    expect(UInt128( 102340728).multipliedWithOverflow(by: 11937925)) == (  1221735935309400, .none)
-    expect(UInt128(1217152688).multipliedWithOverflow(by:  6689711)) == (  8142399725593168, .none)
-    expect(UInt128(2287743245).multipliedWithOverflow(by: 14917385)) == ( 34127146766814325, .none)
+    expect(UInt128(137518590).multipliedReportingOverflow(by: 11758638)) == (1617031318080420, false)
+    expect(UInt128(157992089).multipliedReportingOverflow(by: 10143944)) == (1602662903259016, false)
+    expect(UInt128(104526062).multipliedReportingOverflow(by: 14940862)) == (1561709467745444, false)
+    expect(UInt128(46835623).multipliedReportingOverflow(by: 13485851)) == (631618233270173, false)
+    expect(UInt128(21400823).multipliedReportingOverflow(by: 1581050)) == (33835771204150, false)
+    expect(UInt128(34262351).multipliedReportingOverflow(by: 15350566)) == (525946480340666, false)
+    expect(UInt128(34393704).multipliedReportingOverflow(by: 1966876)) == (67648150948704, false)
+    expect(UInt128(109875335).multipliedReportingOverflow(by: 3692222)) == (405684129144370, false)
+    expect(UInt128(161460981).multipliedReportingOverflow(by: 6588256)) == (1063746276839136, false)
+    expect(UInt128(88413839).multipliedReportingOverflow(by: 3061549)) == (270683300376611, false)
+    expect(UInt128(107553343).multipliedReportingOverflow(by: 2289734)) == (246268546280762, false)
+    expect(UInt128(26813502).multipliedReportingOverflow(by: 4812287)) == (129034267099074, false)
+    expect(UInt128(109963470).multipliedReportingOverflow(by: 9420947)) == (1035960022806090, false)
+    expect(UInt128(59737665).multipliedReportingOverflow(by: 7292006)) == (435607411605990, false)
+    expect(UInt128(159661650).multipliedReportingOverflow(by: 3785723)) == (604434780622950, false)
+    expect(UInt128(107483237).multipliedReportingOverflow(by: 5634305)) == (605593339645285, false)
+    expect(UInt128(150610178).multipliedReportingOverflow(by: 12489135)) == (1880990845416030, false)
+    expect(UInt128(102340728).multipliedReportingOverflow(by: 11937925)) == (1221735935309400, false)
+    expect(UInt128(1217152688).multipliedReportingOverflow(by: 6689711)) == (8142399725593168, false)
+    expect(UInt128(2287743245).multipliedReportingOverflow(by: 14917385)) == (34127146766814325, false)
     expect(UInt128.doubleWidthMultiply(UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617),
                                        UInt128(high: 0x2216a1420bf34521, low: 0x801d64ae10c5361d))) == (high: UInt128(high: 0x1b96d311f7c762b1,
                                                                                                                       low: 0x82fe383b4d0c9d52),
                                                                                                         low: UInt128(high: 0x0ff133f20278727a,
                                                                                                                      low: 0x07fe6d9718f9da9b))
-    expect(UInt128.max.multipliedWithOverflow(by: UInt128.max)) == (1, .overflow)
+    expect(UInt128.max.multipliedReportingOverflow(by: UInt128.max)) == (1, true)
   }
 
   func testDivision() {
-    expect(UInt128( 137518590).dividedWithOverflow(by: 11758638)) == ( 11, .none)
-    expect(UInt128( 157992089).dividedWithOverflow(by: 10143944)) == ( 15, .none)
-    expect(UInt128( 104526062).dividedWithOverflow(by: 14940862)) == (  6, .none)
-    expect(UInt128(  46835623).dividedWithOverflow(by: 13485851)) == (  3, .none)
-    expect(UInt128(  21400823).dividedWithOverflow(by:  1581050)) == ( 13, .none)
-    expect(UInt128(  34262351).dividedWithOverflow(by: 15350566)) == (  2, .none)
-    expect(UInt128(  34393704).dividedWithOverflow(by:  1966876)) == ( 17, .none)
-    expect(UInt128( 109875335).dividedWithOverflow(by:  3692222)) == ( 29, .none)
-    expect(UInt128( 161460981).dividedWithOverflow(by:  6588256)) == ( 24, .none)
-    expect(UInt128(  88413839).dividedWithOverflow(by:  3061549)) == ( 28, .none)
-    expect(UInt128( 107553343).dividedWithOverflow(by:  2289734)) == ( 46, .none)
-    expect(UInt128(  26813502).dividedWithOverflow(by:  4812287)) == (  5, .none)
-    expect(UInt128( 109963470).dividedWithOverflow(by:  9420947)) == ( 11, .none)
-    expect(UInt128(  59737665).dividedWithOverflow(by:  7292006)) == (  8, .none)
-    expect(UInt128( 159661650).dividedWithOverflow(by:  3785723)) == ( 42, .none)
-    expect(UInt128( 107483237).dividedWithOverflow(by:  5634305)) == ( 19, .none)
-    expect(UInt128( 150610178).dividedWithOverflow(by: 12489135)) == ( 12, .none)
-    expect(UInt128( 102340728).dividedWithOverflow(by: 11937925)) == (  8, .none)
-    expect(UInt128(1217152688).dividedWithOverflow(by:  6689711)) == (181, .none)
-    expect(UInt128(2287743245).dividedWithOverflow(by: 14917385)) == (153, .none)
-    expect(UInt128(2287743245).remainder(dividingBy: 14917385))   == 5383340
+    expect(UInt128(137518590).dividedReportingOverflow(by: 11758638)) == (11, false)
+    expect(UInt128(157992089).dividedReportingOverflow(by: 10143944)) == (15, false)
+    expect(UInt128(104526062).dividedReportingOverflow(by: 14940862)) == (6, false)
+    expect(UInt128(46835623).dividedReportingOverflow(by: 13485851)) == (3, false)
+    expect(UInt128(21400823).dividedReportingOverflow(by: 1581050)) == (13, false)
+    expect(UInt128(34262351).dividedReportingOverflow(by: 15350566)) == (2, false)
+    expect(UInt128(34393704).dividedReportingOverflow(by: 1966876)) == (17, false)
+    expect(UInt128(109875335).dividedReportingOverflow(by: 3692222)) == (29, false)
+    expect(UInt128(161460981).dividedReportingOverflow(by: 6588256)) == (24, false)
+    expect(UInt128(88413839).dividedReportingOverflow(by: 3061549)) == (28, false)
+    expect(UInt128(107553343).dividedReportingOverflow(by: 2289734)) == (46, false)
+    expect(UInt128(26813502).dividedReportingOverflow(by: 4812287)) == (5, false)
+    expect(UInt128(109963470).dividedReportingOverflow(by: 9420947)) == (11, false)
+    expect(UInt128(59737665).dividedReportingOverflow(by: 7292006)) == (8, false)
+    expect(UInt128(159661650).dividedReportingOverflow(by: 3785723)) == (42, false)
+    expect(UInt128(107483237).dividedReportingOverflow(by: 5634305)) == (19, false)
+    expect(UInt128(150610178).dividedReportingOverflow(by: 12489135)) == (12, false)
+    expect(UInt128(102340728).dividedReportingOverflow(by: 11937925)) == (8, false)
+    expect(UInt128(1217152688).dividedReportingOverflow(by: 6689711)) == (181, false)
+    expect(UInt128(2287743245).dividedReportingOverflow(by: 14917385)) == (153, false)
+    expect(UInt128(2287743245).remainderReportingOverflow(dividingBy: 14917385)) == (5383340, false)
   }
 
   func testStaticVariables() {
@@ -151,7 +149,7 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128().signum()) == 1
   }
 
-  func asBinaryInteger<T>(_ value: T) -> T where T:BinaryInteger {
+  func asBinaryInteger<T>(_ value: T) -> T where T: BinaryInteger {
     return value
   }
 
@@ -170,7 +168,7 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(high: 0x15a0213be95279b4,
                    low: 0x4797a3617eb8b808).bitwiseAnd(UInt128(high: 0xacdc3a1f1ea7ffc3,
                                                                low: 0xca1ca51eb646f945))) == UInt128(high: 0x480201b08027980,
-                                                                                                    low: 0x4214a1003600b800)
+                                                                                                     low: 0x4214a1003600b800)
     expect(UInt128(high: 0x1d107d9678d0d4f8,
                    low: 0xec0ca5fc919029c6).bitwiseAnd(UInt128(high: 0x8c8c509b742d039a,
                                                                low: 0xa6951ea6fec91922))) == UInt128(high: 0xc00509270000098,
@@ -203,9 +201,9 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(high: 0x371cdc61db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 2
     expect(UInt128(high: 0x071cdc61db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 5
     expect(UInt128(high: 0x00000061db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 25
-    expect(UInt128(low:  0xdd5b5aee8ebb7051).leadingZeros) == 64
-    expect(UInt128(low:  0x005b5aee8ebb7051).leadingZeros) == 73
-    expect(UInt128(low:  0x0000000e8ebb7051).leadingZeros) == 92
+    expect(UInt128(low: 0xdd5b5aee8ebb7051).leadingZeros) == 64
+    expect(UInt128(low: 0x005b5aee8ebb7051).leadingZeros) == 73
+    expect(UInt128(low: 0x0000000e8ebb7051).leadingZeros) == 92
 
     expect(UInt128(high: 0x371cdc61db600552, low: 0x305d38128a857e8).popcount) == 54
     expect(UInt128(high: 0x177e4942eb8821c7, low: 0x8f2b1de818d1cd9).popcount) == 60
@@ -223,11 +221,10 @@ final class UInt128Tests: XCTestCase {
 
   func testWordAt() {
     let x = UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617)
-    expect(x.word(at: 0)) == 0x41a230cc06319617
-    expect(x.word(at: 1)) == 0xcf31029a1b0b213e
+    expect(x.words[0]) == 0x41a230cc06319617
+    expect(x.words[1]) == 0xcf31029a1b0b213e
     let y = UInt128(high: 0x2216a1420bf34521, low: 0x801d64ae10c5361d)
-    expect(y.word(at: 0)) == 0x801d64ae10c5361d
-    expect(y.word(at: 1)) == 0x2216a1420bf34521
+    expect(y.words[0]) == 0x801d64ae10c5361d
+    expect(y.words[1]) == 0x2216a1420bf34521
   }
-
 }

@@ -25,7 +25,11 @@ public struct ListIndex<Element> {
   fileprivate let node: ListNode<Element>
 }
 
-extension ListIndex {//: Comparable {
+extension ListIndex: Comparable {
+  public static func < (lhs: ListIndex<Element>, rhs: ListIndex<Element>) -> Bool {
+    lhs.node.tag < rhs.node.tag
+  }
+
   public func successor() -> ListIndex<Element> {
     switch node {
       case .end: fatalError("cannot increment endIndex")
@@ -37,6 +41,15 @@ extension ListIndex {//: Comparable {
 public func == <T>(lhs: ListIndex<T>, rhs: ListIndex<T>) -> Bool { return lhs.node.tag == rhs.node.tag }
 
 public struct List<Element>: Collection {
+  public func index(after i: ListIndex<Element>) -> ListIndex<Element> {
+    switch i.node {
+      case .end: return i
+      case .node(_, _, let next):
+        return ListIndex(node: next)
+    }
+  }
+
+
   // Index's type could be inferred, but it helps make the
   // rest of the code clearer:
   public typealias Index = ListIndex<Element>
@@ -72,7 +85,7 @@ extension List: ExpressibleByArrayLiteral {
 }
 
 extension List: CustomStringConvertible {
-  public var description: String { return "[" + ", ".join(self.map { String($0) }) + "]" }
+  public var description: String { return "[" + ", ".join(self.map { "\($0)" }) + "]" }
 }
 
 extension List {

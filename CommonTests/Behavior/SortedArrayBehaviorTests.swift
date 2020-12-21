@@ -13,23 +13,23 @@ final class SortedArrayBehaviorTests: XCTestCase {
     
   func testCreation() {
     let sortedArray1 = SortedArray([1, 2, 3, 4])
-    guard expect(sortedArray1).to(haveCount(4)) else { return }
+    expect(sortedArray1).to(haveCount(4))
     expect(sortedArray1) == [1, 2, 3, 4]
 
     let sortedArray2 = SortedArray([2, 3, 1, 4])
-    guard expect(sortedArray2).to(haveCount(4)) else { return }
+    expect(sortedArray2).to(haveCount(4))
     expect(sortedArray2) == [1, 2, 3, 4]
 
     let sortedArray3 = SortedArray([4, 3, 2, 1])
-    guard expect(sortedArray3).to(haveCount(4)) else { return }
+    expect(sortedArray3).to(haveCount(4))
     expect(sortedArray3) == [1, 2, 3, 4]
 
     let sortedArray4 = SortedArray([3, 2, 1, 4])
-    guard expect(sortedArray4).to(haveCount(4)) else { return }
+    expect(sortedArray4).to(haveCount(4))
     expect(sortedArray4) == [1, 2, 3, 4]
 
     let sortedArray5 = SortedArray(AnySequence([1, 2, 3, 4]))
-    guard expect(sortedArray5).to(haveCount(4)) else { return }
+    expect(sortedArray5).to(haveCount(4))
     expect(sortedArray5) == [1, 2, 3, 4]
     
   }
@@ -83,22 +83,22 @@ final class SortedArrayBehaviorTests: XCTestCase {
     var sortedArray = SortedArray<String>()
     expect(sortedArray).to(haveCount(0))
     sortedArray.append("4")
-    guard expect(sortedArray).to(haveCount(1)) else { return }
+    expect(sortedArray).to(haveCount(1))
     expect(sortedArray) == ["4"]
     sortedArray.append("2")
-    guard expect(sortedArray).to(haveCount(2)) else { return }
+    expect(sortedArray).to(haveCount(2))
     expect(sortedArray) == ["2", "4"]
     sortedArray.append("3")
-    guard expect(sortedArray).to(haveCount(3)) else { return }
+    expect(sortedArray).to(haveCount(3))
     expect(sortedArray) == ["2", "3", "4"]
     sortedArray.append("1")
-    guard expect(sortedArray).to(haveCount(4)) else { return }
+    expect(sortedArray).to(haveCount(4))
     expect(sortedArray) == ["1", "2", "3", "4"]
     sortedArray.append(contentsOf: ["4", "5", "6"])
-    guard expect(sortedArray).to(haveCount(7)) else { return }
+    expect(sortedArray).to(haveCount(7))
     expect(sortedArray) == ["1", "2", "3", "4", "4", "5", "6"]
     sortedArray.append(contentsOf: [])
-    guard expect(sortedArray).to(haveCount(7)) else { return }
+    expect(sortedArray).to(haveCount(7))
     expect(sortedArray) == ["1", "2", "3", "4", "4", "5", "6"]
   }
 
@@ -119,17 +119,17 @@ final class SortedArrayBehaviorTests: XCTestCase {
     expect(sortedArray1.capacity) == 10
     sortedArray1.append(contentsOf: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
     expect(sortedArray1.capacity) == 10
-    sortedArray1.removeSubrange(Range(0..<0))
-    guard expect(sortedArray1).to(haveCount(10)) else { return }
+    sortedArray1.removeSubrange(0..<0)
+    expect(sortedArray1).to(haveCount(10))
     expect(sortedArray1) == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    sortedArray1.removeSubrange(CountableRange(3..<4))
-    guard expect(sortedArray1).to(haveCount(9)) else { return }
+    sortedArray1.removeSubrange(3..<4)
+    expect(sortedArray1).to(haveCount(9))
     expect(sortedArray1) == ["0", "1", "2", "4", "5", "6", "7", "8", "9"]
-    sortedArray1.removeSubrange(ClosedRange(4...6))
-    guard expect(sortedArray1).to(haveCount(6)) else { return }
+    sortedArray1.removeSubrange(4...6)
+    expect(sortedArray1).to(haveCount(6))
     expect(sortedArray1) == ["0", "1", "2", "4", "8", "9"]
-    sortedArray1.removeSubrange(CountableClosedRange(2...3))
-    guard expect(sortedArray1).to(haveCount(4)) else { return }
+    sortedArray1.removeSubrange(2...3)
+    expect(sortedArray1).to(haveCount(4))
     expect(sortedArray1) == ["0", "1", "8", "9"]
     var sortedArray2 = sortedArray1
     sortedArray2.removeAll(keepingCapacity: true)
@@ -160,24 +160,24 @@ final class SortedArrayBehaviorTests: XCTestCase {
 
   func testReplaceRange() {
     var sortedArray: SortedArray<String> = ["1", "2", "3"]
-    sortedArray.replaceSubrange(CountableRange(1 ..< 3), with: ["4", "5"])
-    guard expect(sortedArray).to(haveCount(3)) else { return }
+    sortedArray.replaceSubrange(1 ..< 3, with: ["4", "5"])
+    expect(sortedArray).to(haveCount(3))
     expect(sortedArray) == ["1", "4", "5"]
 
-    sortedArray.replaceSubrange(CountableClosedRange(0 ... 0), with: ["1", "2", "3"])
-    guard expect(sortedArray).to(haveCount(5)) else { return }
+    sortedArray.replaceSubrange(0 ... 0, with: ["1", "2", "3"])
+    expect(sortedArray).to(haveCount(5))
     expect(sortedArray) == ["1", "2", "3", "4", "5"]
 
-    sortedArray.replaceSubrange(ClosedRange(3...3), with: EmptyCollection())
-    guard expect(sortedArray).to(haveCount(4)) else { return }
+    sortedArray.replaceSubrange(3...3, with: EmptyCollection())
+    expect(sortedArray).to(haveCount(4))
     expect(sortedArray) == ["1", "2", "3", "5"]
 
-    sortedArray.replaceSubrange(Range(3 ..< 3), with: ["4"])
-    guard expect(sortedArray).to(haveCount(5)) else { return }
+    sortedArray.replaceSubrange(3 ..< 3, with: ["4"])
+    expect(sortedArray).to(haveCount(5))
     expect(sortedArray) == ["1", "2", "3", "4", "5"]
 
     sortedArray.replaceSubrange(5..<5, with: ["8", "4", "9", "2"])
-    guard expect(sortedArray).to(haveCount(9)) else { return }
+    expect(sortedArray).to(haveCount(9))
     expect(sortedArray) == ["1", "2", "2", "3", "4", "4", "5", "8", "9"]
 
   }
@@ -207,14 +207,14 @@ final class SortedArrayBehaviorTests: XCTestCase {
   func testSubscriptRangeAccessors() {
     var sortedArray1 = SortedArray<String>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
     let slice1 = sortedArray1[4..<8]
-    guard expect(slice1).to(haveCount(4)) else { return }
+    expect(slice1).to(haveCount(4))
     expect(slice1) == ["4", "5", "6", "7"]
     expect(slice1[5]) == "5"
     let slice2 = slice1[6..<8]
-    guard expect(slice2).to(haveCount(2)) else { return }
+    expect(slice2).to(haveCount(2))
     expect(slice2) == ["6", "7"]
     sortedArray1.replaceSubrange(4..<10, with: ["9"])
-    guard expect(sortedArray1).to(haveCount(5)) else { return }
+    expect(sortedArray1).to(haveCount(5))
     expect(sortedArray1) == ["0", "1", "2", "3", "9"]
     expect(slice1) == ["4", "5", "6", "7"]
     expect(slice2) == ["6", "7"]
@@ -225,20 +225,20 @@ final class SortedArrayBehaviorTests: XCTestCase {
     let slice4 = sortedArray2[sortedArray2.indices]
     expect(slice1 == slice4) == true
     sortedArray1[0..<1] = slice4
-    guard expect(sortedArray1).to(haveCount(8)) else { return }
+    expect(sortedArray1).to(haveCount(8))
     expect(sortedArray1) == ["1", "2", "3", "4", "5", "6", "7", "9"]
   }
 
   func testPrefix() {
     let array: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     let sortedArray = SortedArray<String>(array)
-    expect(sortedArray.prefix(4).flatMap({$0})).to(equal(array.prefix(4)))
+    expect(sortedArray.prefix(4).compactMap({$0})).to(equal(array.prefix(4)))
   }
 
   func testSuffix() {
     let array: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     let sortedArray = SortedArray<String>(array)
-    expect(sortedArray.suffix(4).flatMap({$0})).to(equal(array.suffix(4)))
+    expect(sortedArray.suffix(4).compactMap({$0})).to(equal(array.suffix(4)))
   }
 
   func testDescription() {
