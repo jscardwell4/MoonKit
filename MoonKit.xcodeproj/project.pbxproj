@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C21ABA4E259196D2009C5C6B /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21ABA4D259196D2009C5C6B /* UInt128.swift */; };
+		C21ABA4F259196D2009C5C6B /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21ABA4D259196D2009C5C6B /* UInt128.swift */; };
 		C2258A5625910D0600A4BED4 /* SortedDictionaryBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA632258FC1F5008B542D /* SortedDictionaryBehaviorTests.swift */; };
 		C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
 		C2258A6425910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
@@ -19,9 +21,10 @@
 		C2258A952591146000A4BED4 /* Point3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC85258D1AD3000AA924 /* Point3D.swift */; };
 		C2258A9C2591148100A4BED4 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8A258D1AD3000AA924 /* List.swift */; };
 		C2258AA32591148200A4BED4 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC8A258D1AD3000AA924 /* List.swift */; };
-		C2258AAA259116DE00A4BED4 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC96258D1AD4000AA924 /* UInt128.swift */; };
-		C2258AB1259116DF00A4BED4 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC96258D1AD4000AA924 /* UInt128.swift */; };
 		C2258AB82591291B00A4BED4 /* UInt128Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA68D258FE17D008B542D /* UInt128Tests.swift */; };
+		C2258AC5259133F000A4BED4 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2731712258D530500554FB2 /* Fraction.swift */; };
+		C2258ACC259133F600A4BED4 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2731712258D530500554FB2 /* Fraction.swift */; };
+		C2258AD32591404800A4BED4 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA688258FE17C008B542D /* FractionTests.swift */; };
 		C228E128258E5FB40060E476 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E127258E5FB40060E476 /* Cocoa.framework */; };
 		C228E12A258E5FB40060E476 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
 		C228E12D258E5FB40060E476 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E12C258E5FB40060E476 /* SourceEditorExtension.swift */; };
@@ -256,6 +259,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C20951652592D33C008E021D /* TFraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFraction.swift; sourceTree = "<group>"; };
+		C21ABA4D259196D2009C5C6B /* UInt128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
 		C228E125258E5FB40060E476 /* MoonCode.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MoonCode.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C228E127258E5FB40060E476 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		C228E129258E5FB40060E476 /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -345,8 +350,6 @@
 		C2E3FC92258D1AD4000AA924 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		C2E3FC93258D1AD4000AA924 /* BitMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMap.swift; sourceTree = "<group>"; };
 		C2E3FC94258D1AD4000AA924 /* Tree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
-		C2E3FC96258D1AD4000AA924 /* UInt128.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
-		C2E3FC97258D1AD4000AA924 /* UIntBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIntBig.swift; sourceTree = "<group>"; };
 		C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountableRangeMap.swift; sourceTree = "<group>"; };
 		C2E3FC99258D1AD4000AA924 /* WeakArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakArray.swift; sourceTree = "<group>"; };
 		C2E3FCF3258D2031000AA924 /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
@@ -682,8 +685,6 @@
 			isa = PBXGroup;
 			children = (
 				C2E3FC8B258D1AD3000AA924 /* BCD.swift */,
-				C2E3FC97258D1AD4000AA924 /* UIntBig.swift */,
-				C2731712258D530500554FB2 /* Fraction.swift */,
 				C2E3FD18258D2AAA000AA924 /* Ratio.swift */,
 			);
 			path = "Ports in Progress";
@@ -692,7 +693,7 @@
 		C2E3FD1D258D3001000AA924 /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
-				C2E3FC96258D1AD4000AA924 /* UInt128.swift */,
+				C2731712258D530500554FB2 /* Fraction.swift */,
 				C2E3FC8A258D1AD3000AA924 /* List.swift */,
 				C2E3FC85258D1AD3000AA924 /* Point3D.swift */,
 				C2E3FC94258D1AD4000AA924 /* Tree.swift */,
@@ -711,6 +712,8 @@
 				C2E3FC89258D1AD3000AA924 /* Queue.swift */,
 				C2E3FC92258D1AD4000AA924 /* Stack.swift */,
 				C2E3FC8F258D1AD4000AA924 /* HashedStorage.swift */,
+				C21ABA4D259196D2009C5C6B /* UInt128.swift */,
+				C20951652592D33C008E021D /* TFraction.swift */,
 			);
 			path = "Data Structures";
 			sourceTree = "<group>";
@@ -1085,10 +1088,10 @@
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C2EDA82E259031A9008B542D /* JSONValue.swift in Sources */,
-				C2258AAA259116DE00A4BED4 /* UInt128.swift in Sources */,
 				C2EDA853259036C7008B542D /* JSONParser.swift in Sources */,
 				C2E3FD44258D36FE000AA924 /* Math.swift in Sources */,
 				C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */,
+				C21ABA4E259196D2009C5C6B /* UInt128.swift in Sources */,
 				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
 				C2EDA7A525901F56008B542D /* BitMap.swift in Sources */,
 				C2E3FD3A258D328A000AA924 /* Range.swift in Sources */,
@@ -1117,6 +1120,7 @@
 				C2EDA6A4258FE258008B542D /* FunctionManipulation.swift in Sources */,
 				C2EDA659258FCA1A008B542D /* CollectionManipulations.swift in Sources */,
 				C2E3FD4D258D3714000AA924 /* Protocols.swift in Sources */,
+				C2258AC5259133F000A4BED4 /* Fraction.swift in Sources */,
 				C2EDA84B2590358F008B542D /* Array.swift in Sources */,
 				C273176C258D701E00554FB2 /* OrderedSet.swift in Sources */,
 				C2EDA6FE258FE6AB008B542D /* NSLayoutConstraint.swift in Sources */,
@@ -1161,10 +1165,10 @@
 				C2731725258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
 				C2EDA835259031AA008B542D /* JSONValue.swift in Sources */,
-				C2258AB1259116DF00A4BED4 /* UInt128.swift in Sources */,
 				C2EDA85A259036C7008B542D /* JSONParser.swift in Sources */,
 				C23591DF20A6423900F1C813 /* Fonts.swift in Sources */,
 				C2258A6425910D7300A4BED4 /* SortedArray.swift in Sources */,
+				C21ABA4F259196D2009C5C6B /* UInt128.swift in Sources */,
 				C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */,
 				C2EDA7AC25901F58008B542D /* BitMap.swift in Sources */,
 				C273172D258D5F7C00554FB2 /* SetType.swift in Sources */,
@@ -1193,6 +1197,7 @@
 				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C2EDA69F258FE258008B542D /* MappingOperations.swift in Sources */,
 				C2EDA6A1258FE258008B542D /* RawOptionSetFunctions.swift in Sources */,
+				C2258ACC259133F600A4BED4 /* Fraction.swift in Sources */,
 				C2EDA84C2590358F008B542D /* Array.swift in Sources */,
 				C2CCD624258E7A8300E9923C /* KeyValueCollection.swift in Sources */,
 				C2EDA6FF258FE6AB008B542D /* NSLayoutConstraint.swift in Sources */,
@@ -1217,6 +1222,7 @@
 				C2258A5625910D0600A4BED4 /* SortedDictionaryBehaviorTests.swift in Sources */,
 				C2EDA8D82590F78A008B542D /* IntervalTests.swift in Sources */,
 				C2EDA664258FD198008B542D /* StackBehaviorTests.swift in Sources */,
+				C2258AD32591404800A4BED4 /* FractionTests.swift in Sources */,
 				C2EDA61C258FB347008B542D /* NimbleMatchers.swift in Sources */,
 				C2258AB82591291B00A4BED4 /* UInt128Tests.swift in Sources */,
 				C2EDA8E62590F7AC008B542D /* PseudoConstraintTests.swift in Sources */,

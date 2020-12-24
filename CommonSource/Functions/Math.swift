@@ -5,214 +5,207 @@
 //  Created by Jason Cardwell on 8/25/16.
 //  Copyright © 2016 Jason Cardwell. All rights reserved.
 //
-
 import Foundation
 
-
-//public func gcd(_ a: UInt128, _ b: UInt128) -> UInt128 {
-//  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-//}
-//public func lcm(_ a: UInt128, _ b: UInt128) -> UInt128 { return a / gcd(a, b) * b }
-
-
-public func gcd(_ a: UInt64, _ b: UInt64) -> UInt64 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: UInt64, _ b: UInt64) -> UInt64 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: Int64, _ b: Int64) -> Int64 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: Int64, _ b: Int64) -> Int64 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: UInt32, _ b: UInt32) -> UInt32 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: UInt32, _ b: UInt32) -> UInt32 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: Int32, _ b: Int32) -> Int32 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: Int32, _ b: Int32) -> Int32 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: UInt16, _ b: UInt16) -> UInt16 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: UInt16, _ b: UInt16) -> UInt16 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: Int16, _ b: Int16) -> Int16 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: Int16, _ b: Int16) -> Int16 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: UInt8, _ b: UInt8) -> UInt8 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: UInt8, _ b: UInt8) -> UInt8 { return a / gcd(a, b) * b }
-
-public func gcd(_ a: Int8, _ b: Int8) -> Int8 {
-  var a = a, b = b; while b != 0 { a = a % b; swap(&a, &b) }; return a
-}
-public func lcm(_ a: Int8, _ b: Int8) -> Int8 { return a / gcd(a, b) * b }
-
-public func reinterpretCast<T,U>(_ obj: T) -> U { return unsafeBitCast(obj, to: U.self) }
-
-
-public func odd<I:FixedWidthInteger>(_ n: I) -> Bool { return n & I(1) == I(1) }
-public func even<I:FixedWidthInteger>(_ n: I) -> Bool { return !odd(n) }
-
-public func half<T>(_ n: T) -> T
-  where T:BitShifting, T:ExpressibleByIntegerLiteral
-{
-  return n >> 1
+/// Xor operation support for `Bool` values.
+///
+/// - Parameters:
+///   - lhs: The left hand side.
+///   - rhs: The right hand side.
+/// - Returns: The xor result between `lhs` and `rhs`.
+public func ^(_ lhs: Bool, _ rhs: Bool) -> Bool {
+  ((lhs && !rhs) || (rhs && !lhs))
 }
 
-public func half<T>(_ n: T) -> T
-  where T:FixedWidthInteger
-{
-  return n &>> 1
-}
-
-
-public func remainder<T>(_ a: T, _ b: T) -> T
-  where T:Comparable, T:Additive, T:Subtractive
-{
-  guard a >= b else { return a }
-  var a = a, b = b, c = b, tmp: T
-  repeat {
-    tmp = c
-    c = b + c
-    b = tmp
-  } while a >= c
-  repeat {
-    if a >= b { a = a - b }
-    tmp = c - b
-    c = b
-    b = tmp
-  } while b < c
-  return a
-}
-
-
-public func largestDoubling<T>(_ a: T, _ b: T) -> T
-  where T:Comparable, T:Additive, T:Subtractive
-{
-  // precondition: b != 0
-  var b = b
-  while a - b >= b { b = b + b }
-  return b
-}
-
-public func largestDoubling<T>(_ a: T, _ b: T) -> T
-  where T:FixedWidthInteger
-{
-  // precondition: b != 0
-  var b = b
-  while a - b >= b { b = b + b }
-  return b
-}
-
-public func quotientRemainder<T>(_ a: T, _ b: T) -> (quotient: T, remainder: T)
-  where
-  T:Comparable, T:Additive, T:Subtractive,
-  T:BitShifting, T:ExpressibleByIntegerLiteral
-{
-  // precondition: b > 0
-  guard a >= b else { return (0, a) }
-  var c: T = largestDoubling(a, b), a = a - c, n: T = 1
-  while c != b {
-    c = half(c)
-    n = n + n
-    if c <= a {
-      a = a - c
-      n = n + 1
-    }
-  }
-  return (n, a)
-}
-
-public func quotientRemainder<T>(_ a: T, _ b: T) -> (quotient: T, remainder: T)
-  where
-  T:FixedWidthInteger
-{
-  // precondition: b > 0
-  guard a >= b else { return (0, a) }
-  var c: T = largestDoubling(a, b), a = a - c, n: T = 1
-  while c != b {
-    c >>= 1
-    n = n + n
-    if c <= a {
-      a = a - c
-      n = n + 1
-    }
-  }
-  return (n, a)
-}
-
-public func gcm_remainder<T>(_ a: T, _ b: T) -> T
-  where T:Comparable, T:Additive, T:Subtractive, T:ExpressibleByIntegerLiteral
-{
+/// Calculates the greatest common denominator for two integers.
+///
+/// - Parameters:
+///   - a: The first integer.
+///   - b: The second integer.
+/// - Returns: The least common denominator for `a` and `b`.
+public func gcd<T>(_ a: T, _ b: T) -> T where T: FixedWidthInteger {
   var a = a, b = b
   while b != 0 {
-    a = remainder(a, b)
+    a = a % b
     swap(&a, &b)
   }
   return a
 }
 
-
-public func power<T>(_ x: T, _ n: Int, op: (T, T) -> T) -> T {
-  guard n != 0 else { return x }
-  var x = x, n = n
-  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
-  guard n != 1 else { return x }
-  var r = x
-  x = op(x, x)
-  n = (n - 1) >> 1
-  while true {
-    if n & 0b1 == 0b1 {
-      r = op(r, x)
-      guard n != 1 else { return r }
-    }
-    n = n >> 1
-    x = op(x, x)
-  }
+/// Calculates the least common multiply between two integers.
+///
+/// - Parameters:
+///   - a: The first integer.
+///   - b: The second integer.
+/// - Returns: The least common multiple shared by `a` and `b`.
+public func lcm<T>(_ a: T, _ b: T) -> T where T: FixedWidthInteger {
+  a / gcd(a, b) * b
 }
 
-public func power<T>(_ x: T, _ n: Int, identity: T, op: (T, T) -> T) -> T {
-  guard n != 0 else { return identity }
-  var x = x, n = abs(n)
-  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
-  guard n != 1 else { return x }
-  var r = x
-  x = op(x, x)
-  n = (n - 1) >> 1
-  while true {
-    if n & 0b1 == 0b1 {
-      r = op(r, x)
-      guard n != 1 else { return r }
+/// Whether the integer is odd.
+///
+/// - Parameter n: The integer to test.
+/// - Returns: `true` if `n` is odd and `false` otherwise.
+public func odd<I: FixedWidthInteger>(_ n: I) -> Bool { n & I(1) == I(1) }
+
+/// Whether the integer is even.
+///
+/// - Parameter n: The integer to test.
+/// - Returns: `true` if `n` is even and `false` otherwise.
+public func even<I: FixedWidthInteger>(_ n: I) -> Bool { !odd(n) }
+
+/// Shift-based halving
+///
+/// - Parameter n: The value to half.
+/// - Returns: half of `n`.
+public func half<T>(_ n: T) -> T where T: FixedWidthInteger { n &>> 1 }
+
+/// Calculates the quotient and remainder for fixed width integer division.
+///
+/// - Parameters:
+///   - a: The dividend.
+///   - b: The divisor.
+/// - Returns: The quotient and remainder when dividing `a` by `b`.
+public func quotientRemainder<T>(_ a: T, _ b: T) -> (quotient: T, remainder: T)
+  where T: FixedWidthInteger
+{
+  precondition(b > 0)
+
+  guard a >= b else { return (0, a) }
+
+  var c = b
+  while a - c >= c { c = c &+ c }
+
+  var r = a - c
+  var q: T = 1
+
+  while c != b {
+    c >>= 1
+    q = q + q
+    if c <= r {
+      r = r - c
+      q = q + 1
     }
-    n = n >> 1
-    x = op(x, x)
   }
+  return (q, r)
 }
 
-public func power<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T) -> T) -> T {
-  guard n != 0 else { return identity }
-  var x = n < 0 ? inverse(x) : x, n = abs(n)
-  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
-  guard n != 1 else { return x }
-  var r = x
-  x = op(x, x)
-  n = (n - 1) >> 1
-  while true {
-    if n & 0b1 == 0b1 {
-      r = op(r, x)
-      guard n != 1 else { return r }
-    }
-    n = n >> 1
-    x = op(x, x)
+/// Raises a value to the specified exponent using the provided closure.
+///
+/// - Parameters:
+///   - value: The value to raise.
+///   - exponent: The exponent to which `value` shall be raised. Must not be `< 1`.
+///   - operation: The closure serving as the operation.
+/// - Returns: The result of raising `value` to `exponent` using `operation`.
+public func power<T>(value: T, exponent: Int, operation: (T, T) -> T) -> T {
+  precondition(exponent > 0)
+  guard exponent != 0 else { return value }
+
+  var value = value, exponent = exponent
+
+  while exponent & 0b1 != 0b1 {
+    value = operation(value, value)
+    exponent = exponent >> 1
   }
+
+  guard exponent != 1 else { return value }
+
+  var result = value
+  value = operation(value, value)
+  exponent = (exponent - 1) >> 1
+
+  while true {
+    if exponent & 0b1 == 0b1 {
+      result = operation(result, value)
+      guard exponent != 1 else { break }
+    }
+    exponent = exponent >> 1
+    value = operation(value, value)
+  }
+
+  return result
+}
+
+/// Raises a value to the specified exponent using the provided closure.
+///
+/// - Parameters:
+///   - value: The value to raise.
+///   - exponent: The exponent to which `value` shall be raised. Must not be `< 0`.
+///   - identity: The value for all `T` values when raised to exponent `0`.
+///   - operation: The closure serving as the operation.
+/// - Returns: The result of raising `value` to `exponent` using `operation`.
+public func power<T>(value: T, exponent: Int, identity: T, operation: (T, T) -> T) -> T {
+  precondition(exponent >= 0)
+
+  guard exponent != 0 else { return identity }
+
+  var value = value, exponent = abs(exponent)
+
+  while exponent & 0b1 != 0b1 {
+    value = operation(value, value)
+    exponent = exponent >> 1
+  }
+
+  guard exponent != 1 else { return value }
+
+  var result = value
+  value = operation(value, value)
+  exponent = (exponent - 1) >> 1
+
+  while true {
+    if exponent & 0b1 == 0b1 {
+      result = operation(result, value)
+      guard exponent != 1 else { break }
+    }
+    exponent = exponent >> 1
+    value = operation(value, value)
+  }
+
+  return result
+}
+
+/// Raises a value to the specified exponent using the provided closure.
+///
+/// - Parameters:
+///   - value: The value to raise.
+///   - exponent: The exponent to which `value` shall be raised.
+///   - identity: The value for all `T` values when raised to exponent `0`.
+///   - inverse: Closure for inverting `value` if `exponent < 0`
+///   - operation: The closure serving as the operation.
+/// - Returns: The result of raising `value` (or `inverse(value)` if `exponent < 0`)
+///            to `abs(exponent)` using `operation`.
+public func power<T>(value: T,
+                     exponent: Int,
+                     identity: T,
+                     inverse: (T) -> T, operation: (T, T) -> T) -> T
+{
+  guard exponent != 0 else { return identity }
+
+  var value = exponent < 0 ? inverse(value) : value
+
+  var exponent = abs(exponent)
+
+  while exponent & 0b1 != 0b1 {
+    value = operation(value, value)
+    exponent = exponent >> 1
+  }
+
+  guard exponent != 1 else { return value }
+
+  var result = value
+  value = operation(value, value)
+  exponent = (exponent - 1) >> 1
+
+  while true {
+    if exponent & 0b1 == 0b1 {
+      result = operation(result, value)
+      guard exponent != 1 else { break }
+    }
+    exponent = exponent >> 1
+    value = operation(value, value)
+  }
+
+  return result
 }
 
 //public func log<T>(_ x: T, _ y: T, op: (T, T) -> T, stop: (T) -> Bool) -> (Int, T) {
@@ -222,14 +215,6 @@ public func power<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T
 //    n = n &+ 1
 //  }
 //  return (n, x)
-//}
-
-//public func log10(_ value: UInt128) -> (value: Int, isExact: Bool) {
-//  let exponent = log10(Double(value))
-//  let isExact = exponent.rounded(.towardZero) == exponent
-//  return (Int(exponent), isExact)
-////  let (value, remainder) = log(value, UInt128(10), op: /, stop: {$0 < 10})
-////  return (value, remainder == 0)
 //}
 
 //public func log<T>(_ x: T, _ n: Int, identity: T, op: (T, T) -> T) -> T {
@@ -249,7 +234,7 @@ public func power<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T
 //    x = op(x, x)
 //  }
 //}
-//
+
 //public func log<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T) -> T) -> T {
 //  guard n != 0 else { return identity }
 //  var x = n < 0 ? inverse(x) : x, n = abs(n)
@@ -268,111 +253,38 @@ public func power<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T
 //  }
 //}
 
-public func pow<I:SignedInteger>(_ lhs: I, _ rhs: I) -> I {
-  var i = rhs
-  var result = lhs
-  while i > 1 {
-    result *= lhs
-    i = i - 1
-  }
-  return result
-}
+/// Calculates the double-width multiplication of two fixed width, unsigned integers.
+/// - Parameters:
+///   - lhs: The first multiplicand.
+///   - rhs: The second multiplicand.
+/// - Returns: The double-width result of multiplying `lhs` by `rhs`.
+public func doubleWidthMultiply<T>(_ lhs: T, _ rhs: T) -> (high: T, low: T)
+  where T: FixedWidthInteger, T: UnsignedInteger
+{
+  let bitWidth = T.bitWidth
+  let halfBitWidth = bitWidth / 2
 
-//public func pow(_ lhs: UInt128, _ rhs: Int) -> UInt128 {
-//  return power(lhs, abs(rhs), identity: UInt128(1), op: *)
-//}
-//
-//public func pow10(_ exponent: Int) -> UInt128 {
-//  return power(UInt128(10), exponent, identity: UInt128(1), op: *)
-//}
+  let mask = T.max >> halfBitWidth
 
-public func div10(_ value: UInt8) -> (quotient: UInt8, remainder: UInt8) {
-  var q: UInt16, r: UInt16 = 0
-  let value = UInt16(value)
-  q = ((value >> 2) + value) >> 1
-  q = (q + value) >> 1
-  q = ((q >> 2) + value) >> 1
-  q = (q + value) >> 4
+  let pLL = (lhs & mask) * (rhs & mask)
+  let pLH = (lhs & mask) * (rhs >> halfBitWidth)
 
-  r = ((q << 2) + q) << 1
-  r = value - r
+  let pHL = (lhs >> halfBitWidth) * (rhs & mask)
+  let pHH = (lhs >> halfBitWidth) * (rhs >> halfBitWidth)
 
-  return (UInt8(q), UInt8(r))
-}
+  var low = pLL & mask
+  var carry = (pLL >> halfBitWidth) &+ (pLH & mask)
+  var high = carry >> halfBitWidth
 
-public func mul10(_ value: UInt8) -> UInt16 {
-  let value = UInt16(value)
-  return ((value << 2) + value) << 1
-}
+  carry = (carry & mask) &+ (pHL & mask)
+  high = high &+ (carry >> halfBitWidth)
+  low |= carry << halfBitWidth
 
-public func doubleWidthMultiply(_ a: UInt8, _ b: UInt8) -> (high: UInt8, low: UInt8) {
-  let pᴸᴸ = (a & 0xf) * (b & 0xf)
-  let pᴸᴴ = (a & 0xf) * (b >> 4)
-  let pᴴᴸ = (a >> 4) * (b & 0xf)
-  let pᴴᴴ = (a >> 4) * (b >> 4)
-  var low = pᴸᴸ & 0xf
-  var carry = (pᴸᴸ >> 4) &+ (pᴸᴴ & 0xf)
-  var high = carry >> 4
-  carry = (carry & 0xf) &+ (pᴴᴸ & 0xf)
-  high = high &+ (carry >> 4)
-  low |= carry << 4
-  high = high &+ (pᴸᴴ >> 4)
-  carry = high >> 4
-  high &= 0xf
-  high = high &+ (pᴴᴸ >> 4) &+ pᴴᴴ &+ carry
-  return (high, low)
-}
+  high = high &+ (pLH >> halfBitWidth)
+  carry = high >> halfBitWidth
 
-public func doubleWidthMultiply(_ a: UInt16, _ b: UInt16) -> (high: UInt16, low: UInt16) {
-  let pᴸᴸ = (a & 0xff) * (b & 0xff)
-  let pᴸᴴ = (a & 0xff) * (b >> 8)
-  let pᴴᴸ = (a >> 8) * (b & 0xff)
-  let pᴴᴴ = (a >> 8) * (b >> 8)
-  var low = pᴸᴸ & 0xff
-  var carry = (pᴸᴸ >> 8) &+ (pᴸᴴ & 0xff)
-  var high = carry >> 8
-  carry = (carry & 0xff) &+ (pᴴᴸ & 0xff)
-  high = high &+ (carry >> 8)
-  low |= carry << 8
-  high = high &+ (pᴸᴴ >> 8)
-  carry = high >> 8
-  high &= 0xff
-  high = high &+ (pᴴᴸ >> 8) &+ pᴴᴴ &+ carry
-  return (high, low)
-}
+  high &= mask
+  high = high &+ (pHL >> halfBitWidth) &+ pHH &+ carry
 
-public func doubleWidthMultiply(_ a: UInt32, _ b: UInt32) -> (high: UInt32, low: UInt32) {
-  let pᴸᴸ = (a & 0xffff) * (b & 0xffff)
-  let pᴸᴴ = (a & 0xffff) * (b >> 16)
-  let pᴴᴸ = (a >> 16) * (b & 0xffff)
-  let pᴴᴴ = (a >> 16) * (b >> 16)
-  var low = pᴸᴸ & 0xffff
-  var carry = (pᴸᴸ >> 16) &+ (pᴸᴴ & 0xffff)
-  var high = carry >> 16
-  carry = (carry & 0xffff) &+ (pᴴᴸ & 0xffff)
-  high = high &+ (carry >> 16)
-  low |= carry << 16
-  high = high &+ (pᴸᴴ >> 16)
-  carry = high >> 16
-  high &= 0xffff
-  high = high &+ (pᴴᴸ >> 16) &+ pᴴᴴ &+ carry
-  return (high, low)
-}
-
-public func doubleWidthMultiply(_ a: UInt64, _ b: UInt64) -> (high: UInt64, low: UInt64) {
-  let pᴸᴸ = (a & 0xffffffff) * (b & 0xffffffff)
-  let pᴸᴴ = (a & 0xffffffff) * (b >> 32)
-  let pᴴᴸ = (a >> 32) * (b & 0xffffffff)
-  let pᴴᴴ = (a >> 32) * (b >> 32)
-  var low = pᴸᴸ & 0xffffffff
-  var carry = (pᴸᴸ >> 32) &+ (pᴸᴴ & 0xffffffff)
-  var high = carry >> 32
-  carry = (carry & 0xffffffff) &+ (pᴴᴸ & 0xffffffff)
-  high = high &+ (carry >> 32)
-  low |= carry << 32
-  high = high &+ (pᴸᴴ >> 32)
-  carry = high >> 32
-  high &= 0xffffffff
-  high = high &+ (pᴴᴸ >> 32) &+ pᴴᴴ &+ carry
   return (high, low)
 }

@@ -9,75 +9,79 @@ import XCTest
 import Nimble
 @testable import MoonKit
 
+private func pow10(_ exponent: Int) -> UInt128 {
+  power(value: 10, exponent: exponent, identity: 1, operation: *)
+}
+
 final class FractionTests: XCTestCase {
 
-/*  func testParts() {
+  func testParts() {
     var parts = (4╱5).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating) == [8]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [8]
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (3╱4).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating) == [7, 5]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [7, 5]
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (0╱64).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating).to(beEmpty())
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating).to(beEmpty())
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (1╱4).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating) == [2, 5]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [2, 5]
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (3╱8).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating) == [3, 7, 5]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [3, 7, 5]
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (9╱11).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating).to(beEmpty())
-    expect(parts.repeating) == [8, 1]
+//    expect(parts.nonrepeating).to(beEmpty())
+//    expect(parts.repeating) == [8, 1]
 
     parts = (1╱24).parts
     expect(parts.integer) == 0
-    expect(parts.nonrepeating) == [0, 4, 1]
-    expect(parts.repeating) == [6]
+//    expect(parts.nonrepeating) == [0, 4, 1]
+//    expect(parts.repeating) == [6]
 
     parts = (8╱3).parts
     expect(parts.integer) == 2
-    expect(parts.nonrepeating).to(beEmpty())
-    expect(parts.repeating) == [6]
+//    expect(parts.nonrepeating).to(beEmpty())
+//    expect(parts.repeating) == [6]
 
     parts = (46╱11).parts
     expect(parts.integer) == 4
-    expect(parts.nonrepeating).to(beEmpty())
-    expect(parts.repeating) == [1, 8]
+//    expect(parts.nonrepeating).to(beEmpty())
+//    expect(parts.repeating) == [1, 8]
 
     parts = (1002331╱24).parts
     expect(parts.integer) == 41763
-    expect(parts.nonrepeating) == [7, 9, 1]
-    expect(parts.repeating) == [6]
+//    expect(parts.nonrepeating) == [7, 9, 1]
+//    expect(parts.repeating) == [6]
 
     parts = (22╱5).parts
     expect(parts.integer) == 4
-    expect(parts.nonrepeating) == [4]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [4]
+//    expect(parts.repeating).to(beEmpty())
 
     parts = (98╱4).parts
     expect(parts.integer) == 24
-    expect(parts.nonrepeating) == [5]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [5]
+//    expect(parts.repeating).to(beEmpty())
     
     parts = (63╱8).parts
     expect(parts.integer) == 7
-    expect(parts.nonrepeating) == [8, 7, 5]
-    expect(parts.repeating).to(beEmpty())
+//    expect(parts.nonrepeating) == [8, 7, 5]
+//    expect(parts.repeating).to(beEmpty())
   }
-   */
+   
 
   func testDecimalForm() {
     expect(Fraction.infinity.decimalForm) == Fraction.infinity
@@ -94,7 +98,7 @@ final class FractionTests: XCTestCase {
     expect((f.numerator, f.denominator)) == (8, 10)
 
     f = (1╱3).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x1913c4381e2cec28, low: 0xadd8b61555555555), pow10(38))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0xadd8b61555555555, high: 0x1913c4381e2cec28), pow10(38))
 
     f = (1╱4).decimalForm
     expect((f.numerator, f.denominator)) == (25, 100)
@@ -103,19 +107,19 @@ final class FractionTests: XCTestCase {
     expect((f.numerator, f.denominator)) == (375, 1000)
 
     f = (9╱11).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x3d8d9bcf8fe2a0c0, low: 0xf0884a91745d1745), pow10(38))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0xf0884a91745d1745, high: 0x3d8d9bcf8fe2a0c0), pow10(38))
 
     f = (1╱24).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x322788703c59d85, low: 0x15bb16c2aaaaaaaa), pow10(38))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0x15bb16c2aaaaaaaa, high: 0x322788703c59d85), pow10(38))
 
     f = (8╱3).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x140fd02ce4f0bced, low: 0x57e091aaaaaaaaaa), pow10(37))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0x57e091aaaaaaaaaa, high: 0x140fd02ce4f0bced), pow10(37))
 
     f = (46╱11).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x1f75e38c3879855c, low: 0xecb77011745d1745), pow10(37))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0xecb77011745d1745, high: 0x1f75e38c3879855c), pow10(37))
 
     f = (1002331╱24).decimalForm
-    expect((f.numerator, f.denominator)) == (UInt128(high: 0x1f6b69e7fe7a5dad, low: 0xc1aa8dc5eaaaaaaa), pow10(33))
+    expect((f.numerator, f.denominator)) == (UInt128(low: 0xc1aa8dc5eaaaaaaa, high: 0x1f6b69e7fe7a5dad), pow10(33))
 
     f = (22╱5).decimalForm
     expect((f.numerator, f.denominator)) == (44, 10)
@@ -161,11 +165,11 @@ final class FractionTests: XCTestCase {
     expect((0╱64).significand) == Fraction.zero
     expect((1╱4).significand) == 25╱1
     expect((3╱8).significand) == 375╱1
-    expect((9╱11).significand) == UInt128(high: 0x3d8d9bcf8fe2a0c0, low: 0xf0884a91745d1745)╱1
-    expect((1╱24).significand) == UInt128(high: 0x322788703c59d85, low: 0x15bb16c2aaaaaaaa)╱1
-    expect((8╱3).significand) == UInt128(high: 0x140fd02ce4f0bced, low: 0x57e091aaaaaaaaaa)╱1
-    expect((46╱11).significand) == UInt128(high: 0x1f75e38c3879855c, low: 0xecb77011745d1745)╱1
-    expect((1002331╱24).significand) == UInt128(high: 0x1f6b69e7fe7a5dad, low: 0xc1aa8dc5eaaaaaaa)╱1
+    expect((9╱11).significand) == UInt128(low: 0xf0884a91745d1745, high: 0x3d8d9bcf8fe2a0c0)╱1
+    expect((1╱24).significand) == UInt128(low: 0x15bb16c2aaaaaaaa, high: 0x322788703c59d85)╱1
+    expect((8╱3).significand) == UInt128(low: 0x57e091aaaaaaaaaa, high: 0x140fd02ce4f0bced)╱1
+    expect((46╱11).significand) == UInt128(low: 0xecb77011745d1745, high: 0x1f75e38c3879855c)╱1
+    expect((1002331╱24).significand) == UInt128(low: 0xc1aa8dc5eaaaaaaa, high: 0x1f6b69e7fe7a5dad)╱1
     expect((22╱5).significand) == 44╱1
     expect((98╱4).significand) == 245╱1
     expect((63╱8).significand) == 7875╱1
@@ -471,11 +475,11 @@ final class FractionTests: XCTestCase {
     expect(Fraction(sign: .plus, exponent:   0, significand: Fraction.zero)) == 0╱64
     expect(Fraction(sign: .plus, exponent:  -2, significand: 25╱1)) == 1╱4
     expect(Fraction(sign: .plus, exponent:  -3, significand: 375╱1)) == 3╱8
-    expect(Fraction(sign: .plus, exponent: -38, significand: UInt128(high: 0x3d8d9bcf8fe2a0c0, low: 0xf0884a91745d1745)╱1)) == 9╱11
-    expect(Fraction(sign: .plus, exponent: -38, significand: UInt128(high: 0x322788703c59d85, low: 0x15bb16c2aaaaaaaa)╱1)) == 1╱24
-    expect(Fraction(sign: .plus, exponent: -37, significand: UInt128(high: 0x140fd02ce4f0bced, low: 0x57e091aaaaaaaaaa)╱1)) == 8╱3
-    expect(Fraction(sign: .plus, exponent: -37, significand: UInt128(high: 0x1f75e38c3879855c, low: 0xecb77011745d1745)╱1)) == 46╱11
-    expect(Fraction(sign: .plus, exponent: -33, significand: UInt128(high: 0x1f6b69e7fe7a5dad, low: 0xc1aa8dc5eaaaaaaa)╱1)) == 1002331╱24
+    expect(Fraction(sign: .plus, exponent: -38, significand: UInt128(low: 0xf0884a91745d1745, high: 0x3d8d9bcf8fe2a0c0)╱1)) == 9╱11
+    expect(Fraction(sign: .plus, exponent: -38, significand: UInt128(low: 0x15bb16c2aaaaaaaa, high: 0x322788703c59d85)╱1)) == 1╱24
+    expect(Fraction(sign: .plus, exponent: -37, significand: UInt128(low: 0x57e091aaaaaaaaaa, high: 0x140fd02ce4f0bced)╱1)) == 8╱3
+    expect(Fraction(sign: .plus, exponent: -37, significand: UInt128(low: 0xecb77011745d1745, high: 0x1f75e38c3879855c)╱1)) == 46╱11
+    expect(Fraction(sign: .plus, exponent: -33, significand: UInt128(low: 0xc1aa8dc5eaaaaaaa, high: 0x1f6b69e7fe7a5dad)╱1)) == 1002331╱24
     expect(Fraction(sign: .plus, exponent:  -1, significand: 44╱1)) == 22╱5
     expect(Fraction(sign: .plus, exponent:  -1, significand: 245╱1)) == 98╱4
     expect(Fraction(sign: .plus, exponent:  -3, significand: 7875╱1)) == 63╱8
@@ -485,11 +489,11 @@ final class FractionTests: XCTestCase {
     expect(Fraction(sign: .minus, exponent:   0, significand: Fraction.zero)) == (0╱64).negated()
     expect(Fraction(sign: .minus, exponent:  -2, significand: 25╱1)) == (1╱4).negated()
     expect(Fraction(sign: .minus, exponent:  -3, significand: 375╱1)) == (3╱8).negated()
-    expect(Fraction(sign: .minus, exponent: -38, significand: UInt128(high: 0x3d8d9bcf8fe2a0c0, low: 0xf0884a91745d1745)╱1)) == (9╱11).negated()
-    expect(Fraction(sign: .minus, exponent: -38, significand: UInt128(high: 0x322788703c59d85, low: 0x15bb16c2aaaaaaaa)╱1)) == (1╱24).negated()
-    expect(Fraction(sign: .minus, exponent: -37, significand: UInt128(high: 0x140fd02ce4f0bced, low: 0x57e091aaaaaaaaaa)╱1)) == (8╱3).negated()
-    expect(Fraction(sign: .minus, exponent: -37, significand: UInt128(high: 0x1f75e38c3879855c, low: 0xecb77011745d1745)╱1)) == (46╱11).negated()
-    expect(Fraction(sign: .minus, exponent: -33, significand: UInt128(high: 0x1f6b69e7fe7a5dad, low: 0xc1aa8dc5eaaaaaaa)╱1)) == (1002331╱24).negated()
+    expect(Fraction(sign: .minus, exponent: -38, significand: UInt128(low: 0xf0884a91745d1745, high: 0x3d8d9bcf8fe2a0c0)╱1)) == (9╱11).negated()
+    expect(Fraction(sign: .minus, exponent: -38, significand: UInt128(low: 0x15bb16c2aaaaaaaa, high: 0x322788703c59d85)╱1)) == (1╱24).negated()
+    expect(Fraction(sign: .minus, exponent: -37, significand: UInt128(low: 0x57e091aaaaaaaaaa, high: 0x140fd02ce4f0bced)╱1)) == (8╱3).negated()
+    expect(Fraction(sign: .minus, exponent: -37, significand: UInt128(low: 0xecb77011745d1745, high: 0x1f75e38c3879855c)╱1)) == (46╱11).negated()
+    expect(Fraction(sign: .minus, exponent: -33, significand: UInt128(low: 0xc1aa8dc5eaaaaaaa, high: 0x1f6b69e7fe7a5dad)╱1)) == (1002331╱24).negated()
     expect(Fraction(sign: .minus, exponent:  -1, significand: 44╱1)) == (22╱5).negated()
     expect(Fraction(sign: .minus, exponent:  -1, significand: 245╱1)) == (98╱4).negated()
     expect(Fraction(sign: .minus, exponent:  -3, significand: 7875╱1)) == (63╱8).negated()
@@ -562,10 +566,7 @@ final class FractionTests: XCTestCase {
     let fractions = [a, b, c, d, e, f, g, h, i, j, k, l]
     for (i, x) in fractions.enumerated() {
       for y in fractions[i+1..<fractions.endIndex] {
-        let passed = expect(x.isLessThanOrEqualTo(y)).to(equal(Bool(!(x.isNaN || y.isNaN))))
-        if !passed {
-          print("failed with x = \(x) and y = \(y)")
-        }
+        expect(x.isLessThanOrEqualTo(y)) == Bool(!(x.isNaN || y.isNaN))
       }
     }
   }
@@ -588,10 +589,7 @@ final class FractionTests: XCTestCase {
     let fractions = [a, b, c, d, e, f, g, h, i, j, k, l]
     for (i, x) in fractions.enumerated() {
       for y in fractions[i+1..<fractions.endIndex] {
-        let passed = expect(x.isTotallyOrdered(belowOrEqualTo: y)).to(beTrue())
-        if !passed {
-          print("failed with x = \(x) and y = \(y)")
-        }
+        expect(x.isTotallyOrdered(belowOrEqualTo: y)) == true
       }
     }
   }
@@ -670,11 +668,11 @@ final class FractionTests: XCTestCase {
     let inf = Fraction(Double.infinity)
     expect(inf) == Fraction.infinity
 
-    let negativeInf = Fraction(Double.infinity.negated())
+    let negativeInf = Fraction(-Double.infinity)
     expect(negativeInf) == -Fraction.infinity
 
     expect(Fraction(Double.pi)).to(equalWithAccuracy(Fraction.pi, 1╱1000000000000000))
-    expect(Fraction(Double.pi.negated())).to(equalWithAccuracy(Fraction.pi.negated(), (1╱1000000000000000)))
+    expect(Fraction(-Double.pi)).to(equalWithAccuracy(Fraction.pi.negated(), (1╱1000000000000000)))
   }
 
   func testConversionToDouble() {

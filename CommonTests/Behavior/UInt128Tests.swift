@@ -26,9 +26,10 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(1234567812345).description) == "1234567812345"
     expect(UInt128(12345678123456).description) == "12345678123456"
     expect(UInt128(123456781234567).description) == "123456781234567"
-    expect(UInt128(high: 0xcf31029a1b0b213e,
-                   low: 0x41a230cc06319617).description) == "275404670447871577180648434354736961047"
-    expect(UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617).debugDescription) == "275404670447871577180648434354736961047 {high: 0xcf31029a1b0b213e; low: 0x41a230cc06319617}"
+    expect(UInt128(low: 0x41a230cc06319617,
+                   high: 0xcf31029a1b0b213e).description) == "275404670447871577180648434354736961047"
+    expect(UInt128(low: 0x41a230cc06319617,
+                   high: 0xcf31029a1b0b213e).debugDescription) == "275404670447871577180648434354736961047 {high: 0xcf31029a1b0b213e; low: 0x41a230cc06319617}"
   }
 
   func testAddition() {
@@ -52,11 +53,12 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(8796195360888).addingReportingOverflow(129378430)) == (8796324739318, false)
     expect(UInt128(1217152688).addingReportingOverflow(23466926)) == (1240619614, false)
     expect(UInt128(2287743245).addingReportingOverflow(115580675)) == (2403323920, false)
-    expect(UInt128.max.addingReportingOverflow(UInt128.max)) == (UInt128(high: 0xffffffffffffffff, low: 0xfffffffffffffffe), true)
-    expect(UInt128(high: 0xcf31029a1b0b213e,
-                   low: 0x41a230cc06319617).addingReportingOverflow(UInt128(high: 0x2216a1420bf34521,
-                                                                       low: 0x801d64ae10c5361d))) == (UInt128(high: 0xf147a3dc26fe665f,
-                                                                                                              low: 0xc1bf957a16f6cc34), false)
+    expect(UInt128.max.addingReportingOverflow(UInt128.max)) == (UInt128(low: 0xfffffffffffffffe,
+                                                                         high: 0xffffffffffffffff), true)
+    expect(UInt128(low: 0x41a230cc06319617,
+                   high: 0xcf31029a1b0b213e).addingReportingOverflow(UInt128(low: 0x801d64ae10c5361d,
+                                                                             high: 0x2216a1420bf34521))) == (UInt128(low: 0xc1bf957a16f6cc34,
+                                                                                                                     high: 0xf147a3dc26fe665f), false)
   }
 
   func testSubtraction() {
@@ -80,10 +82,10 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(8796195360888).subtractingReportingOverflow(129378430)) == (8796065982458, false)
     expect(UInt128(1217152688).subtractingReportingOverflow(23466926)) == (1193685762, false)
     expect(UInt128(2287743245).subtractingReportingOverflow(115580675)) == (2172162570, false)
-    expect(UInt128(high: 0xcf31029a1b0b213e,
-                   low: 0x41a230cc06319617).subtractingReportingOverflow(UInt128(high: 0x2216a1420bf34521,
-                                                                            low: 0x801d64ae10c5361d))) == (UInt128(high: 0xad1a61580f17dc1c,
-                                                                                                                   low: 0xc184cc1df56c5ffa), false)
+    expect(UInt128(low: 0x41a230cc06319617,
+                   high: 0xcf31029a1b0b213e).subtractingReportingOverflow(UInt128(low: 0x801d64ae10c5361d,
+                                                                                  high: 0x2216a1420bf34521))) == (UInt128(low: 0xc184cc1df56c5ffa,
+                                                                                                                          high: 0xad1a61580f17dc1c), false)
   }
 
   func testMultiplication() {
@@ -107,11 +109,12 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(102340728).multipliedReportingOverflow(by: 11937925)) == (1221735935309400, false)
     expect(UInt128(1217152688).multipliedReportingOverflow(by: 6689711)) == (8142399725593168, false)
     expect(UInt128(2287743245).multipliedReportingOverflow(by: 14917385)) == (34127146766814325, false)
-    expect(UInt128.doubleWidthMultiply(UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617),
-                                       UInt128(high: 0x2216a1420bf34521, low: 0x801d64ae10c5361d))) == (high: UInt128(high: 0x1b96d311f7c762b1,
-                                                                                                                      low: 0x82fe383b4d0c9d52),
-                                                                                                        low: UInt128(high: 0x0ff133f20278727a,
-                                                                                                                     low: 0x07fe6d9718f9da9b))
+    expect(UInt128(low: 0x41a230cc06319617,
+                   high: 0xcf31029a1b0b213e).multipliedFullWidth(by: UInt128(low: 0x801d64ae10c5361d,
+                                                                             high: 0x2216a1420bf34521)))
+      == (high: UInt128(low: 0x82fe383b4d0c9d52, high: 0x1b96d311f7c762b1),
+          low: UInt128(low: 0x07fe6d9718f9da9b, high: 0x0ff133f20278727a))
+
     expect(UInt128.max.multipliedReportingOverflow(by: UInt128.max)) == (1, true)
   }
 
@@ -141,12 +144,12 @@ final class UInt128Tests: XCTestCase {
 
   func testStaticVariables() {
     expect(UInt128.min) == 0
-    expect(UInt128.max) == UInt128(high: UInt64.max, low: UInt64.max)
+    expect(UInt128.max) == UInt128(low: UInt64.max, high: UInt64.max)
     expect(UInt128.bitWidth) == 128
     expect(UInt128.isSigned) == false
     expect(UInt128.max.magnitude) == UInt128.max
-    expect(UInt128.min.minimumSignedRepresentationBitWidth) == 128
-    expect(UInt128().signum()) == 1
+    expect(UInt128().signum()) == 0
+    expect(UInt128(100).signum()) == 1
   }
 
   func asBinaryInteger<T>(_ value: T) -> T where T: BinaryInteger {
@@ -154,76 +157,99 @@ final class UInt128Tests: XCTestCase {
   }
 
   func testBitwiseOr() {
-    expect(UInt128(high: 0x15a0213be95279b4,
-                   low: 0x4797a3617eb8b808).bitwiseOr(UInt128(high: 0xacdc3a1f1ea7ffc3,
-                                                              low: 0xca1ca51eb646f945))) == UInt128(high: 0xbdfc3b3ffff7fff7,
-                                                                                                    low: 0xcf9fa77ffefef94d)
-    expect(UInt128(high: 0x1d107d9678d0d4f8,
-                   low: 0xec0ca5fc919029c6).bitwiseOr(UInt128(high: 0x8c8c509b742d039a,
-                                                              low: 0xa6951ea6fec91922))) == UInt128(high: 0x9d9c7d9f7cfdd7fa,
-                                                                                                    low: 0xee9dbffeffd939e6)
+    expect(UInt128(low: 0x4797a3617eb8b808,
+                   high: 0x15a0213be95279b4) | UInt128(low: 0xca1ca51eb646f945,
+                                                       high: 0xacdc3a1f1ea7ffc3)) == UInt128(low: 0xcf9fa77ffefef94d,
+                                                                                             high: 0xbdfc3b3ffff7fff7)
+    expect(UInt128(low: 0xec0ca5fc919029c6,
+                   high: 0x1d107d9678d0d4f8) | UInt128(low: 0xa6951ea6fec91922,
+                                                       high: 0x8c8c509b742d039a)) == UInt128(low: 0xee9dbffeffd939e6,
+                                                                                             high: 0x9d9c7d9f7cfdd7fa)
   }
 
   func testBitwiseAnd() {
-    expect(UInt128(high: 0x15a0213be95279b4,
-                   low: 0x4797a3617eb8b808).bitwiseAnd(UInt128(high: 0xacdc3a1f1ea7ffc3,
-                                                               low: 0xca1ca51eb646f945))) == UInt128(high: 0x480201b08027980,
-                                                                                                     low: 0x4214a1003600b800)
-    expect(UInt128(high: 0x1d107d9678d0d4f8,
-                   low: 0xec0ca5fc919029c6).bitwiseAnd(UInt128(high: 0x8c8c509b742d039a,
-                                                               low: 0xa6951ea6fec91922))) == UInt128(high: 0xc00509270000098,
-                                                                                                     low: 0xa40404a490800902)
+    expect(UInt128(low: 0x4797a3617eb8b808,
+                   high: 0x15a0213be95279b4) & UInt128(low: 0xca1ca51eb646f945,
+                                                       high: 0xacdc3a1f1ea7ffc3)) == UInt128(low: 0x4214a1003600b800,
+                                                                                             high: 0x480201b08027980)
+    expect(UInt128(low: 0xec0ca5fc919029c6,
+                   high: 0x1d107d9678d0d4f8) & UInt128(low: 0xa6951ea6fec91922,
+                                                       high: 0x8c8c509b742d039a)) == UInt128(low: 0xa40404a490800902,
+                                                                                             high: 0xc00509270000098)
   }
 
   func testBitwiseXor() {
-    expect(UInt128(high: 0x15a0213be95279b4,
-                   low: 0x4797a3617eb8b808).bitwiseXor(UInt128(high: 0xacdc3a1f1ea7ffc3,
-                                                               low: 0xca1ca51eb646f945))) == UInt128(high: 0xb97c1b24f7f58677,
-                                                                                                     low: 0x8d8b067fc8fe414d)
-    expect(UInt128(high: 0x1d107d9678d0d4f8,
-                   low: 0xec0ca5fc919029c6).bitwiseXor(UInt128(high: 0x8c8c509b742d039a,
-                                                               low: 0xa6951ea6fec91922))) == UInt128(high: 0x919c2d0d0cfdd762,
-                                                                                                     low: 0x4a99bb5a6f5930e4)
+    expect(UInt128(low: 0x4797a3617eb8b808,
+                   high: 0x15a0213be95279b4) ^ UInt128(low: 0xca1ca51eb646f945,
+                                                       high: 0xacdc3a1f1ea7ffc3)) == UInt128(low: 0x8d8b067fc8fe414d,
+                                                                                             high: 0xb97c1b24f7f58677)
+    expect(UInt128(low: 0xec0ca5fc919029c6,
+                   high: 0x1d107d9678d0d4f8) ^ UInt128(low: 0xa6951ea6fec91922,
+                                                       high: 0x8c8c509b742d039a)) == UInt128(low: 0x4a99bb5a6f5930e4,
+                                                                                             high: 0x919c2d0d0cfdd762)
   }
 
   func testMaskingShiftLeft() {
-    expect(UInt128(high: 0x914b165e0272e2a0, low: 0x6befc7e45b009df5).maskingShiftLeft(64)) == UInt128(high: 0x6befc7e45b009df5)
-    expect(UInt128(high: 0x914b165e0272e2a0, low: 0x6befc7e45b009df5).maskingShiftLeft(4)) == UInt128(high: 0x14b165e0272e2a06, low: 0xbefc7e45b009df50)
-    expect(UInt128(high: 0x914b165e0272e2a0, low: 0x6befc7e45b009df5).maskingShiftLeft(0)) == UInt128(high: 0x914b165e0272e2a0, low: 0x6befc7e45b009df5)
+    expect(UInt128(low: 0x6befc7e45b009df5,
+                   high: 0x914b165e0272e2a0) &<< 64) == UInt128(low: 0,
+                                                                high: 0x6befc7e45b009df5)
+    expect(UInt128(low: 0x6befc7e45b009df5,
+                   high: 0x914b165e0272e2a0) &<< 4) == UInt128(low: 0xbefc7e45b009df50,
+                                                               high: 0x14b165e0272e2a06)
+    expect(UInt128(low: 0x6befc7e45b009df5,
+                   high: 0x914b165e0272e2a0) &<< 0) == UInt128(low: 0x6befc7e45b009df5,
+                                                               high: 0x914b165e0272e2a0)
   }
 
   func testMaskingShiftRight() {
-    expect(UInt128(high: 0xa2799ee3f8945555, low: 0x2e64af845590fa4a).maskingShiftRight(64)) == UInt128(low: 0xa2799ee3f8945555)
-    expect(UInt128(high: 0xa2799ee3f8945555, low: 0x2e64af845590fa4a).maskingShiftRight(4)) == UInt128(high: 0x0a2799ee3f894555, low: 0x52e64af845590fa4)
+    expect(UInt128(low: 0x2e64af845590fa4a,
+                   high: 0xa2799ee3f8945555) &>> 64) == UInt128(low: 0xa2799ee3f8945555,
+                                                                high: 0)
+    expect(UInt128(low: 0x2e64af845590fa4a,
+                   high: 0xa2799ee3f8945555) &>> 4) == UInt128(low: 0x52e64af845590fa4,
+                                                               high: 0x0a2799ee3f894555)
   }
 
   func testLeadingZerosAndPopcount() {
-    expect(UInt128(high: 0x371cdc61db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 2
-    expect(UInt128(high: 0x071cdc61db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 5
-    expect(UInt128(high: 0x00000061db600552, low: 0xdd5b5aee8ebb7051).leadingZeros) == 25
-    expect(UInt128(low: 0xdd5b5aee8ebb7051).leadingZeros) == 64
-    expect(UInt128(low: 0x005b5aee8ebb7051).leadingZeros) == 73
-    expect(UInt128(low: 0x0000000e8ebb7051).leadingZeros) == 92
+    expect(UInt128(low: 0xdd5b5aee8ebb7051,
+                   high: 0x371cdc61db600552).leadingZeroBitCount) == 2
+    expect(UInt128(low: 0xdd5b5aee8ebb7051,
+                   high: 0x071cdc61db600552).leadingZeroBitCount) == 5
+    expect(UInt128(low: 0xdd5b5aee8ebb7051,
+                   high: 0x00000061db600552).leadingZeroBitCount) == 25
+    expect(UInt128(low: 0xdd5b5aee8ebb7051,
+                   high: 0).leadingZeroBitCount) == 64
+    expect(UInt128(low: 0x005b5aee8ebb7051,
+                   high: 0).leadingZeroBitCount) == 73
+    expect(UInt128(low: 0x0000000e8ebb7051,
+                   high: 0).leadingZeroBitCount) == 92
 
-    expect(UInt128(high: 0x371cdc61db600552, low: 0x305d38128a857e8).popcount) == 54
-    expect(UInt128(high: 0x177e4942eb8821c7, low: 0x8f2b1de818d1cd9).popcount) == 60
   }
 
   func testInitializers() {
-    expect(UInt128(self.asBinaryInteger(UInt128(high: 234, low: 1245)))) == UInt128(high: 234, low: 1245)
-    expect(UInt128(clamping: self.asBinaryInteger(UInt128(high: 234, low: 1245)))) == UInt128(high: 234, low: 1245)
-    expect(UInt128(Double(3.402823669209384e38))) == UInt128(high: 0xfffffffffffff000, low: 0x0000000000000000)
-    expect(UInt128(exactly: Double(3.402823669209384e38))) == UInt128(high: 0xfffffffffffff000, low: 0x0000000000000000)
+    expect(UInt128(self.asBinaryInteger(UInt128(low: 1245,
+                                                high: 234)))) == UInt128(low: 1245,
+                                                                         high: 234)
+    expect(UInt128(clamping: self.asBinaryInteger(UInt128(low: 1245,
+                                                          high: 234)))) == UInt128(low: 1245,
+                                                                                   high: 234)
+    expect(UInt128(Double(3.402823669209384e38))) == UInt128(low: 0x0000000000000000,
+                                                             high: 0xfffffffffffff000)
+    expect(UInt128(exactly: Double(3.402823669209384e38))) == UInt128(low: 0x0000000000000000,
+                                                                      high: 0xfffffffffffff000)
     expect(UInt128(exactly: Double(3.25))).to(beNil())
-    expect(UInt128(Float(3.4028236))) == UInt128(high: 0x0000000000000000, low: 0x0000000000000003)
+    expect(UInt128(Float(3.4028236))) == UInt128(low: 0x0000000000000003,
+                                                 high: 0x0000000000000000)
     expect(UInt128(_truncatingBits: UInt(12345678))) == 12345678
   }
 
   func testWordAt() {
-    let x = UInt128(high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617)
+    let x = UInt128(low: 0x41a230cc06319617,
+                    high: 0xcf31029a1b0b213e)
     expect(x.words[0]) == 0x41a230cc06319617
     expect(x.words[1]) == 0xcf31029a1b0b213e
-    let y = UInt128(high: 0x2216a1420bf34521, low: 0x801d64ae10c5361d)
+    let y = UInt128(low: 0x801d64ae10c5361d,
+                    high: 0x2216a1420bf34521)
     expect(y.words[0]) == 0x801d64ae10c5361d
     expect(y.words[1]) == 0x2216a1420bf34521
   }
