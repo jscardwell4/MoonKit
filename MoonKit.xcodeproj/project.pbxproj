@@ -259,7 +259,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C20951652592D33C008E021D /* TFraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFraction.swift; sourceTree = "<group>"; };
 		C21ABA4D259196D2009C5C6B /* UInt128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
 		C228E125258E5FB40060E476 /* MoonCode.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MoonCode.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C228E127258E5FB40060E476 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -713,7 +712,6 @@
 				C2E3FC92258D1AD4000AA924 /* Stack.swift */,
 				C2E3FC8F258D1AD4000AA924 /* HashedStorage.swift */,
 				C21ABA4D259196D2009C5C6B /* UInt128.swift */,
-				C20951652592D33C008E021D /* TFraction.swift */,
 			);
 			path = "Data Structures";
 			sourceTree = "<group>";

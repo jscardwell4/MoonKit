@@ -360,14 +360,14 @@ public struct Fraction {
 
 // MARK: Full Width Conversions
 
-public extension Fraction {
+extension Fraction {
   /// The default initializer for full width conversion from a floating point type to
   /// a fraction. For normal values the resulting fraction will be in decimal form
   /// unless `reduce` is `true`, in which case an attempt will be made to reduce the
   /// fraction down from it's decimal form.
   ///
   /// - parameter value:  The value to be converted into a fraction
-  init(_ value: Double) {
+  public init(_ value: Double) {
     guard !value.isSignalingNaN else {
       let payload = UInt128(value.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling)
@@ -417,14 +417,16 @@ public extension Fraction {
     reduce()
   }
 
-  /// Full width conversion from a `Decimal` to a fraction. The maximum value of both `Double` and `Decimal` are well
-  /// above that of `Fraction`; however, there may be some degree of increased precision in converting from a `Decimal`
-  /// value versus a `Double` value. The fraction will be in decimal form unless `reduce` is `true`, in which case an
-  /// attempt will be made to reduce the fraction down from it's decimal form.
+  /// Full width conversion from a `Decimal` to a fraction. The maximum value of both
+  /// `Double` and `Decimal` are well above that of `Fraction`; however, there may be
+  /// some degree of increased precision in converting from a `Decimal` value versus a
+  /// `Double` value. The fraction will be in decimal form unless `reduce` is `true`,
+  /// in which case an attempt will be made to reduce the fraction down from it's
+  /// decimal form.
   ///
   /// - parameter value:  The value to be converted into a fraction
   /// - parameter reduce: Whether the fraction should be reduced before returning.
-  init(_ value: Decimal) {
+  public init(_ value: Decimal) {
     guard !value.isSignalingNaN else {
       let payload = UInt128((value as NSDecimalNumber).doubleValue.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling)
@@ -486,6 +488,14 @@ public extension Fraction {
 
     reduce()
   }
+
+  /// Full width conversion from an `Int`.
+  /// - Parameter value: The integer value.
+  public init(_ value: Int) {
+    self.init(numerator: UInt128(abs(value)),
+              denominator: 1,
+              sign: value < 0 ? .minus : .plus)
+  }
 }
 
 // MARK: CustomStringConvertible
@@ -533,7 +543,7 @@ extension Fraction: AdditiveArithmetic {
   ///
   /// Zero is the identity element for addition. For any value,
   /// `x + .zero == x` and `.zero + x == x`.
-  public static let zero = Fraction()
+  public static let zero = Fraction(numerator: 0, denominator: 1, sign: .plus)
 
   /// Adds two values and produces their sum.
   ///
@@ -1036,25 +1046,13 @@ extension Fraction: FloatingPoint {
   /// with more trailing zeros in its significand bit pattern.
   ///
   /// - Parameter value: The integer to convert to a floating-point value.
-  public init(_ value: Int) {
-    self.init(numerator: UInt128(abs(value)),
-              denominator: 1,
-              sign: value < 0 ? .minus : .plus)
-  }
-
-  /// Creates a new value, rounded to the closest possible representation.
-  ///
-  /// If two representable values are equally close, the result is the value
-  /// with more trailing zeros in its significand bit pattern.
-  ///
-  /// - Parameter value: The integer to convert to a floating-point value.
   public init<Source>(_ value: Source) where Source: BinaryInteger {
     self.init(numerator: UInt128(value.magnitude),
               denominator: 1,
               sign: value < 0 ? .minus : .plus)
   }
 
-  /// The radix, or base of exponentiation, for a floating-point type.
+  /// The radix, or base of exponentiation, for a fraction.
   ///
   /// The magnitude of a floating-point value `x` of type `F` can be calculated
   /// by using the following formula, where `**` is exponentiation:
