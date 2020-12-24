@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../MoonKit_old/MoonKit_old.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:../../Documents/GitHub/Nimble/Nimble.xcodeproj">
    </FileRef>
    <FileRef
