@@ -9,18 +9,20 @@ import Foundation
 
 // MARK: - Fraction
 
+// TODO: - Monitor numerator/denominator value changes.
+
 public struct Fraction {
   /// The numerator of the fraction.
-  public var numerator: UInt128
+  public fileprivate(set) var numerator: UInt128
 
   /// The denominator of the fraction.
-  public var denominator: UInt128
+  public fileprivate(set) var denominator: UInt128
 
   /// Structure holding various flag values for the fraction.
   fileprivate var flags: Flags
 
   /// Structure for storing a `Fraction` instance's various flag values.
-  struct Flags: OptionSet, Hashable, CustomStringConvertible {
+  fileprivate struct Flags: OptionSet, Hashable, CustomStringConvertible {
     /// The underlying raw value.
     let rawValue: UInt8
 
@@ -149,12 +151,12 @@ public struct Fraction {
       : (isInfinite
         ? Fraction(numerator: 0, denominator: 1, sign: sign)
         : (isZero
-          ? Fraction(signOf: self, magnitudeOf: Fraction.infinity)
+          ? Fraction(signOf: self, magnitudeOf: .infinity)
           : Fraction(numerator: denominator, denominator: numerator, sign: sign)))
   }
 
   /// The fraction as represented with a power of ten denominator.
-  public var decimalForm: Fraction {
+  public func decimalForm() -> Fraction {
     // Check that the current form isn't most appropriate.
     guard !isNaN, !isInfinite, _powersOfTen ∌ denominator else { return self }
 
@@ -231,7 +233,6 @@ public struct Fraction {
 
           fractional.enqueue(quotient)
           partials.insert(AnyHashable((quotient, remainder)))
-
       }
     }
 
@@ -320,11 +321,11 @@ public struct Fraction {
     guard isFinite, !isZero, !isReduced else { return }
 
     if isRepeating {
-      let decimalForm = self.decimalForm
+      let decimal = decimalForm()
       let (integer,
            nonrepeating,
-           repeating) = _split(numerator: decimalForm.numerator,
-                               exponent: Swift.abs(Int(decimalForm.exponent)))
+           repeating) = _split(numerator: decimal.numerator,
+                               exponent: abs(decimal.exponent))
       switch (nonrepeating.count, repeating.count) {
         case (_, 0):
           break
@@ -360,14 +361,14 @@ public struct Fraction {
 
 // MARK: Full Width Conversions
 
-extension Fraction {
+public extension Fraction {
   /// The default initializer for full width conversion from a floating point type to
   /// a fraction. For normal values the resulting fraction will be in decimal form
   /// unless `reduce` is `true`, in which case an attempt will be made to reduce the
   /// fraction down from it's decimal form.
   ///
   /// - parameter value:  The value to be converted into a fraction
-  public init(_ value: Double) {
+  init(_ value: Double) {
     guard !value.isSignalingNaN else {
       let payload = UInt128(value.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling)
@@ -426,7 +427,7 @@ extension Fraction {
   ///
   /// - parameter value:  The value to be converted into a fraction
   /// - parameter reduce: Whether the fraction should be reduced before returning.
-  public init(_ value: Decimal) {
+  init(_ value: Decimal) {
     guard !value.isSignalingNaN else {
       let payload = UInt128((value as NSDecimalNumber).doubleValue.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling)
@@ -491,7 +492,7 @@ extension Fraction {
 
   /// Full width conversion from an `Int`.
   /// - Parameter value: The integer value.
-  public init(_ value: Int) {
+  init(_ value: Int) {
     self.init(numerator: UInt128(abs(value)),
               denominator: 1,
               sign: value < 0 ? .minus : .plus)
@@ -798,154 +799,6 @@ extension Fraction: Strideable {
 
 // MARK: FloatingPoint
 
-/// A floating-point numeric type.
-///
-/// Floating-point types are used to represent fractional numbers, like 5.5,
-/// 100.0, or 3.14159274. Each floating-point type has its own possible range
-/// and precision. The floating-point types in the standard library are
-/// `Float`, `Double`, and `Float80` where available.
-///
-/// Create new instances of floating-point types using integer or
-/// floating-point literals. For example:
-///
-///     let temperature = 33.2
-///     let recordHigh = 37.5
-///
-/// The `FloatingPoint` protocol declares common arithmetic operations, so you
-/// can write functions and algorithms that work on any floating-point type.
-/// The following example declares a function that calculates the length of
-/// the hypotenuse of a right triangle given its two perpendicular sides.
-/// Because the `hypotenuse(_:_:)` function uses a generic parameter
-/// constrained to the `FloatingPoint` protocol, you can call it using any
-/// floating-point type.
-///
-///     func hypotenuse<T: FloatingPoint>(_ a: T, _ b: T) -> T {
-///         return (a * a + b * b).squareRoot()
-///     }
-///
-///     let (dx, dy) = (3.0, 4.0)
-///     let distance = hypotenuse(dx, dy)
-///     // distance == 5.0
-///
-/// Floating-point values are represented as a *sign* and a *magnitude*, where
-/// the magnitude is calculated using the type's *radix* and the instance's
-/// *significand* and *exponent*. This magnitude calculation takes the
-/// following form for a floating-point value `x` of type `F`, where `**` is
-/// exponentiation:
-///
-///     x.significand * F.radix ** x.exponent
-///
-/// Here's an example of the number -8.5 represented as an instance of the
-/// `Double` type, which defines a radix of 2.
-///
-///     let y = -8.5
-///     // y.sign == .minus
-///     // y.significand == 1.0625
-///     // y.exponent == 3
-///
-///     let magnitude = 1.0625 * Double(2 ** 3)
-///     // magnitude == 8.5
-///
-/// Types that conform to the `FloatingPoint` protocol provide most basic
-/// (clause 5) operations of the [IEEE 754 specification][spec]. The base,
-/// precision, and exponent range are not fixed in any way by this protocol,
-/// but it enforces the basic requirements of any IEEE 754 floating-point
-/// type.
-///
-/// [spec]: http://ieeexplore.ieee.org/servlet/opac?punumber=4610933
-///
-/// Additional Considerations
-/// =========================
-///
-/// In addition to representing specific numbers, floating-point types also
-/// have special values for working with overflow and nonnumeric results of
-/// calculation.
-///
-/// Infinity
-/// --------
-///
-/// Any value whose magnitude is so great that it would round to a value
-/// outside the range of representable numbers is rounded to *infinity*. For a
-/// type `F`, positive and negative infinity are represented as `F.infinity`
-/// and `-F.infinity`, respectively. Positive infinity compares greater than
-/// every finite value and negative infinity, while negative infinity compares
-/// less than every finite value and positive infinity. Infinite values with
-/// the same sign are equal to each other.
-///
-///     let values: [Double] = [10.0, 25.0, -10.0, .infinity, -.infinity]
-///     print(values.sorted())
-///     // Prints "[-inf, -10.0, 10.0, 25.0, inf]"
-///
-/// Operations with infinite values follow real arithmetic as much as possible:
-/// Adding or subtracting a finite value, or multiplying or dividing infinity
-/// by a nonzero finite value, results in infinity.
-///
-/// NaN ("not a number")
-/// --------------------
-///
-/// Floating-point types represent values that are neither finite numbers nor
-/// infinity as NaN, an abbreviation for "not a number." Comparing a NaN with
-/// any value, including another NaN, results in `false`.
-///
-///     let myNaN = Double.nan
-///     print(myNaN > 0)
-///     // Prints "false"
-///     print(myNaN < 0)
-///     // Prints "false"
-///     print(myNaN == .nan)
-///     // Prints "false"
-///
-/// Because testing whether one NaN is equal to another NaN results in `false`,
-/// use the `isNaN` property to test whether a value is NaN.
-///
-///     print(myNaN.isNaN)
-///     // Prints "true"
-///
-/// NaN propagates through many arithmetic operations. When you are operating
-/// on many values, this behavior is valuable because operations on NaN simply
-/// forward the value and don't cause runtime errors. The following example
-/// shows how NaN values operate in different contexts.
-///
-/// Imagine you have a set of temperature data for which you need to report
-/// some general statistics: the total number of observations, the number of
-/// valid observations, and the average temperature. First, a set of
-/// observations in Celsius is parsed from strings to `Double` values:
-///
-///     let temperatureData = ["21.5", "19.25", "27", "no data", "28.25", "no data", "23"]
-///     let tempsCelsius = temperatureData.map { Double($0) ?? .nan }
-///     // tempsCelsius == [21.5, 19.25, 27, nan, 28.25, nan, 23.0]
-///
-/// Note that some elements in the `temperatureData ` array are not valid
-/// numbers. When these invalid strings are parsed by the `Double` failable
-/// initializer, the example uses the nil-coalescing operator (`??`) to
-/// provide NaN as a fallback value.
-///
-/// Next, the observations in Celsius are converted to Fahrenheit:
-///
-///     let tempsFahrenheit = tempsCelsius.map { $0 * 1.8 + 32 }
-///     // tempsFahrenheit == [70.7, 66.65, 80.6, nan, 82.85, nan, 73.4]
-///
-/// The NaN values in the `tempsCelsius` array are propagated through the
-/// conversion and remain NaN in `tempsFahrenheit`.
-///
-/// Because calculating the average of the observations involves combining
-/// every value of the `tempsFahrenheit` array, any NaN values cause the
-/// result to also be NaN, as seen in this example:
-///
-///     let badAverage = tempsFahrenheit.reduce(0.0, +) / Double(tempsFahrenheit.count)
-///     // badAverage.isNaN == true
-///
-/// Instead, when you need an operation to have a specific numeric result,
-/// filter out any NaN values using the `isNaN` property.
-///
-///     let validTemps = tempsFahrenheit.filter { !$0.isNaN }
-///     let average = validTemps.reduce(0.0, +) / Double(validTemps.count)
-///
-/// Finally, report the average temperature and observation counts:
-///
-///     print("Average: \(average)°F in \(validTemps.count) " +
-///           "out of \(tempsFahrenheit.count) observations.")
-///     // Prints "Average: 74.84°F in 5 out of 7 observations."
 extension Fraction: FloatingPoint {
   /// A type that can represent any written exponent.
   public typealias Exponent = Int
@@ -1122,7 +975,7 @@ extension Fraction: FloatingPoint {
   /// This value corresponds to type-specific C macros such as `FLT_MAX` and
   /// `DBL_MAX`. The naming of those macros is slightly misleading, because
   /// `infinity` is greater than this value.
-  public static let greatestFiniteMagnitude = Fraction(numerator: UInt128.max)
+  public static let greatestFiniteMagnitude = Fraction(numerator: .max)
 
   /// The mathematical constant pi.
   ///
@@ -1233,11 +1086,7 @@ extension Fraction: FloatingPoint {
   ///
   /// [spec]: http://ieeexplore.ieee.org/servlet/opac?punumber=4610933
   public var exponent: Self.Exponent {
-    isNaN || isInfinite
-      ? .max
-      : (isZero
-        ? 0
-        : -Int(log10(Double(decimalForm.denominator))))
+    isNaN || isInfinite ? .max : (isZero ? 0 : -_log10(decimalForm().denominator))
   }
 
   /// The significand of the floating-point value.
@@ -1275,7 +1124,7 @@ extension Fraction: FloatingPoint {
         ? .infinity
         : (isZero
           ? .zero
-          : Fraction(numerator: decimalForm.numerator, sign: sign)))
+          : Fraction(numerator: decimalForm().numerator, sign: sign)))
   }
 
   /// Returns the quotient of dividing the first value by the second, rounded
@@ -1409,9 +1258,7 @@ extension Fraction: FloatingPoint {
   /// - Returns: The remainder of this value divided by `other` using
   ///   truncating division.
   public func truncatingRemainder(dividingBy other: Self) -> Self {
-    var result = self
-    result.formTruncatingRemainder(dividingBy: other)
-    return result
+    _truncatingRemainder(self, other)
   }
 
   /// Replaces this value with the remainder of itself divided by the given
@@ -1444,33 +1291,7 @@ extension Fraction: FloatingPoint {
   ///
   /// - Parameter other: The value to use when dividing this value.
   public mutating func formTruncatingRemainder(dividingBy other: Self) {
-    // check NaNs
-    guard !isNaN else { return }
-    guard !other.isNaN else { flags.insert(.isNaN); return }
-
-    // check infinities
-    switch (isInfinite, other.isInfinite) {
-      case (true, _),
-           (false, false) where other.numerator == 0:
-        flags.insert(.isNaN)
-        return
-      case (false, true),
-           (false, false) where numerator == 0:
-        return
-      case (false, false):
-        /*
-         n = numerator, d = denominator, nʹ = other.numerator, dʹ = other.denominator
-         n/d mod nʹ/dʹ == nʺ/dʺ mod n‴/d″ where n/d == n″/d″ and n′/d′ == n‴/d″
-         */
-        let denominatorʹ = lcm(denominator, other.denominator)
-        let numeratorʹ = (denominatorʹ / denominator) * numerator
-        let otherNumerator = (denominatorʹ / other.denominator) * other.numerator
-
-        numerator = numeratorʹ % otherNumerator
-        denominator = denominatorʹ
-        flags.remove([.isReduced, .isRepeating])
-        reduce()
-    }
+    self = _truncatingRemainder(self, other)
   }
 
   /// Returns the square root of the value, rounded to a representable value.
@@ -1487,90 +1308,11 @@ extension Fraction: FloatingPoint {
   ///     // distance == 5.0
   ///
   /// - Returns: The square root of the value.
-  public func squareRoot() -> Self {
-    // TODO: Implement the function
-    fatalError("\(#function) not yet implemented.")
-  }
+  public func squareRoot() -> Self { _squareRoot(self) }
 
   /// Replaces this value with its square root, rounded to a representable
   /// value.
-  public mutating func formSquareRoot() {
-    guard !(isZero || isNaN || isInfinite && sign == .plus) else { return }
-    guard !(isInfinite && sign == .minus) else { flags.insert(.isNaN); return }
-
-    reduce()
-
-    // √(n/d) == √n/√d == (√n * √d)/d == (√(n * d))/d
-    let (numeratorʹ, overflow) = numerator.multipliedReportingOverflow(by: denominator)
-    guard overflow != true else {
-      self = Fraction(Double(self).squareRoot())
-      return
-    }
-
-    let pairs: AnyIterator<UInt128> = {
-      var value = numeratorʹ
-      let exponent = Int(log10(Double(value)))
-      let totalPairs = (exponent &+ 1) / 2
-      var currentPair = totalPairs
-      return AnyIterator {
-        guard currentPair > -1 else { return nil }
-        let powerOf10: UInt128 = power(value: 10, exponent: currentPair * 2,
-                                       identity: 1, operation: *)
-        let result = value / powerOf10
-        currentPair = currentPair &- 1
-        value -= result * powerOf10
-        return result
-      }
-    }()
-
-    var p: (integer: (value: UInt128, exponent: Int),
-            fractional: (value: UInt128, exponent: Int)) = ((0, 0),
-                                                            (0, 0))
-    var x: UInt128 = 0
-    var y: UInt128 = 0
-    var currentPair = pairs.next()
-
-    guard currentPair != nil else { flags.insert(.isNaN); return }
-
-    var c = currentPair!
-
-    repeat {
-      x = 0
-      let pʹ = p.integer.value
-      while (x &+ 1) * (20 * pʹ &+ (x &+ 1)) <= c { x = x &+ 1 }
-      p.integer.value *= 10
-      p.integer.value += x
-      p.integer.exponent += 1
-      y = x * (20 * pʹ &+ x)
-      c -= y
-      currentPair = pairs.next()
-      if currentPair != nil {
-        c *= 100
-        c += currentPair!
-      }
-    } while currentPair != nil
-
-    while c != 0, (p.fractional.exponent &+ p.integer.exponent) < 38 {
-      c *= 100
-      x = 0
-      let pʹ = p.integer.value * power(value: 10, exponent: p.fractional.exponent,
-                                       identity: 1, operation: *) + p.fractional.value
-      while (x &+ 1) * (20 * pʹ &+ (x &+ 1)) <= c { x = x &+ 1 }
-      let (fractionalʹ, overflow) = p.fractional.value.multipliedReportingOverflow(by: 10)
-      guard overflow == false else { break }
-      p.fractional.value = fractionalʹ &+ x
-      p.fractional.exponent += 1
-      y = x * (20 * pʹ &+ x)
-      c -= y
-    }
-
-    let denominatorʹ: UInt128 = power(value: 10, exponent: p.fractional.exponent,
-                                      identity: 1, operation: *)
-    numerator = denominatorʹ * p.integer.value + p.fractional.value
-    denominator *= denominatorʹ
-    flags.remove(.isReduced)
-    if c == 0 { flags.remove(.isRepeating) }
-  }
+  public mutating func formSquareRoot() { self = _squareRoot(self) }
 
   /// Returns the result of adding the product of the two given values to this
   /// value, computed without intermediate rounding.
@@ -1586,9 +1328,7 @@ extension Fraction: FloatingPoint {
   ///   - rhs: The other value to multiply.
   /// - Returns: The product of `lhs` and `rhs`, added to this value.
   public func addingProduct(_ lhs: Self, _ rhs: Self) -> Self {
-    var result = self
-    result.addProduct(lhs, rhs)
-    return result
+    _addProduct(self, lhs, rhs)
   }
 
   /// Adds the product of the two given values to this value in place, computed
@@ -1598,64 +1338,7 @@ extension Fraction: FloatingPoint {
   ///   - lhs: One of the values to multiply before adding to this value.
   ///   - rhs: The other value to multiply.
   public mutating func addProduct(_ lhs: Self, _ rhs: Self) {
-    guard !isNaN else { return }
-
-    // calculate the product
-    var product: Fraction
-
-    switch (lhs.isInfinite, rhs.isInfinite) {
-      case (true, false) where rhs.numerator == 0,
-           (false, true) where lhs.numerator == 0,
-           (false, _) where lhs.isNaN,
-           (_, false) where rhs.isNaN:
-        flags.insert(.isNaN); return
-      case (false, true):
-        product = rhs
-      case (true, false),
-           (true, true):
-        product = lhs
-      case (false, false):
-        product = (lhs.numerator * rhs.numerator)╱(lhs.denominator * rhs.denominator)
-    }
-
-    // Make sure product is appropriately signed
-    if lhs.sign != rhs.sign { product.negate() }
-
-    // Check infinities
-    switch (isInfinite, product.isInfinite) {
-      case (false, false): break
-      case (true, false),
-           (true, true) where sign == product.sign: return
-      case (false, true): self = product; return
-      case (true, true): flags.insert(.isNaN); return
-    }
-
-    // Calculate numerators over common base
-    let denominatorʹ = lcm(denominator, product.denominator)
-    let numeratorʹ = (denominatorʹ / denominator) * numerator
-    let otherNumerator = (denominatorʹ / product.denominator) * product.numerator
-
-    denominator = denominatorʹ // Update to common base used in calculations
-
-    // Check signs
-    switch (sign, product.sign) {
-      case (.plus, .plus),
-           (.minus, .minus):
-        numerator = numeratorʹ &+ otherNumerator
-      case (.plus, .minus) where numeratorʹ >= otherNumerator:
-        numerator = numeratorʹ &- otherNumerator
-      case (.plus, .minus) /* where numeratorʹ < otherNumerator*/:
-        numerator = otherNumerator &- numeratorʹ
-        flags.insert(.isNegative)
-      case (.minus, .plus) where numeratorʹ >= otherNumerator:
-        numerator = numeratorʹ &- otherNumerator
-      case (.minus, .plus) /* where numeratorʹ < otherNumerator*/:
-        numerator = otherNumerator &- numeratorʹ
-        flags.remove(.isNegative)
-    }
-
-    flags.remove([.isReduced, .isRepeating])
-    reduce()
+    self = _addProduct(self, lhs, rhs)
   }
 
   /// Returns the lesser of the two given values.
@@ -1686,8 +1369,11 @@ extension Fraction: FloatingPoint {
   /// - Returns: The minimum of `x` and `y`, or whichever is a number if the
   ///   other is NaN.
   public static func minimum(_ x: Self, _ y: Self) -> Self {
-    // TODO: Implement the function
-    fatalError("\(#function) not yet implemented.")
+    guard !x.isSignalingNaN,
+          !y.isSignalingNaN,
+          !x.isNaN || !y.isNaN else { return .nan }
+
+    return x.isNaN ? y : (y.isNaN ? x : (_isLessThanOrEqual(x, y) ? x : y))
   }
 
   /// Returns the greater of the two given values.
@@ -1718,8 +1404,11 @@ extension Fraction: FloatingPoint {
   /// - Returns: The greater of `x` and `y`, or whichever is a number if the
   ///   other is NaN.
   public static func maximum(_ x: Self, _ y: Self) -> Self {
-    // TODO: Implement the function
-    fatalError("\(#function) not yet implemented.")
+    guard !x.isSignalingNaN,
+          !y.isSignalingNaN,
+          !x.isNaN || !y.isNaN else { return .nan }
+
+    return x.isNaN ? y : (y.isNaN ? x : (_isLessThanOrEqual(x, y) ? y : x))
   }
 
   /// Returns the value with lesser magnitude.
@@ -1752,8 +1441,7 @@ extension Fraction: FloatingPoint {
   /// - Returns: Whichever of `x` or `y` has lesser magnitude, or whichever is
   ///   a number if the other is NaN.
   public static func minimumMagnitude(_ x: Self, _ y: Self) -> Self {
-    // TODO: Implement the function
-    fatalError("\(#function) not yet implemented.")
+    minimum(x.magnitude, y.magnitude)
   }
 
   /// Returns the value with greater magnitude.
@@ -1786,8 +1474,7 @@ extension Fraction: FloatingPoint {
   /// - Returns: Whichever of `x` or `y` has greater magnitude, or whichever is
   ///   a number if the other is NaN.
   public static func maximumMagnitude(_ x: Self, _ y: Self) -> Self {
-    // TODO: Implement the function
-    fatalError("\(#function) not yet implemented.")
+    maximum(x.magnitude, y.magnitude)
   }
 
   /// Returns this value rounded to an integral value using the specified
@@ -1823,11 +1510,7 @@ extension Fraction: FloatingPoint {
   ///
   /// - Parameter rule: The rounding rule to use.
   /// - Returns: The integral value found by rounding using `rule`.
-  public func rounded(_ rule: FloatingPointRoundingRule) -> Self {
-    var result = self
-    result.round(rule)
-    return result
-  }
+  public func rounded(_ rule: FloatingPointRoundingRule) -> Self { _round(self, rule) }
 
   /// Rounds the value to an integral value using the specified rounding rule.
   ///
@@ -1864,47 +1547,7 @@ extension Fraction: FloatingPoint {
   ///
   /// - Parameter rule: The rounding rule to use.
   public mutating func round(_ rule: FloatingPointRoundingRule) {
-    guard !isNaN, !isInfinite, !isZero else { return }
-    var numeratorʹ = numerator / denominator
-
-    switch ((numerator - numeratorʹ)╱1, denominator╱2) {
-      case let (x, y) where x < y:
-        switch rule {
-          case .down where sign == .minus,
-               .up where sign == .plus,
-               .awayFromZero:
-            numeratorʹ += 1
-          default:
-            break
-        }
-      case let (x, y) where x > y:
-        switch rule {
-          case .awayFromZero,
-               .toNearestOrEven,
-               .toNearestOrAwayFromZero,
-               .down where sign == .minus,
-               .up where sign == .plus:
-            numeratorʹ += 1
-          default:
-            break
-        }
-      default:
-        switch rule {
-          case .awayFromZero,
-               .toNearestOrAwayFromZero,
-               .down where sign == .minus,
-               .up where sign == .plus,
-               .toNearestOrEven where numeratorʹ % 2 == 1:
-            numeratorʹ += 1
-          default:
-            break
-        }
-    }
-
-    numerator = numeratorʹ
-    denominator = 1
-    flags.remove(.isRepeating)
-    flags.insert(.isReduced)
+    self = _round(self, rule)
   }
 
   /// The least representable value that compares greater than this value.
@@ -1918,24 +1561,17 @@ extension Fraction: FloatingPoint {
   /// - If `x` is zero, then `x.nextUp` is `leastNonzeroMagnitude`.
   /// - If `x` is `greatestFiniteMagnitude`, then `x.nextUp` is `infinity`.
   public var nextUp: Self {
-    guard !isNaN else { return self }
-    switch (numerator, denominator, sign) {
-      case (_, 0, .minus):
-        // If `self` is `-infinity` return `-greatestMagnitude`.
-        return Fraction(numerator: UInt128.max, denominator: 1, sign: .minus)
-      case (_, 0, .plus):
-        // If `self` is `infinity` return `x`.
-        return self
-      case (1, UInt128.max, .minus):
-        // If `self` is `-leastNonzeroMagnitude` return `-0.0`.
-        return Fraction(numerator: 0, denominator: UInt128.max, sign: .minus)
-      case (UInt128.max, 1, .plus):
-        // If `self` is `greatestMagnitude` return `infinity`.
-        return Fraction(numerator: UInt128.max, denominator: 0, sign: .plus)
-      default:
-        // Otherwise increment by `leastNonzeroMagnitude`
-        return self + .leastNonzeroMagnitude
-    }
+    guard !isNaN, !(isInfinite && flags ∌ .isNegative) else { return self }
+
+    guard !isInfinite else { return -.greatestFiniteMagnitude }
+
+    guard !_isEqual(self, -.leastNonzeroMagnitude) else { return .zero }
+
+    guard !isZero else { return .leastNonzeroMagnitude }
+
+    guard !_isEqual(self, .greatestFiniteMagnitude) else { return .infinity }
+
+    return _add(self, .leastNonzeroMagnitude)
   }
 
   /// The greatest representable value that compares less than this value.
@@ -1948,7 +1584,19 @@ extension Fraction: FloatingPoint {
   /// - If `x` is `leastNonzeroMagnitude`, then `x.nextDown` is `0.0`.
   /// - If `x` is zero, then `x.nextDown` is `-leastNonzeroMagnitude`.
   /// - If `x` is `-greatestFiniteMagnitude`, then `x.nextDown` is `-infinity`.
-  public var nextDown: Self { fatalError("\(#function) not yet implemented.") }
+  public var nextDown: Self {
+    guard !isNaN, !(isInfinite && flags ∋ .isNegative) else { return .nan }
+
+    guard !isInfinite else { return .greatestFiniteMagnitude }
+
+    guard !_isEqual(self, .leastNonzeroMagnitude) else { return .zero }
+
+    guard !isZero else { return -.leastNonzeroMagnitude }
+
+    guard !_isEqual(self, -.greatestFiniteMagnitude) else { return -.infinity }
+
+    return _subtract(self, .leastNonzeroMagnitude)
+  }
 
   /// Returns a Boolean value indicating whether this instance is equal to the
   /// given value.
@@ -2235,10 +1883,10 @@ private func _add(_ lhs: Fraction, _ rhs: Fraction) -> Fraction {
 
   // Check infinities
   guard !lhs.isInfinite else {
-    return rhs.isInfinite && lhs.sign != rhs.sign
-      ? .nan
-      : Fraction(signOf: lhs, magnitudeOf: .infinity)
+    return rhs.isInfinite && lhs.sign != rhs.sign ? .nan : lhs
   }
+
+  guard !rhs.isInfinite else { return rhs }
 
   // Rebase the fracions so that they share a common denominator.
   let denominator = lcm(lhs.denominator, rhs.denominator)
@@ -2424,6 +2072,225 @@ private func _truncatingRemainder(_ lhs: Fraction, _ rhs: Fraction) -> Fraction 
   let numerator = numeratorʹ % numeratorʺ
 
   return Fraction(numerator: numerator, denominator: denominator, reducing: true)
+}
+
+/// Calculating the square root of a fraction.
+/// - Parameter value: The fraction for which to calculate the square root.
+/// - Returns: The square root of `value`.
+private func _squareRoot(_ value: Fraction) -> Fraction {
+  guard !(value.isZero || value.isNaN || value.isInfinite && value.sign == .plus) else {
+    return value
+  }
+
+  guard !(value.isInfinite && value.sign == .minus) else {
+    return .nan
+  }
+
+  let value = value.reduced()
+
+  // √(n/d) == √n/√d == (√n * √d)/d == (√(n * d))/d
+  let (numeratorʹ,
+       overflow) = value.numerator.multipliedReportingOverflow(by: value.denominator)
+
+  guard !overflow else {
+    return Fraction(Double(value).squareRoot())
+  }
+
+  let pairs: AnyIterator<UInt128> = {
+    var result = numeratorʹ
+    let exponent = _log10(result)
+    let totalPairs = (exponent &+ 1) / 2
+    var currentPair = totalPairs
+    return AnyIterator {
+      guard currentPair > -1 else { return nil }
+      let powerOf10 = _pow10(currentPair * 2)
+      let resultʹ = result / powerOf10
+      currentPair = currentPair &- 1
+      result -= resultʹ * powerOf10
+      return resultʹ
+    }
+  }()
+
+  var p: (integer: (value: UInt128, exponent: Int),
+          fractional: (value: UInt128, exponent: Int)) = ((0, 0),
+                                                          (0, 0))
+  var x: UInt128 = 0
+  var y: UInt128 = 0
+  var currentPair = pairs.next()
+
+  guard var c = currentPair else { return .nan }
+
+  repeat {
+    x = 0
+
+    let pʹ = p.integer.value
+
+    while (x &+ 1) * (20 * pʹ &+ (x &+ 1)) <= c { x = x &+ 1 }
+
+    p.integer.value *= 10
+    p.integer.value += x
+    p.integer.exponent += 1
+
+    y = x * (20 * pʹ &+ x)
+    c -= y
+
+    currentPair = pairs.next()
+
+    if currentPair != nil {
+      c *= 100
+      c += currentPair!
+    }
+
+  } while currentPair != nil
+
+  while c != 0, (p.fractional.exponent &+ p.integer.exponent) < 38 {
+    c *= 100
+    x = 0
+
+    let pʹ = p.integer.value * _pow10(p.fractional.exponent) + p.fractional.value
+
+    while (x &+ 1) * (20 * pʹ &+ (x &+ 1)) <= c { x = x &+ 1 }
+
+    let (fractionalʹ, overflow) = p.fractional.value.multipliedReportingOverflow(by: 10)
+
+    guard !overflow else { break }
+
+    p.fractional.value = fractionalʹ &+ x
+    p.fractional.exponent += 1
+
+    y = x * (20 * pʹ &+ x)
+    c -= y
+  }
+
+  let numerator = _pow10(p.fractional.exponent) * p.integer.value + p.fractional.value
+  let denominator = value.denominator * _pow10(p.fractional.exponent)
+
+  return Fraction(numerator: numerator, denominator: denominator)
+}
+
+/// Calculates the addition of a fraction to the product of two other fractions.
+/// - Parameters:
+///   - value: The summand.
+///   - m1: The first multiplicand.
+///   - m2: The second multiplicand.
+/// - Returns: The result of adding `value` to the product of `m1` and `m2`.
+private func _addProduct(_ value: Fraction, _ m1: Fraction, _ m2: Fraction) -> Fraction {
+  guard !value.isNaN else { return .nan }
+
+  // calculate the product
+  var product: Fraction
+
+  switch (m1.isInfinite, m2.isInfinite) {
+    case (true, false) where m2.isZero,
+         (false, true) where m1.isZero,
+         (false, _) where m1.isNaN,
+         (_, false) where m2.isNaN:
+      return .nan
+    case (false, true):
+      product = m2
+    case (true, false),
+         (true, true):
+      product = m1
+    case (false, false):
+      product = Fraction(numerator: m1.numerator * m2.numerator,
+                         denominator: m1.denominator * m2.denominator)
+  }
+
+  // Make sure product is appropriately signed
+  if m1.sign != m2.sign { product.negate() }
+
+  // Check infinities
+  switch (value.isInfinite, product.isInfinite) {
+    case (false, false): break
+    case (true, false),
+         (true, true) where value.sign == product.sign: return value
+    case (false, true): return product
+    case (true, true): return .nan
+  }
+
+  // Calculate numerators over common base
+  let denominator = lcm(value.denominator, product.denominator)
+  let numeratorʹ = (denominator / value.denominator) * value.numerator
+  let numeratorʺ = (denominator / product.denominator) * product.numerator
+
+  let numerator: UInt128
+  let sign: FloatingPointSign
+
+  // Check signs
+  switch (value.sign, product.sign) {
+    case (.plus, .plus),
+         (.minus, .minus):
+      numerator = numeratorʹ &+ numeratorʺ
+      sign = .plus
+
+    case (.plus, .minus) where numeratorʹ >= numeratorʺ:
+      numerator = numeratorʹ &- numeratorʺ
+      sign = .plus
+
+    case (.plus, .minus):
+      numerator = numeratorʺ &- numeratorʹ
+      sign = .minus
+
+    case (.minus, .plus) where numeratorʹ >= numeratorʺ:
+      numerator = numeratorʹ &- numeratorʺ
+      sign = .minus
+
+    case (.minus, .plus):
+      numerator = numeratorʺ &- numeratorʹ
+      sign = .plus
+  }
+
+  return Fraction(numerator: numerator,
+                  denominator: denominator,
+                  sign: sign,
+                  reducing: true)
+}
+
+/// Rounds the specified fraction according the specified rounding rule.
+/// - Parameters:
+///   - value: The fraction to round.
+///   - rule: The rule used to round the fraction.
+/// - Returns: `value` rounded according to `rule`.
+private func _round(_ value: Fraction, _ rule: FloatingPointRoundingRule) -> Fraction {
+  guard !value.isNaN, !value.isInfinite, !value.isZero else { return value }
+
+  var numerator = value.numerator / value.denominator
+
+  switch ((value.numerator - numerator)╱1, value.denominator╱2) {
+    case let (x, y) where x < y:
+      switch rule {
+        case .down where value.sign == .minus,
+             .up where value.sign == .plus,
+             .awayFromZero:
+          numerator += 1
+        default:
+          break
+      }
+    case let (x, y) where x > y:
+      switch rule {
+        case .awayFromZero,
+             .toNearestOrEven,
+             .toNearestOrAwayFromZero,
+             .down where value.sign == .minus,
+             .up where value.sign == .plus:
+          numerator += 1
+        default:
+          break
+      }
+    default:
+      switch rule {
+        case .awayFromZero,
+             .toNearestOrAwayFromZero,
+             .down where value.sign == .minus,
+             .up where value.sign == .plus,
+             .toNearestOrEven where numerator % 2 == 1:
+          numerator += 1
+        default:
+          break
+      }
+  }
+
+  return Fraction(numerator: numerator)
 }
 
 // MARK: - Comparisons

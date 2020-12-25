@@ -339,7 +339,6 @@
 		C2E3FC88258D1AD3000AA924 /* Any2DIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Any2DIndex.swift; sourceTree = "<group>"; };
 		C2E3FC89258D1AD3000AA924 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		C2E3FC8A258D1AD3000AA924 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		C2E3FC8B258D1AD3000AA924 /* BCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BCD.swift; sourceTree = "<group>"; };
 		C2E3FC8C258D1AD3000AA924 /* AnyComparable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyComparable.swift; sourceTree = "<group>"; };
 		C2E3FC8D258D1AD3000AA924 /* Heap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Heap.swift; sourceTree = "<group>"; };
 		C2E3FC8E258D1AD3000AA924 /* SetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetType.swift; sourceTree = "<group>"; };
@@ -358,7 +357,6 @@
 		C2E3FD0B258D29BA000AA924 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		C2E3FD0C258D29BA000AA924 /* Numbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		C2E3FD13258D29F2000AA924 /* MiscellaneousFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousFunctions.swift; sourceTree = "<group>"; };
-		C2E3FD18258D2AAA000AA924 /* Ratio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ratio.swift; sourceTree = "<group>"; };
 		C2E3FD26258D308D000AA924 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		C2E3FD2B258D313C000AA924 /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		C2E6CB7D201AAC4C00D50E78 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -568,7 +566,6 @@
 		C29DBD1C1FEC046600A7EB56 /* CommonSource */ = {
 			isa = PBXGroup;
 			children = (
-				C2A6964A258C06F5009CB31F /* Ports in Progress */,
 				C2E3FD40258D36D1000AA924 /* Functions */,
 				C23591D920A6423900F1C813 /* Fonts */,
 				C29DBD581FEC0C9400A7EB56 /* CommandLineToolHelpers */,
@@ -678,15 +675,6 @@
 				C29DBD591FEC0CE900A7EB56 /* Paths.swift */,
 			);
 			path = CommandLineToolHelpers;
-			sourceTree = "<group>";
-		};
-		C2A6964A258C06F5009CB31F /* Ports in Progress */ = {
-			isa = PBXGroup;
-			children = (
-				C2E3FC8B258D1AD3000AA924 /* BCD.swift */,
-				C2E3FD18258D2AAA000AA924 /* Ratio.swift */,
-			);
-			path = "Ports in Progress";
 			sourceTree = "<group>";
 		};
 		C2E3FD1D258D3001000AA924 /* Data Structures */ = {
