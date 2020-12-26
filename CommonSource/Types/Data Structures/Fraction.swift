@@ -9,8 +9,6 @@ import Foundation
 
 // MARK: - Fraction
 
-// TODO: - Monitor numerator/denominator value changes.
-
 public struct Fraction {
   /// The numerator of the fraction.
   public fileprivate(set) var numerator: UInt128
@@ -389,17 +387,18 @@ public extension Fraction {
     let fractional = Swift.abs(value) - integer
     let digits = Array(fractional.digits().prefix(15))
 
-    let fractionalParts = _split(fractionalNumerator: digits)
-    if !fractionalParts.repeating.isEmpty {
+    let (nonrepeating, repeating) = _split(fractionalNumerator: digits)
+
+    if !repeating.isEmpty {
       // The decimal has a repeating pattern
 
-      let fractionalValue = UInt128(digits: fractionalParts.nonrepeating + fractionalParts.repeating)
-      let nonrepeatingValue = UInt128(digits: fractionalParts.nonrepeating)
+      let fractionalValue = UInt128(digits: nonrepeating + repeating)
+      let nonrepeatingValue = UInt128(digits: nonrepeating)
 
       let numeratorʹ = fractionalValue &- nonrepeatingValue
       var denominator: UInt128 = 0
-      for _ in 0..<fractionalParts.repeating.count { denominator = denominator * 10 &+ 9 }
-      for _ in 0..<fractionalParts.nonrepeating.count { denominator = denominator * 10 }
+      for _ in 0..<repeating.count { denominator = denominator * 10 &+ 9 }
+      for _ in 0..<nonrepeating.count { denominator = denominator * 10 }
       numerator *= denominator
       numerator += numeratorʹ
       self = Fraction(numerator: numerator, denominator: denominator, sign: value.sign)
@@ -408,8 +407,7 @@ public extension Fraction {
     } else {
       // The decimal terminates or does not have a repeating pattern
 
-      let denominator: UInt128 = power(value: 10, exponent: digits.count,
-                                       identity: 1, operation: *)
+      let denominator: UInt128 = _pow10(digits.count)
       numerator *= denominator
       numerator += UInt128(digits: digits)
       self = Fraction(numerator: numerator, denominator: denominator, sign: value.sign)
@@ -429,7 +427,8 @@ public extension Fraction {
   /// - parameter reduce: Whether the fraction should be reduced before returning.
   init(_ value: Decimal) {
     guard !value.isSignalingNaN else {
-      let payload = UInt128((value as NSDecimalNumber).doubleValue.significandBitPattern & ~(UInt64(1) << 50))
+      let bitPattern = (value as NSDecimalNumber).doubleValue.significandBitPattern
+      let payload = UInt128(bitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling)
       return
     }
@@ -501,6 +500,48 @@ public extension Fraction {
 
 // MARK: CustomStringConvertible
 
+/// A type with a customized textual representation.
+///
+/// Types that conform to the `CustomStringConvertible` protocol can provide
+/// their own representation to be used when converting an instance to a
+/// string. The `String(describing:)` initializer is the preferred way to
+/// convert an instance of *any* type to a string. If the passed instance
+/// conforms to `CustomStringConvertible`, the `String(describing:)`
+/// initializer and the `print(_:)` function use the instance's custom
+/// `description` property.
+///
+/// Accessing a type's `description` property directly or using
+/// `CustomStringConvertible` as a generic constraint is discouraged.
+///
+/// Conforming to the CustomStringConvertible Protocol
+/// ==================================================
+///
+/// Add `CustomStringConvertible` conformance to your custom types by defining
+/// a `description` property.
+///
+/// For example, this custom `Point` struct uses the default representation
+/// supplied by the standard library:
+///
+///     struct Point {
+///         let x: Int, y: Int
+///     }
+///
+///     let p = Point(x: 21, y: 30)
+///     print(p)
+///     // Prints "Point(x: 21, y: 30)"
+///
+/// After implementing the `description` property and declaring
+/// `CustomStringConvertible` conformance, the `Point` type provides its own
+/// custom representation.
+///
+///     extension Point: CustomStringConvertible {
+///         var description: String {
+///             return "(\(x), \(y))"
+///         }
+///     }
+///
+///     print(p)
+///     // Prints "(21, 30)"
 extension Fraction: CustomStringConvertible {
   /// Textual represenation of the fraction's value.
   public var description: String {
@@ -520,6 +561,60 @@ extension Fraction: CustomStringConvertible {
 
 // MARK: CustomDebugStringConvertible
 
+/// A type with a customized textual representation suitable for debugging
+/// purposes.
+///
+/// Swift provides a default debugging textual representation for any type.
+/// That default representation is used by the `String(reflecting:)`
+/// initializer and the `debugPrint(_:)` function for types that don't provide
+/// their own. To customize that representation, make your type conform to the
+/// `CustomDebugStringConvertible` protocol.
+///
+/// Because the `String(reflecting:)` initializer works for instances of *any*
+/// type, returning an instance's `debugDescription` if the value passed
+/// conforms to `CustomDebugStringConvertible`, accessing a type's
+/// `debugDescription` property directly or using
+/// `CustomDebugStringConvertible` as a generic constraint is discouraged.
+///
+/// - Note: Calling the `dump(_:_:_:_:)` function and printing in the debugger
+///   uses both `String(reflecting:)` and `Mirror(reflecting:)` to collect
+///   information about an instance. If you implement
+///   `CustomDebugStringConvertible` conformance for your custom type, you may
+///   want to consider providing a custom mirror by implementing
+///   `CustomReflectable` conformance, as well.
+///
+/// Conforming to the CustomDebugStringConvertible Protocol
+/// =======================================================
+///
+/// Add `CustomDebugStringConvertible` conformance to your custom types by
+/// defining a `debugDescription` property.
+///
+/// For example, this custom `Point` struct uses the default representation
+/// supplied by the standard library:
+///
+///     struct Point {
+///         let x: Int, y: Int
+///     }
+///
+///     let p = Point(x: 21, y: 30)
+///     print(String(reflecting: p))
+///     // Prints "p: Point = {
+///     //           x = 21
+///     //           y = 30
+///     //         }"
+///
+/// After adding `CustomDebugStringConvertible` conformance by implementing the
+/// `debugDescription` property, `Point` provides its own custom debugging
+/// representation.
+///
+///     extension Point: CustomDebugStringConvertible {
+///         var debugDescription: String {
+///             return "Point(x: \(x), y: \(y))"
+///         }
+///     }
+///
+///     print(String(reflecting: p))
+///     // Prints "Point(x: 21, y: 30)"
 extension Fraction: CustomDebugStringConvertible {
   /// Textual representation of the fraction's value and its flags.
   public var debugDescription: String { return description + " {flags: \(flags)}" }
@@ -527,6 +622,97 @@ extension Fraction: CustomDebugStringConvertible {
 
 // MARK: Hashable
 
+/// A type that can be hashed into a `Hasher` to produce an integer hash value.
+///
+/// You can use any type that conforms to the `Hashable` protocol in a set or as
+/// a dictionary key. Many types in the standard library conform to `Hashable`:
+/// Strings, integers, floating-point and Boolean values, and even sets are
+/// hashable by default. Some other types, such as optionals, arrays and ranges
+/// automatically become hashable when their type arguments implement the same.
+///
+/// Your own custom types can be hashable as well. When you define an
+/// enumeration without associated values, it gains `Hashable` conformance
+/// automatically, and you can add `Hashable` conformance to your other custom
+/// types by implementing the `hash(into:)` method. For structs whose stored
+/// properties are all `Hashable`, and for enum types that have all-`Hashable`
+/// associated values, the compiler is able to provide an implementation of
+/// `hash(into:)` automatically.
+///
+/// Hashing a value means feeding its essential components into a hash function,
+/// represented by the `Hasher` type. Essential components are those that
+/// contribute to the type's implementation of `Equatable`. Two instances that
+/// are equal must feed the same values to `Hasher` in `hash(into:)`, in the
+/// same order.
+///
+/// Conforming to the Hashable Protocol
+/// ===================================
+///
+/// To use your own custom type in a set or as the key type of a dictionary,
+/// add `Hashable` conformance to your type. The `Hashable` protocol inherits
+/// from the `Equatable` protocol, so you must also satisfy that protocol's
+/// requirements.
+///
+/// The compiler automatically synthesizes your custom type's `Hashable` and
+/// requirements when you declare `Hashable` conformance in the type's original
+/// declaration and your type meets these criteria:
+///
+/// - For a `struct`, all its stored properties must conform to `Hashable`.
+/// - For an `enum`, all its associated values must conform to `Hashable`. (An
+///   `enum` without associated values has `Hashable` conformance even without
+///   the declaration.)
+///
+/// To customize your type's `Hashable` conformance, to adopt `Hashable` in a
+/// type that doesn't meet the criteria listed above, or to extend an existing
+/// type to conform to `Hashable`, implement the `hash(into:)` method in your
+/// custom type.
+///
+/// In your `hash(into:)` implementation, call `combine(_:)` on the provided
+/// `Hasher` instance with the essential components of your type. To ensure
+/// that your type meets the semantic requirements of the `Hashable` and
+/// `Equatable` protocols, it's a good idea to also customize your type's
+/// `Equatable` conformance to match.
+///
+/// As an example, consider a `GridPoint` type that describes a location in a
+/// grid of buttons. Here's the initial declaration of the `GridPoint` type:
+///
+///     /// A point in an x-y coordinate system.
+///     struct GridPoint {
+///         var x: Int
+///         var y: Int
+///     }
+///
+/// You'd like to create a set of the grid points where a user has already
+/// tapped. Because the `GridPoint` type is not hashable yet, it can't be used
+/// in a set. To add `Hashable` conformance, provide an `==` operator function
+/// and implement the `hash(into:)` method.
+///
+///     extension GridPoint: Hashable {
+///         static func == (lhs: GridPoint, rhs: GridPoint) -> Bool {
+///             return lhs.x == rhs.x && lhs.y == rhs.y
+///         }
+///
+///         func hash(into hasher: inout Hasher) {
+///             hasher.combine(x)
+///             hasher.combine(y)
+///         }
+///     }
+///
+/// The `hash(into:)` method in this example feeds the grid point's `x` and `y`
+/// properties into the provided hasher. These properties are the same ones
+/// used to test for equality in the `==` operator function.
+///
+/// Now that `GridPoint` conforms to the `Hashable` protocol, you can create a
+/// set of previously tapped grid points.
+///
+///     var tappedPoints: Set = [GridPoint(x: 2, y: 3), GridPoint(x: 4, y: 1)]
+///     let nextTap = GridPoint(x: 0, y: 1)
+///     if tappedPoints.contains(nextTap) {
+///         print("Already tapped at (\(nextTap.x), \(nextTap.y)).")
+///     } else {
+///         tappedPoints.insert(nextTap)
+///         print("New tap detected at (\(nextTap.x), \(nextTap.y)).")
+///     }
+///     // Prints "New tap detected at (0, 1).")
 extension Fraction: Hashable {
   /// Hashes the numerator, denominator, and flag values into the specified `hasher`.
   /// - Parameter hasher: The `Hasher` into which we shall be hashing.
@@ -539,6 +725,40 @@ extension Fraction: Hashable {
 
 // MARK: AdditiveArithmetic
 
+/// A type with values that support addition and subtraction.
+///
+/// The `AdditiveArithmetic` protocol provides a suitable basis for additive
+/// arithmetic on scalar values, such as integers and floating-point numbers,
+/// or vectors. You can write generic methods that operate on any numeric type
+/// in the standard library by using the `AdditiveArithmetic` protocol as a
+/// generic constraint.
+///
+/// The following code declares a method that calculates the total of any
+/// sequence with `AdditiveArithmetic` elements.
+///
+///     extension Sequence where Element: AdditiveArithmetic {
+///         func sum() -> Element {
+///             return reduce(.zero, +)
+///         }
+///     }
+///
+/// The `sum()` method is now available on any sequence with values that
+/// conform to `AdditiveArithmetic`, whether it is an array of `Double` or a
+/// range of `Int`.
+///
+///     let arraySum = [1.1, 2.2, 3.3, 4.4, 5.5].sum()
+///     // arraySum == 16.5
+///
+///     let rangeSum = (1..<10).sum()
+///     // rangeSum == 45
+///
+/// Conforming to the AdditiveArithmetic Protocol
+/// =============================================
+///
+/// To add `AdditiveArithmetic` protocol conformance to your own custom type,
+/// implement the required operators, and provide a static `zero` property
+/// using a type that can represent the magnitude of any value of your custom
+/// type.
 extension Fraction: AdditiveArithmetic {
   /// The zero value.
   ///
@@ -608,6 +828,28 @@ extension Fraction: AdditiveArithmetic {
 
 // MARK: ExpressibleByIntegerLiteral
 
+/// A type that can be initialized with an integer literal.
+///
+/// The standard library integer and floating-point types, such as `Int` and
+/// `Double`, conform to the `ExpressibleByIntegerLiteral` protocol. You can
+/// initialize a variable or constant of any of these types by assigning an
+/// integer literal.
+///
+///     // Type inferred as 'Int'
+///     let cookieCount = 12
+///
+///     // An array of 'Int'
+///     let chipsPerCookie = [21, 22, 25, 23, 24, 19]
+///
+///     // A floating-point value initialized using an integer literal
+///     let redPercentage: Double = 1
+///     // redPercentage == 1.0
+///
+/// Conforming to ExpressibleByIntegerLiteral
+/// =========================================
+///
+/// To add `ExpressibleByIntegerLiteral` conformance to your custom type,
+/// implement the required initializer.
 extension Fraction: ExpressibleByIntegerLiteral {
   /// Creates an instance initialized to the specified integer value.
   ///
@@ -629,6 +871,41 @@ extension Fraction: ExpressibleByIntegerLiteral {
 
 // MARK: Numeric
 
+/// A type with values that support multiplication.
+///
+/// The `Numeric` protocol provides a suitable basis for arithmetic on
+/// scalar values, such as integers and floating-point numbers. You can write
+/// generic methods that operate on any numeric type in the standard library
+/// by using the `Numeric` protocol as a generic constraint.
+///
+/// The following example extends `Sequence` with a method that returns an
+/// array with the sequence's values multiplied by two.
+///
+///     extension Sequence where Element: Numeric {
+///         func doublingAll() -> [Element] {
+///             return map { $0 * 2 }
+///         }
+///     }
+///
+/// With this extension, any sequence with elements that conform to `Numeric`
+/// has the `doublingAll()` method. For example, you can double the elements of
+/// an array of doubles or a range of integers:
+///
+///     let observations = [1.5, 2.0, 3.25, 4.875, 5.5]
+///     let doubledObservations = observations.doublingAll()
+///     // doubledObservations == [3.0, 4.0, 6.5, 9.75, 11.0]
+///
+///     let integers = 0..<8
+///     let doubledIntegers = integers.doublingAll()
+///     // doubledIntegers == [0, 2, 4, 6, 8, 10, 12, 14]
+///
+/// Conforming to the Numeric Protocol
+/// ==================================
+///
+/// To add `Numeric` protocol conformance to your own custom type, implement
+/// the required initializer and operators, and provide a `magnitude` property
+/// using a type that can represent the magnitude of any value of your custom
+/// type.
 extension Fraction: Numeric {
   /// Creates a new instance from the given integer, if it can be represented
   /// exactly.
@@ -705,6 +982,28 @@ extension Fraction: Numeric {
 
 // MARK: SignedNumeric
 
+/// A type that can represent both positive and negative values.
+///
+/// The `SignedNumeric` protocol extends the operations defined by the
+/// `Numeric` protocol to include a value's additive inverse.
+///
+/// Conforming to the SignedNumeric Protocol
+/// ========================================
+///
+/// Because the `SignedNumeric` protocol provides default implementations of
+/// both of its required methods, you don't need to do anything beyond
+/// declaring conformance to the protocol and ensuring that the values of your
+/// type support negation. To customize your type's implementation, provide
+/// your own mutating `negate()` method.
+///
+/// When the additive inverse of a value is unrepresentable in a conforming
+/// type, the operation should either trap or return an exceptional value. For
+/// example, using the negation operator (prefix `-`) with `Int.min` results in
+/// a runtime error.
+///
+///     let x = Int.min
+///     let y = -x
+///     // Overflow error
 extension Fraction: SignedNumeric {
   /// Returns the additive inverse of the specified value.
   ///
@@ -750,6 +1049,92 @@ extension Fraction: SignedNumeric {
 
 // MARK: Strideable
 
+/// A type representing continuous, one-dimensional values that can be offset
+/// and measured.
+///
+/// You can use a type that conforms to the `Strideable` protocol with the
+/// `stride(from:to:by:)` and `stride(from:through:by:)` functions. For
+/// example, you can use `stride(from:to:by:)` to iterate over an
+/// interval of floating-point values:
+///
+///     for radians in stride(from: 0.0, to: .pi * 2, by: .pi / 2) {
+///         let degrees = Int(radians * 180 / .pi)
+///         print("Degrees: \(degrees), radians: \(radians)")
+///     }
+///     // Degrees: 0, radians: 0.0
+///     // Degrees: 90, radians: 1.5707963267949
+///     // Degrees: 180, radians: 3.14159265358979
+///     // Degrees: 270, radians: 4.71238898038469
+///
+/// The last parameter of these functions is of the associated `Stride`
+/// type---the type that represents the distance between any two instances of
+/// the `Strideable` type.
+///
+/// Types that have an integer `Stride` can be used as the boundaries of a
+/// countable range or as the lower bound of an iterable one-sided range. For
+/// example, you can iterate over a range of `Int` and use sequence and
+/// collection methods.
+///
+///     var sum = 0
+///     for x in 1...100 {
+///         sum += x
+///     }
+///     // sum == 5050
+///
+///     let digits = (0..<10).map(String.init)
+///     // ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+///
+/// Conforming to the Strideable Protocol
+/// =====================================
+///
+/// To add `Strideable` conformance to a custom type, choose a `Stride` type
+/// that can represent the distance between two instances and implement the
+/// `advanced(by:)` and `distance(to:)` methods. For example, this
+/// hypothetical `Date` type stores its value as the number of days before or
+/// after January 1, 2000:
+///
+///     struct Date: Equatable, CustomStringConvertible {
+///         var daysAfterY2K: Int
+///
+///         var description: String {
+///             // ...
+///         }
+///     }
+///
+/// The `Stride` type for `Date` is `Int`, inferred from the parameter and
+/// return types of `advanced(by:)` and `distance(to:)`:
+///
+///     extension Date: Strideable {
+///         func advanced(by n: Int) -> Date {
+///             var result = self
+///             result.daysAfterY2K += n
+///             return result
+///         }
+///
+///         func distance(to other: Date) -> Int {
+///             return other.daysAfterY2K - self.daysAfterY2K
+///         }
+///     }
+///
+/// The `Date` type can now be used with the `stride(from:to:by:)` and
+/// `stride(from:through:by:)` functions and as the bounds of an iterable
+/// range.
+///
+///     let startDate = Date(daysAfterY2K: 0)   // January 1, 2000
+///     let endDate = Date(daysAfterY2K: 15)    // January 16, 2000
+///
+///     for date in stride(from: startDate, to: endDate, by: 7) {
+///         print(date)
+///     }
+///     // January 1, 2000
+///     // January 8, 2000
+///     // January 15, 2000
+///
+/// - Important: The `Strideable` protocol provides default implementations for
+///   the equal-to (`==`) and less-than (`<`) operators that depend on the
+///   `Stride` type's implementations. If a type conforming to `Strideable` is
+///   its own `Stride` type, it must provide concrete implementations of the
+///   two operators to avoid infinite recursion.
 extension Fraction: Strideable {
   /// A type that represents the distance between two values.
   public typealias Stride = Self
@@ -799,6 +1184,154 @@ extension Fraction: Strideable {
 
 // MARK: FloatingPoint
 
+/// A floating-point numeric type.
+///
+/// Floating-point types are used to represent fractional numbers, like 5.5,
+/// 100.0, or 3.14159274. Each floating-point type has its own possible range
+/// and precision. The floating-point types in the standard library are
+/// `Float`, `Double`, and `Float80` where available.
+///
+/// Create new instances of floating-point types using integer or
+/// floating-point literals. For example:
+///
+///     let temperature = 33.2
+///     let recordHigh = 37.5
+///
+/// The `FloatingPoint` protocol declares common arithmetic operations, so you
+/// can write functions and algorithms that work on any floating-point type.
+/// The following example declares a function that calculates the length of
+/// the hypotenuse of a right triangle given its two perpendicular sides.
+/// Because the `hypotenuse(_:_:)` function uses a generic parameter
+/// constrained to the `FloatingPoint` protocol, you can call it using any
+/// floating-point type.
+///
+///     func hypotenuse<T: FloatingPoint>(_ a: T, _ b: T) -> T {
+///         return (a * a + b * b).squareRoot()
+///     }
+///
+///     let (dx, dy) = (3.0, 4.0)
+///     let distance = hypotenuse(dx, dy)
+///     // distance == 5.0
+///
+/// Floating-point values are represented as a *sign* and a *magnitude*, where
+/// the magnitude is calculated using the type's *radix* and the instance's
+/// *significand* and *exponent*. This magnitude calculation takes the
+/// following form for a floating-point value `x` of type `F`, where `**` is
+/// exponentiation:
+///
+///     x.significand * F.radix ** x.exponent
+///
+/// Here's an example of the number -8.5 represented as an instance of the
+/// `Double` type, which defines a radix of 2.
+///
+///     let y = -8.5
+///     // y.sign == .minus
+///     // y.significand == 1.0625
+///     // y.exponent == 3
+///
+///     let magnitude = 1.0625 * Double(2 ** 3)
+///     // magnitude == 8.5
+///
+/// Types that conform to the `FloatingPoint` protocol provide most basic
+/// (clause 5) operations of the [IEEE 754 specification][spec]. The base,
+/// precision, and exponent range are not fixed in any way by this protocol,
+/// but it enforces the basic requirements of any IEEE 754 floating-point
+/// type.
+///
+/// [spec]: http://ieeexplore.ieee.org/servlet/opac?punumber=4610933
+///
+/// Additional Considerations
+/// =========================
+///
+/// In addition to representing specific numbers, floating-point types also
+/// have special values for working with overflow and nonnumeric results of
+/// calculation.
+///
+/// Infinity
+/// --------
+///
+/// Any value whose magnitude is so great that it would round to a value
+/// outside the range of representable numbers is rounded to *infinity*. For a
+/// type `F`, positive and negative infinity are represented as `F.infinity`
+/// and `-F.infinity`, respectively. Positive infinity compares greater than
+/// every finite value and negative infinity, while negative infinity compares
+/// less than every finite value and positive infinity. Infinite values with
+/// the same sign are equal to each other.
+///
+///     let values: [Double] = [10.0, 25.0, -10.0, .infinity, -.infinity]
+///     print(values.sorted())
+///     // Prints "[-inf, -10.0, 10.0, 25.0, inf]"
+///
+/// Operations with infinite values follow real arithmetic as much as possible:
+/// Adding or subtracting a finite value, or multiplying or dividing infinity
+/// by a nonzero finite value, results in infinity.
+///
+/// NaN ("not a number")
+/// --------------------
+///
+/// Floating-point types represent values that are neither finite numbers nor
+/// infinity as NaN, an abbreviation for "not a number." Comparing a NaN with
+/// any value, including another NaN, results in `false`.
+///
+///     let myNaN = Double.nan
+///     print(myNaN > 0)
+///     // Prints "false"
+///     print(myNaN < 0)
+///     // Prints "false"
+///     print(myNaN == .nan)
+///     // Prints "false"
+///
+/// Because testing whether one NaN is equal to another NaN results in `false`,
+/// use the `isNaN` property to test whether a value is NaN.
+///
+///     print(myNaN.isNaN)
+///     // Prints "true"
+///
+/// NaN propagates through many arithmetic operations. When you are operating
+/// on many values, this behavior is valuable because operations on NaN simply
+/// forward the value and don't cause runtime errors. The following example
+/// shows how NaN values operate in different contexts.
+///
+/// Imagine you have a set of temperature data for which you need to report
+/// some general statistics: the total number of observations, the number of
+/// valid observations, and the average temperature. First, a set of
+/// observations in Celsius is parsed from strings to `Double` values:
+///
+///     let temperatureData = ["21.5", "19.25", "27", "no data", "28.25", "no data", "23"]
+///     let tempsCelsius = temperatureData.map { Double($0) ?? .nan }
+///     // tempsCelsius == [21.5, 19.25, 27, nan, 28.25, nan, 23.0]
+///
+/// Note that some elements in the `temperatureData ` array are not valid
+/// numbers. When these invalid strings are parsed by the `Double` failable
+/// initializer, the example uses the nil-coalescing operator (`??`) to
+/// provide NaN as a fallback value.
+///
+/// Next, the observations in Celsius are converted to Fahrenheit:
+///
+///     let tempsFahrenheit = tempsCelsius.map { $0 * 1.8 + 32 }
+///     // tempsFahrenheit == [70.7, 66.65, 80.6, nan, 82.85, nan, 73.4]
+///
+/// The NaN values in the `tempsCelsius` array are propagated through the
+/// conversion and remain NaN in `tempsFahrenheit`.
+///
+/// Because calculating the average of the observations involves combining
+/// every value of the `tempsFahrenheit` array, any NaN values cause the
+/// result to also be NaN, as seen in this example:
+///
+///     let badAverage = tempsFahrenheit.reduce(0.0, +) / Double(tempsFahrenheit.count)
+///     // badAverage.isNaN == true
+///
+/// Instead, when you need an operation to have a specific numeric result,
+/// filter out any NaN values using the `isNaN` property.
+///
+///     let validTemps = tempsFahrenheit.filter { !$0.isNaN }
+///     let average = validTemps.reduce(0.0, +) / Double(validTemps.count)
+///
+/// Finally, report the average temperature and observation counts:
+///
+///     print("Average: \(average)°F in \(validTemps.count) " +
+///           "out of \(tempsFahrenheit.count) observations.")
+///     // Prints "Average: 74.84°F in 5 out of 7 observations."
 extension Fraction: FloatingPoint {
   /// A type that can represent any written exponent.
   public typealias Exponent = Int

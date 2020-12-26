@@ -399,7 +399,6 @@
 		C2EDA6FD258FE6AB008B542D /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		C2EDA70F25900BC0008B542D /* MoonKit_iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = MoonKit_iOS.xctestplan; sourceTree = "<group>"; };
 		C2EDA72C25900C5E008B542D /* MoonKitPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoonKitPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2EDA72D25900C5E008B542D /* MoonKitTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MoonKitTests copy-Info.plist"; path = "/Users/Moondeer/Projects/MoonKit/MoonKitTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		C2EDA81F25902673008B542D /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		C2EDA84A2590358F008B542D /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		C2EDA8BA25904BBE008B542D /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -546,7 +545,6 @@
 				C228E14D258E67740060E476 /* MoonCodeApp */,
 				C228E126258E5FB40060E476 /* Frameworks */,
 				C29DBCE71FEC03C700A7EB56 /* Products */,
-				C2EDA72D25900C5E008B542D /* MoonKitTests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1650,7 +1648,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = "MoonKitTests copy-Info.plist";
+				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1672,7 +1670,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
-				INFOPLIST_FILE = "MoonKitTests copy-Info.plist";
+				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

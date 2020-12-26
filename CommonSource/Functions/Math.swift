@@ -60,34 +60,194 @@ public func even<I: FixedWidthInteger>(_ n: I) -> Bool { !odd(n) }
 /// - Returns: half of `n`.
 public func half<T>(_ n: T) -> T where T: FixedWidthInteger { n &>> 1 }
 
-/// Calculates the quotient and remainder for fixed width integer division.
+/// Calculates the quotient and remainder for fixed width unsigned integer division.
 ///
 /// - Parameters:
-///   - a: The dividend.
-///   - b: The divisor.
+///   - dividend: The dividend.
+///   - divisor: The divisor.
 /// - Returns: The quotient and remainder when dividing `a` by `b`.
-public func quotientRemainder<T>(_ a: T, _ b: T) -> (quotient: T, remainder: T)
-  where T: FixedWidthInteger
+public func quotientAndRemainder<I>(dividend: I, divisor: I) -> (quotient: I,
+                                                                 remainder: I)
+  where I: FixedWidthInteger, I: UnsignedInteger
 {
-  precondition(b > 0)
+  // Determine how many leading zeroes there are in the dividend.
+  let dividendBits = I.bitWidth - dividend.leadingZeroBitCount
 
-  guard a >= b else { return (0, a) }
+  // Determine the minimum number of bits required per subtraction.
+  let divisorBits = I.bitWidth - divisor.leadingZeroBitCount
 
-  var c = b
-  while a - c >= c { c = c &+ c }
+  // Determine the total number of shifts that will be performed during the calculation.
+  var shiftsRequired = dividendBits - divisorBits + 1
 
-  var r = a - c
-  var q: T = 1
+  // Initialize the remainder with the shifted high bits.
+  var remainder = dividend
 
-  while c != b {
-    c >>= 1
-    q = q + q
-    if c <= r {
-      r = r - c
-      q = q + 1
-    }
+  // Calculate the actual shift required for the next subtraction.
+  var currentShift = I.bitWidth - remainder.leadingZeroBitCount - divisorBits
+
+  // Initialize the quotient.
+  var quotient: I = 0
+
+  repeat {
+    // Get the value from which to subtract this round.
+    let minuend = remainder >> currentShift
+
+    // Determine whether the quotient bit will be `1` or `0`.
+    let bit = divisor < minuend ? 1 as I : 0
+
+    // Determine the value being subtracted.
+    let subtrahend = divisor * bit
+
+    // Subtract `subtrahend` from `minuend`.
+    let difference = minuend - subtrahend
+
+    // Slide the quotient over and insert the bit for this round.
+    quotient = (quotient << 1) | bit
+
+    // Clear out the corresponding bits of the remainder for this subtraction.
+    remainder &= I.max >> (I.bitWidth - currentShift)
+
+    // Insert the bits for `difference`.
+    remainder |= difference << currentShift
+
+    // Decrement the shift counters.
+    shiftsRequired -= 1
+    currentShift -= 1
+
+  } while shiftsRequired > 0
+
+  // Ensure there isn't one left in the chamber.
+  if remainder >= divisor {
+    // Subtract the `divisor`.
+    remainder -= divisor
+
+    // For the final digit we can simply add `1`.
+    quotient += 1
   }
-  return (q, r)
+
+  // Return the calculated quotient and remainder.
+  return (quotient: quotient, remainder: remainder)
+}
+
+/// Returns a tuple containing the quotient and remainder obtained by dividing
+/// the given value by this value.
+///
+/// The resulting quotient must be representable within the bounds of the
+/// type. If the quotient is too large to represent in the type, a runtime
+/// error may occur.
+///
+/// The following example divides a value that is too large to be represented
+/// using a single `UInt` instance by another `UInt` value. Because the quotient
+/// is representable as an `UInt`, the division succeeds.
+///
+///     // 'dividend' represents the value 0x506f70652053616e74612049494949
+///     let dividend = (22640526660490081 as UInt, 7959093232766896457 as UInt)
+///     let divisor = 2241543570477705381 as UInt
+///
+///     let (quotient, remainder) = divisor.dividingFullWidth(dividend)
+///     // quotient == 186319822866995413
+///     // remainder == 0
+///
+///
+/// - Parameters:
+///   - dividend: A tuple containing the high and low parts of a double-width integer.
+///   - divisor: The value by which to divide `dividend`.
+/// - Returns: A tuple containing the quotient and remainder obtained by
+///            dividing `dividend` by this value.
+public func quotientAndRemainder<I>(dividend: (high: I, low: I),
+                                    divisor: I) -> (quotient: I, remainder: I)
+  where I: FixedWidthInteger, I: UnsignedInteger
+{
+  // Determine how many leading zeroes there are in the dividend.
+  let dividendBits = dividend.high == 0
+    ? I.bitWidth - dividend.low.leadingZeroBitCount
+    : I.bitWidth * 2 - dividend.high.leadingZeroBitCount
+
+  // Determine the minimum number of bits required per subtraction.
+  let divisorBits = I.bitWidth - divisor.leadingZeroBitCount
+
+  // Determine the total number of shifts that will be performed during the calculation.
+  var shiftsRequired = dividendBits - divisorBits + 1
+
+  // Determine how many bits from the lower register we have room for.
+  let movedBitCount = dividend.high.leadingZeroBitCount
+
+  // Initialize the remainder with the shifted high bits.
+  var remainder = (dividend.high << movedBitCount)
+
+  // Move over the lower register bits.
+  remainder |= (dividend.low >> (I.bitWidth - movedBitCount))
+
+  // Keep track of the remaining bits of the lower register.
+  var lowBitsRemaining = I.bitWidth - movedBitCount
+  var lowʹ = dividend.low << movedBitCount
+
+  // Calculate the actual shift required for the next subtraction.
+  var currentShift = I.bitWidth - remainder.leadingZeroBitCount - divisorBits
+
+  // Initialize the quotient.
+  var quotient: I = 0
+
+  repeat {
+    // Get the value from which to subtract this round.
+    let minuend = remainder >> currentShift
+
+    // Determine whether the quotient bit will be `1` or `0`.
+    let bit = divisor < minuend ? 1 as I : 0
+
+    // Determine the value being subtracted.
+    let subtrahend = divisor * bit
+
+    // Subtract `subtrahend` from `minuend`.
+    let difference = minuend - subtrahend
+
+    // Slide the quotient over and insert the bit for this round.
+    quotient = (quotient << 1) | bit
+
+    // Clear out the corresponding bits of the remainder for this subtraction.
+    remainder &= I.max >> (I.bitWidth - currentShift)
+
+    // Insert the bits for `difference`.
+    remainder |= difference << currentShift
+
+    // Decrement the shift counters.
+    shiftsRequired -= 1
+    currentShift -= 1
+
+    // Do lower register bits require moving and is there room to move them?
+    if lowBitsRemaining > 0, remainder.leadingZeroBitCount > 0 {
+      // Move over as many as will currently fit in `remainder`.
+      let currentRoom = min(remainder.leadingZeroBitCount, lowBitsRemaining)
+
+      // Shift to make room for the moved bits.
+      remainder <<= currentRoom
+
+      // Move the bits over to `remainder`.
+      remainder |= lowʹ >> (I.bitWidth - currentRoom)
+
+      // Clear the bits out of the lower register.
+      lowʹ <<= currentRoom
+
+      // Decrement the lower register bit count remaining.
+      lowBitsRemaining -= currentRoom
+
+      // Increment the current shift to accomodate the moved bits.
+      currentShift += currentRoom
+    }
+
+  } while shiftsRequired > 0
+
+  // Ensure there isn't one left in the chamber.
+  if remainder >= divisor {
+    // Subtract the `divisor`.
+    remainder -= divisor
+
+    // For the final digit we can simply add `1`.
+    quotient += 1
+  }
+
+  // Return the calculated quotient and remainder.
+  return (quotient: quotient, remainder: remainder)
 }
 
 /// Raises a value to the specified exponent using the provided closure.
@@ -208,16 +368,16 @@ public func power<T>(value: T,
   return result
 }
 
-//public func log<T>(_ x: T, _ y: T, op: (T, T) -> T, stop: (T) -> Bool) -> (Int, T) {
+// public func log<T>(_ x: T, _ y: T, op: (T, T) -> T, stop: (T) -> Bool) -> (Int, T) {
 //  var x = x, n = 0
 //  while !stop(x) {
 //    x = op(x, y)
 //    n = n &+ 1
 //  }
 //  return (n, x)
-//}
+// }
 
-//public func log<T>(_ x: T, _ n: Int, identity: T, op: (T, T) -> T) -> T {
+// public func log<T>(_ x: T, _ n: Int, identity: T, op: (T, T) -> T) -> T {
 //  guard n != 0 else { return identity }
 //  var x = x, n = abs(n)
 //  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
@@ -233,9 +393,9 @@ public func power<T>(value: T,
 //    n = n >> 1
 //    x = op(x, x)
 //  }
-//}
+// }
 
-//public func log<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T) -> T) -> T {
+// public func log<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T) -> T) -> T {
 //  guard n != 0 else { return identity }
 //  var x = n < 0 ? inverse(x) : x, n = abs(n)
 //  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
@@ -251,20 +411,20 @@ public func power<T>(value: T,
 //    n = n >> 1
 //    x = op(x, x)
 //  }
-//}
+// }
 
 /// Calculates the double-width multiplication of two fixed width, unsigned integers.
 /// - Parameters:
 ///   - lhs: The first multiplicand.
 ///   - rhs: The second multiplicand.
 /// - Returns: The double-width result of multiplying `lhs` by `rhs`.
-public func doubleWidthMultiply<T>(_ lhs: T, _ rhs: T) -> (high: T, low: T)
-  where T: FixedWidthInteger, T: UnsignedInteger
+public func doubleWidthMultiply<I>(_ lhs: I, _ rhs: I) -> (high: I, low: I)
+  where I: FixedWidthInteger, I: UnsignedInteger
 {
-  let bitWidth = T.bitWidth
+  let bitWidth = I.bitWidth
   let halfBitWidth = bitWidth / 2
 
-  let mask = T.max >> halfBitWidth
+  let mask = I.max >> halfBitWidth
 
   let pLL = (lhs & mask) * (rhs & mask)
   let pLH = (lhs & mask) * (rhs >> halfBitWidth)

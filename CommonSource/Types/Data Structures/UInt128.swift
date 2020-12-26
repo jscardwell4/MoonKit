@@ -18,12 +18,14 @@ public struct UInt128: UnsignedInteger {
   public fileprivate(set) var high: UInt64 = 0
 
   /// Default initializer.
+  ///
   /// - Parameters:
   ///   - low: The value for the low bits.
   ///   - high: The value for the high bits.
   public init(low: UInt64 = 0, high: UInt64 = 0) { self.low = low; self.high = high }
 
   /// Initializing by rounding a `Decimal` value.
+  ///
   /// - Parameter value: The value to be converted via rounding.
   public init(_ value: Decimal) {
     precondition(value.sign == .plus,
@@ -69,12 +71,6 @@ public struct UInt128: UnsignedInteger {
 // MARK: ExpressibleByIntegerLiteral
 
 extension UInt128: ExpressibleByIntegerLiteral {
-  /// A type that represents an integer literal.
-  ///
-  /// The standard library integer and floating-point types are all valid types
-  /// for `IntegerLiteralType`.
-  public typealias IntegerLiteralType = UInt
-
   /// Creates an instance initialized to the specified integer value.
   ///
   /// Do not call this initializer directly. Instead, initialize a variable or
@@ -86,7 +82,7 @@ extension UInt128: ExpressibleByIntegerLiteral {
   /// literal initializer behind the scenes.
   ///
   /// - Parameter value: The value to create.
-  public init(integerLiteral value: Self.IntegerLiteralType) {
+  public init(integerLiteral value: UInt) {
     self.init(low: UInt64(value), high: 0)
   }
 }
@@ -149,8 +145,7 @@ extension UInt128: CustomDebugStringConvertible {
   public var debugDescription: String {
     """
     \(description) \
-    {high: 0x\(String(high, radix: 16)); \
-    low: 0x\(String(low, radix: 16))}
+    (high: 0x\(String(high, radix: 16)), low: 0x\(String(low, radix: 16)))
     """
   }
 }
@@ -169,9 +164,6 @@ extension UInt128: LosslessStringConvertible {
 // MARK: Strideable
 
 extension UInt128: Strideable {
-  /// A type that represents the distance between two values.
-  public typealias Stride = Int
-
   /// Returns the distance from this value to the given value, expressed as a
   /// stride.
   ///
@@ -184,7 +176,7 @@ extension UInt128: Strideable {
   /// - Returns: The distance from this value to `other`.
   ///
   /// - Complexity: O(1)
-  public func distance(to other: Self) -> Self.Stride {
+  public func distance(to other: Self) -> Int {
     self > other
       ? Int(truncatingIfNeeded: self - other)
       : Int(truncatingIfNeeded: other - self)
@@ -216,7 +208,7 @@ extension UInt128: Strideable {
   /// - Returns: A value that is offset from this value by `n`.
   ///
   /// - Complexity: O(1)
-  public func advanced(by n: Self.Stride) -> Self {
+  public func advanced(by n: Int) -> Self {
     let nʹ = UInt128(low: UInt64(abs(n)), high: 0)
     return n > 0 ? self + nʹ : self - nʹ
   }
@@ -360,7 +352,9 @@ extension UInt128: AdditiveArithmetic {
   /// - Parameters:
   ///   - lhs: A numeric value.
   ///   - rhs: The value to subtract from `lhs`.
-  public static func - (lhs: Self, rhs: Self) -> Self { _subtract(lhs, rhs).partialValue }
+  public static func - (lhs: Self, rhs: Self) -> Self {
+    _subtract(lhs, rhs).partialValue
+  }
 
   /// Subtracts the second value from the first and stores the difference in the
   /// left-hand-side variable.
@@ -401,10 +395,6 @@ extension UInt128: Numeric {
     }
   }
 
-  /// A type that can represent the absolute value of any possible value of the
-  /// conforming type.
-  public typealias Magnitude = Self
-
   /// The magnitude of this value.
   ///
   /// For any numeric value `x`, `x.magnitude` is the absolute value of `x`.
@@ -420,7 +410,7 @@ extension UInt128: Numeric {
   /// to find an absolute value. In addition, because `abs(_:)` always returns
   /// a value of the same type, even in a generic context, using the function
   /// instead of the `magnitude` property is encouraged.
-  public var magnitude: Self.Magnitude { self }
+  public var magnitude: Self { self }
 
   /// Multiplies two values and produces their product.
   ///
@@ -442,7 +432,9 @@ extension UInt128: Numeric {
   /// - Parameters:
   ///   - lhs: The first value to multiply.
   ///   - rhs: The second value to multiply.
-  public static func * (lhs: Self, rhs: Self) -> Self { _multiply(lhs, rhs).partialValue }
+  public static func * (lhs: Self, rhs: Self) -> Self {
+    _multiply(lhs, rhs).partialValue
+  }
 
   /// Multiplies two values and stores the result in the left-hand-side
   /// variable.
@@ -699,7 +691,7 @@ extension UInt128: FixedWidthInteger {
   ///
   /// Negative values are returned in two's complement representation,
   /// regardless of the type's underlying implementation.
-  public var words: Self.Words { Words(self) }
+  public var words: Words { Words(self) }
 
   /// The number of bits in the current binary representation of this value.
   ///
@@ -779,7 +771,8 @@ extension UInt128: FixedWidthInteger {
   }
 
   /// A representation of this integer with the byte order swapped.
-  public var byteSwapped: Self { UInt128(low: high.byteSwapped, high: low.byteSwapped) }
+  public var byteSwapped: Self { UInt128(low: high.byteSwapped,
+                                         high: low.byteSwapped) }
 
   // MARK: Operations
 
@@ -972,7 +965,7 @@ extension UInt128: FixedWidthInteger {
                                              low: Self.Magnitude)) -> (quotient: Self,
                                                                        remainder: Self)
   {
-    fatalError("\(#fileID) \(#function) Not yet implemented.")
+    MoonKit.quotientAndRemainder(dividend: dividend, divisor: self)
   }
 
   // MARK: Operator support
@@ -1531,7 +1524,7 @@ private func _convertFloatingPoint<T>(_ source: T) -> (value: UInt128, isExact: 
                             significandBitPattern: significand)
         bits = UInt64(double)
     }
-    
+
     switch shift {
       case 0...63: value.low |= bits << shift
       case 64...127: value.high |= bits << (shift &- 64)
@@ -1785,6 +1778,8 @@ private func _bitwiseXor(_ lhs: UInt128, _ rhs: UInt128) -> UInt128 {
 private func _bitwiseRightShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
   where T: BinaryInteger
 {
+  guard rhs >= 0 else { return _bitwiseLeftShift(lhs, rhs.magnitude) }
+
   let low: UInt64, high: UInt64
   switch Int(rhs) {
     case 0:
@@ -1808,6 +1803,8 @@ private func _bitwiseRightShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
 private func _bitwiseLeftShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
   where T: BinaryInteger
 {
+  guard rhs >= 0 else { return _bitwiseRightShift(lhs, rhs.magnitude) }
+
   let low: UInt64, high: UInt64
   switch Int(rhs) {
     case 0:
@@ -1824,7 +1821,7 @@ private func _bitwiseLeftShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
 }
 
 /// Performs a masking bitwise right shift `&>>`.
-/// - Warning: Not currently masking.
+///
 /// - Parameters:
 ///   - lhs: The value to shift.
 ///   - rhs: The amount by which to shift `lhs`.
@@ -1832,11 +1829,11 @@ private func _bitwiseLeftShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
 private func _bitwiseMaskingRightShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
   where T: BinaryInteger
 {
-  _bitwiseRightShift(lhs, rhs)
+  _bitwiseRightShift(lhs, rhs % T(UInt128.bitWidth))
 }
 
 /// Performs a masking bitwise left shift `<<`.
-/// - Warning: Not currently masking.
+///
 /// - Parameters:
 ///   - lhs: The value to shift.
 ///   - rhs: The amount by which to shift `lhs`.
@@ -1844,7 +1841,7 @@ private func _bitwiseMaskingRightShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
 private func _bitwiseMaskingLeftShift<T>(_ lhs: UInt128, _ rhs: T) -> UInt128
   where T: BinaryInteger
 {
-  _bitwiseLeftShift(lhs, rhs)
+  _bitwiseLeftShift(lhs, rhs % T(UInt128.bitWidth))
 }
 
 // MARK: Comparisons
@@ -1874,7 +1871,8 @@ public extension String {
   /// - Parameters:
   ///   - value: The value to be described by the string.
   ///   - radix: The numeric base the description should employ. Supported values for
-  ///            `radix` include 2, 8, 4, 10, and 16
+  ///            `radix` include 2, 8, 4, 10, and 16. `10` is used in place of
+  ///            unsupported values.
   ///   - uppercase: Whether any letters that appear should be uppercase.
   init(_ value: UInt128, radix: Int, uppercase: Bool = false) {
     guard value.high > 0 else {
@@ -1884,35 +1882,40 @@ public extension String {
     switch radix {
       case 32:
         let high = String(value.high, radix: radix, uppercase: uppercase)
-        let leadingZeros = String(repeating: "0", count: countLeadingZeros(value.low) / 16)
+        let leadingZeros = String(repeating: "0",
+                                  count: countLeadingZeros(value.low) / 16)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 16:
         let high = String(value.high, radix: radix, uppercase: uppercase)
-        let leadingZeros = String(repeating: "0", count: countLeadingZeros(value.low) / 8)
+        let leadingZeros = String(repeating: "0",
+                                  count: countLeadingZeros(value.low) / 8)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 8:
         let high = String(value.high, radix: radix, uppercase: uppercase)
-        let leadingZeros = String(repeating: "0", count: countLeadingZeros(value.low) / 4)
+        let leadingZeros = String(repeating: "0",
+                                  count: countLeadingZeros(value.low) / 4)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 4:
         let high = String(value.high, radix: radix, uppercase: uppercase)
-        let leadingZeros = String(repeating: "0", count: countLeadingZeros(value.low) / 2)
+        let leadingZeros = String(repeating: "0",
+                                  count: countLeadingZeros(value.low) / 2)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 2:
         let high = String(value.high, radix: radix, uppercase: uppercase)
-        let leadingZeros = String(repeating: "0", count: countLeadingZeros(value.low))
+        let leadingZeros = String(repeating: "0",
+                                  count: countLeadingZeros(value.low))
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
-      case 10:
+      default:
         let n7 = value.high >> 48
         let n6 = (value.high >> 32) & 0xFFFF
         let n5 = (value.high >> 16) & 0xFFFF
@@ -2015,10 +2018,6 @@ public extension String {
 
         guard strings.last?.isEmpty != true else { self = "0"; return }
         self = strings.joined(separator: "")
-
-      default:
-        // TODO: Fill in the gaps for bases 3 through 32
-        fatalError("\(#function) not yet implemented for bases other than 2, 8, 4, 10, and 16")
     }
   }
 }

@@ -29,7 +29,7 @@ final class UInt128Tests: XCTestCase {
     expect(UInt128(low: 0x41a230cc06319617,
                    high: 0xcf31029a1b0b213e).description) == "275404670447871577180648434354736961047"
     expect(UInt128(low: 0x41a230cc06319617,
-                   high: 0xcf31029a1b0b213e).debugDescription) == "275404670447871577180648434354736961047 {high: 0xcf31029a1b0b213e; low: 0x41a230cc06319617}"
+                   high: 0xcf31029a1b0b213e).debugDescription) == "275404670447871577180648434354736961047 (high: 0xcf31029a1b0b213e, low: 0x41a230cc06319617)"
   }
 
   func testAddition() {

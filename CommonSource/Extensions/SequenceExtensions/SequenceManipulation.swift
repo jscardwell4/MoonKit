@@ -114,7 +114,7 @@ public extension Sequence {
           array.insert(element, at: 0)
         }
         while array.count < segmentSize { array.insert(p, at: 0) }
-        result.insert(array, at: 0)
+        result.append(array.reversed())
 
     }
 
