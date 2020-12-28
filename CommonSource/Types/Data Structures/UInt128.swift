@@ -49,9 +49,10 @@ public struct UInt128: UnsignedInteger {
   /// - Returns: An array with the decimal digits of this value
   ///            along with any leading `0`s
   public func digits(minLength: Int = 0) -> [UInt8] {
+//    guard self > 0 else { return Array<UInt8>(repeating: 0, count: Swift.max(minLength, 1)) }
     var digits: Stack<UInt8> = []
     var value = self
-    var exponent = Swift.max(minLength, Int(log10(Double(self))))
+    var exponent = Swift.max(minLength, Int(log10(Double(self)).isInfinite ? 0 : log10(Double(self))))
     repeat {
       digits.push(UInt8((value % 10).low))
       value /= 10; exponent -= 1
@@ -145,7 +146,7 @@ extension UInt128: CustomDebugStringConvertible {
   public var debugDescription: String {
     """
     \(description) \
-    (high: 0x\(String(high, radix: 16)), low: 0x\(String(low, radix: 16)))
+    (low: 0x\(String(low, radix: 16)), high: 0x\(String(high, radix: 16)))
     """
   }
 }
@@ -671,19 +672,42 @@ extension UInt128: FixedWidthInteger {
     public typealias SubSequence = Slice<UInt128.Words>
     public typealias Indices = Range<Int>
 
-    public var count: Int { 2 }
+    public var count: Int { (UInt64.bitWidth / UInt.bitWidth) * 2 }
     public var startIndex: Int { 0 }
     public var endIndex: Int { count }
     public var indices: Range<Int> { startIndex ..< endIndex }
     public func index(after i: Int) -> Int { i + 1 }
     public func index(before i: Int) -> Int { i - 1 }
 
-    var _low: UInt
-    var _high: UInt
+    var _low: UInt64
+    var _high: UInt64
 
-    init(_ value: UInt128) { _low = UInt(value.low); _high = UInt(value.high) }
+    init(_ value: UInt128) { _low = value.low; _high = value.high }
 
-    public subscript(position: Int) -> UInt { position == 0 ? _low : _high }
+    public subscript(position: Int) -> UInt {
+      switch position {
+        case 0 where count > 2:
+          return UInt(_low & (UInt64.max >> 32))
+
+        case 0:
+          return UInt(_low)
+
+        case 1 where count > 2:
+          return UInt((_low & (UInt64.max << 32)) >> 32)
+
+        case 1:
+          return UInt(_high)
+
+        case 2:
+          return UInt(_high & (UInt64.max >> 32))
+
+        case 3:
+          return UInt((_high & (UInt64.max << 32)) >> 32)
+
+        default:
+          fatalError("\(#fileID) \(#function) Unexpected word index '\(position)'")
+      }
+    }
   }
 
   /// A collection containing the words of this value's binary
@@ -1883,35 +1907,35 @@ public extension String {
       case 32:
         let high = String(value.high, radix: radix, uppercase: uppercase)
         let leadingZeros = String(repeating: "0",
-                                  count: countLeadingZeros(value.low) / 16)
+                                  count: value.low.leadingZeroBitCount / 16)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 16:
         let high = String(value.high, radix: radix, uppercase: uppercase)
         let leadingZeros = String(repeating: "0",
-                                  count: countLeadingZeros(value.low) / 8)
+                                  count: value.low.leadingZeroBitCount / 8)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 8:
         let high = String(value.high, radix: radix, uppercase: uppercase)
         let leadingZeros = String(repeating: "0",
-                                  count: countLeadingZeros(value.low) / 4)
+                                  count: value.low.leadingZeroBitCount / 4)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 4:
         let high = String(value.high, radix: radix, uppercase: uppercase)
         let leadingZeros = String(repeating: "0",
-                                  count: countLeadingZeros(value.low) / 2)
+                                  count: value.low.leadingZeroBitCount / 2)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 
       case 2:
         let high = String(value.high, radix: radix, uppercase: uppercase)
         let leadingZeros = String(repeating: "0",
-                                  count: countLeadingZeros(value.low))
+                                  count: value.low.leadingZeroBitCount)
         let low = String(value.low, radix: radix, uppercase: uppercase)
         self = "\(high)\(leadingZeros)\(low)"
 

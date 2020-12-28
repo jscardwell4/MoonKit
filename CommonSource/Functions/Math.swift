@@ -368,51 +368,6 @@ public func power<T>(value: T,
   return result
 }
 
-// public func log<T>(_ x: T, _ y: T, op: (T, T) -> T, stop: (T) -> Bool) -> (Int, T) {
-//  var x = x, n = 0
-//  while !stop(x) {
-//    x = op(x, y)
-//    n = n &+ 1
-//  }
-//  return (n, x)
-// }
-
-// public func log<T>(_ x: T, _ n: Int, identity: T, op: (T, T) -> T) -> T {
-//  guard n != 0 else { return identity }
-//  var x = x, n = abs(n)
-//  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
-//  guard n != 1 else { return x }
-//  var r = x
-//  x = op(x, x)
-//  n = (n - 1) >> 1
-//  while true {
-//    if n & 0b1 == 0b1 {
-//      r = op(r, x)
-//      guard n != 1 else { return r }
-//    }
-//    n = n >> 1
-//    x = op(x, x)
-//  }
-// }
-
-// public func log<T>(_ x: T, _ n: Int, identity: T, inverse: (T) -> T, op: (T, T) -> T) -> T {
-//  guard n != 0 else { return identity }
-//  var x = n < 0 ? inverse(x) : x, n = abs(n)
-//  while n & 0b1 != 0b1 { x = op(x, x); n = n >> 1 }
-//  guard n != 1 else { return x }
-//  var r = x
-//  x = op(x, x)
-//  n = (n - 1) >> 1
-//  while true {
-//    if n & 0b1 == 0b1 {
-//      r = op(r, x)
-//      guard n != 1 else { return r }
-//    }
-//    n = n >> 1
-//    x = op(x, x)
-//  }
-// }
-
 /// Calculates the double-width multiplication of two fixed width, unsigned integers.
 /// - Parameters:
 ///   - lhs: The first multiplicand.

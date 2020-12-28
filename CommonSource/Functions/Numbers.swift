@@ -565,7 +565,6 @@ extension Double {
 
     return Array(integerDigits) + fractionalDigits
   }
-//  public func rounded(mantissaLength: Int) -> Double { return MoonKit.rounded(self, mantissaLength) }
 }
 
 extension Decimal {
