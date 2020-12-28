@@ -36,7 +36,7 @@ internal final class OrderedSetStorage<Member: Hashable>: HashedStorage {
     let storage = super.create(minimumCapacity: requiredCapacity) {
       Header(capacity: $0.capacity,
              representedCapacity: representedCapacity,
-             bucketMapAddress: $0.withUnsafeMutablePointerToElements { pointerCast($0) })
+             bucketMapAddress: $0.withUnsafeMutablePointerToElements { UnsafeMutablePointer($0._rawValue) })
     }
 
     return storage as! Storage

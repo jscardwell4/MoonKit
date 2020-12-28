@@ -56,7 +56,7 @@ public struct Identifier: RandomAccessCollection, Comparable {
   public init() {}
 
   /// Initialize with the type name of an object and a list of strings
-  public init(for object: Any, tags: String...) { _tags = filteredTags([typeName(object)] + tags) }
+  public init(for object: Any, tags: String...) { _tags = filteredTags(["\(type(of: object))"] + tags) }
 
   /// Initialize from a sequence of strings
   public init<Source>(_ tags: Source)

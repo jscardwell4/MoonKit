@@ -7,6 +7,14 @@
 //
 import Foundation
 
+/// Returns the nearest power of 2 greater than or equal to a specified integer value.
+///
+/// - Parameter value: The integer value containing the minimum value required.
+/// - Returns: A power of 2 guaranteed to be ≥ `value`.
+public func round2(_ value: Int) -> Int {
+  Int(exp2(ceil(log2(max(0, Double(value))))))
+}
+
 /// Xor operation support for `Bool` values.
 ///
 /// - Parameters:

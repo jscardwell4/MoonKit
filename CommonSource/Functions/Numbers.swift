@@ -10,14 +10,6 @@ import Foundation
 import UIKit
 import Darwin
 
-/// Returns the nearest power of 2 greater than or equal to a specified integer value.
-/// 
-/// - Parameter value: The integer value containing the minimum value required.
-/// - Returns: A power of 2 guaranteed to be ≥ `value`.
-public func round2(_ value: Int) -> Int {
-  Int(exp2(ceil(log2(max(0, Double(value))))))
-}
-
 /// Multiplies a floating point value by a power of ten to remove the decimal place.
 ///
 /// - Parameter value: The floating point value to convert.
@@ -67,30 +59,31 @@ public func decimalDigits<I>(_ value: I) -> [UInt8] where I:FixedWidthInteger {
   return result
 }
 
-/// Converts the fractional portion of a floating point number into an array of
-/// its digits.
+/// Converts a floating point value into decimal digits, separating the integer
+/// digits from the fractional digits.
 ///
 /// - Parameter value: The value with a fractional part to convert to digits.
-/// - Returns: The base 10 digits of the fractional part of `value`.
-public func fractionalDigits<F>(_ value: F) -> [UInt8]
-where F:BinaryFloatingPoint, F:LosslessStringConvertible
+/// - Returns: A tuple of the base 10 digits of `value`.
+public func decimalDigits<F>(_ value: F) -> (integer: [UInt8], fractional: [UInt8])
+where F:BinaryFloatingPoint//, F:LosslessStringConvertible
 {
-  guard !(value.isNaN || value.isInfinite) else { return [] }
-  guard !value.isZero else { return [0] }
+  guard !(value.isNaN || value.isInfinite) else { return ([], []) }
+  guard !value.isZero else { return ([0], []) }
 
-  // Trim away the integer part.
-//  let fractional = value - value.rounded(.towardZero)
-
-  // Find the decimal or `value` is already an integer.
   // Capture the magnitude as a string to trim floating point garbage.
-  let string = "\(value.magnitude)".split(separator: ".")[1]
+  let strings = "\(value.magnitude)".split(separator: ".")
 
-  var digits: [UInt8] = []
+  var integer: [UInt8] = [], fractional: [UInt8] = []
 
-  for character in string {
+  for character in strings[0] {
     guard let digit = UInt8(String(character)) else { continue }
-    digits.append(digit)
+    integer.append(digit)
   }
 
-  return digits
+  for character in strings[1] {
+    guard let digit = UInt8(String(character)) else { continue }
+    fractional.append(digit)
+  }
+
+  return (integer, fractional)
 }

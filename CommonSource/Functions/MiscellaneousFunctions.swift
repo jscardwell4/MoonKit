@@ -9,38 +9,6 @@
 import Foundation
 import UIKit
 
-public func repeatWith(initial: Int, shouldContinue: (Int) -> Bool, next: (Int, Int) -> Int, by: Int = 1, block: (Int) -> Void) {
-  var i = initial
-  repeat {
-    block(i)
-    i = next(i, by)
-  } while shouldContinue(i)
-}
-
-public func unreachable(_ message: StaticString? = nil) -> Never {
-  fatalError("The impossible happened!!! \(message ?? "")")
-}
-
-public func branch(_ tuples: (() -> Bool, () -> Void)...) {
-  for (predicate, action) in tuples {
-    guard !predicate() else { action(); return }
-  }
-}
-
-@inline(__always)
-public func synchronized<R>(_ lock: AnyObject, block: () -> R) -> R {
-  objc_sync_enter(lock)
-  defer { objc_sync_exit(lock) }
-  return block()
-}
-
-/**
-nonce
-
-- returns: String
-*/
-public func nonce() -> String { return Foundation.UUID().uuidString }
-
 public func dumpObjectIntrospection(_ obj: AnyObject, includeInheritance: Bool = false) {
   func descriptionForObject(_ objClass: AnyClass, inherited: Bool) -> String {
     var string = ""
@@ -51,14 +19,6 @@ public func dumpObjectIntrospection(_ obj: AnyObject, includeInheritance: Bool =
 
     if !inherited {
       string += "size: \(class_getInstanceSize(objClass))\n"
-      //      if let ivarLayout = String(UTF8String: UnsafePointer(class_getIvarLayout(objClass)))
-      //        where !ivarLayout.isEmpty {
-      //        string += "ivar layout: \(ivarLayout)\n"
-      //      }
-      //      if let weakIvarLayout = String(UTF8String: UnsafePointer(class_getWeakIvarLayout(objClass)))
-      //        where !weakIvarLayout.isEmpty {
-      //        string += "weak ivar layout: \(weakIvarLayout)\n"
-      //      }
     }
 
     var outCount: UInt32 = 0
@@ -152,64 +112,3 @@ public func dumpObjectIntrospection(_ obj: AnyObject, includeInheritance: Bool =
   }
   
 }
-
-public func pointerCast<T, U>(_ pointer: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<U> {
-  return UnsafeMutablePointer<U>(pointer._rawValue)
-}
-
-public func pointerCast<T, U>(_ pointer: UnsafePointer<T>) -> UnsafePointer<U> {
-  return UnsafePointer<U>(pointer._rawValue)
-}
-
-//public func pointerCast<T>(_ pointer: UnsafeMutablePointer<T>) -> UnsafePointer<T> {
-//  return UnsafePointer<T>(pointer._rawValue)
-//}
-
-//public func pointerCast<T>(_ pointer: UnsafePointer<T>) -> UnsafeMutablePointer<T> {
-//  return UnsafeMutablePointer<T>(pointer._rawValue)
-//}
-
-
-public func <<- <T,U,R>(_ lhs: (T) throws -> R, rhs: (T,U)) rethrows -> U {
-  _ = try lhs(rhs.0)
-  return rhs.1
-}
-
-/**
- No-op function intended to be used as a more noticeable way to force instantiation of lazy properties
-
- - parameter t: T
-*/
-@inline(never)
-public func touch<T>(_ t: T) {}
-
-
-//@inline(__always) public prefix func |<T:SignedNumber>(_ value: T) -> T { return value }
-//public postfix func |<T:SignedNumber>(_ value: T) -> T { return abs(value) }
-
-/**
-typeName:
-
-- parameter object: Any
-
-- returns: String
-*/
-public func typeName(_ object: Any) -> String { return "\(type(of: object))" }
-
-/** Ticks since last device reboot */
-public var hostTicks: UInt64 { return mach_absolute_time() }
-
-/** Nanoseconds since last reboot */
-//public var hostTime: UInt64 {
-//  let ratio = nanosecondsPerHostTick
-//  return hostTicks * ratio.numerator.low / ratio.denominator.low
-//}
-
-/** Ratio that represents the number of nanoseconds per host tick */
-//public var nanosecondsPerHostTick: Ratio {
-//  var info = mach_timebase_info()
-//  mach_timebase_info(&info)
-//  return Int64(info.numer)∶Int64(info.denom)
-//}
-
-

@@ -499,7 +499,7 @@ extension Interval {
         return .descending
 
       default:
-        unreachable("If we found a case that gets here we need to rework our control flow.")
+        fatalError("If we found a case that gets here we need to rework our control flow.")
 
     }
 

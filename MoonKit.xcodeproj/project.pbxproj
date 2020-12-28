@@ -156,8 +156,6 @@
 		C2EDA692258FE218008B542D /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA690258FE218008B542D /* Generic.swift */; };
 		C2EDA69E258FE258008B542D /* MappingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA698258FE258008B542D /* MappingOperations.swift */; };
 		C2EDA69F258FE258008B542D /* MappingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA698258FE258008B542D /* MappingOperations.swift */; };
-		C2EDA6A0258FE258008B542D /* RawOptionSetFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA699258FE258008B542D /* RawOptionSetFunctions.swift */; };
-		C2EDA6A1258FE258008B542D /* RawOptionSetFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA699258FE258008B542D /* RawOptionSetFunctions.swift */; };
 		C2EDA6A2258FE258008B542D /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA69A258FE258008B542D /* Dispatch.swift */; };
 		C2EDA6A3258FE258008B542D /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA69A258FE258008B542D /* Dispatch.swift */; };
 		C2EDA6A4258FE258008B542D /* FunctionManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA69B258FE258008B542D /* FunctionManipulation.swift */; };
@@ -390,7 +388,6 @@
 		C2EDA68F258FE17D008B542D /* BCDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCDTests.swift; sourceTree = "<group>"; };
 		C2EDA690258FE218008B542D /* Generic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		C2EDA698258FE258008B542D /* MappingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingOperations.swift; sourceTree = "<group>"; };
-		C2EDA699258FE258008B542D /* RawOptionSetFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawOptionSetFunctions.swift; sourceTree = "<group>"; };
 		C2EDA69A258FE258008B542D /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		C2EDA69B258FE258008B542D /* FunctionManipulation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionManipulation.swift; sourceTree = "<group>"; };
 		C2EDA6B9258FE46C008B542D /* PseudoConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PseudoConstraint.swift; sourceTree = "<group>"; };
@@ -706,7 +703,6 @@
 			isa = PBXGroup;
 			children = (
 				C2EDA698258FE258008B542D /* MappingOperations.swift */,
-				C2EDA699258FE258008B542D /* RawOptionSetFunctions.swift */,
 				C2EDA69B258FE258008B542D /* FunctionManipulation.swift */,
 				C2EDA69A258FE258008B542D /* Dispatch.swift */,
 				C2EDA690258FE218008B542D /* Generic.swift */,
@@ -1064,7 +1060,6 @@
 				C2E3FD43258D36FE000AA924 /* Numbers.swift in Sources */,
 				C2EDA7E9259021F1008B542D /* IntervalMap.swift in Sources */,
 				C2731724258D586100554FB2 /* SetAlgebraType.swift in Sources */,
-				C2EDA6A0258FE258008B542D /* RawOptionSetFunctions.swift in Sources */,
 				C2EDA83C259031F6008B542D /* JSONValueRelatedExtensions.swift in Sources */,
 				C2258A9C2591148100A4BED4 /* List.swift in Sources */,
 				C2EDA6BA258FE46C008B542D /* PseudoConstraint.swift in Sources */,
@@ -1180,7 +1175,6 @@
 				C2E3FD58258D3884000AA924 /* Stack.swift in Sources */,
 				C2E6CB7F201AAC4C00D50E78 /* Date.swift in Sources */,
 				C2EDA69F258FE258008B542D /* MappingOperations.swift in Sources */,
-				C2EDA6A1258FE258008B542D /* RawOptionSetFunctions.swift in Sources */,
 				C2258ACC259133F600A4BED4 /* Fraction.swift in Sources */,
 				C2EDA84C2590358F008B542D /* Array.swift in Sources */,
 				C2CCD624258E7A8300E9923C /* KeyValueCollection.swift in Sources */,

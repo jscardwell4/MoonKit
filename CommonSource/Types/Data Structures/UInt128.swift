@@ -1507,6 +1507,12 @@ extension UInt128: FixedWidthInteger {
 private func _convertFloatingPoint<T>(_ source: T) -> (value: UInt128, isExact: Bool)
   where T: BinaryFloatingPoint
 {
+//  let (integer, fractional) = decimalDigits(abs(source))
+//
+//  let value = UInt128(digits: integer)
+//
+//  return (value, fractional.count == 0)
+
   var source = source
   var value = UInt128()
   var shift = UInt64()
@@ -1534,7 +1540,7 @@ private func _convertFloatingPoint<T>(_ source: T) -> (value: UInt128, isExact: 
     switch shift {
       case 0...63: value.low |= bits << shift
       case 64...127: value.high |= bits << (shift &- 64)
-      default: unreachable()
+      default: fatalError()
     }
     shift = shift &+ 16
     source /= base
@@ -2032,4 +2038,12 @@ public extension Double {
   /// Initializing with a `UInt128` value.
   /// - Parameter value: The value with which to initialize the `Double`.
   init(_ value: UInt128) { self = Double(value.high) * exp2(64.0) + Double(value.low) }
+}
+
+public extension Float80 {
+  /// Initializing with a `UInt128` value.
+  /// - Parameter value: The value with which to initialize the `Double`.
+  init(_ value: UInt128) {
+    self = Float80(value.high) * exp2(Float80(64.0)) + Float80(value.low)
+  }
 }

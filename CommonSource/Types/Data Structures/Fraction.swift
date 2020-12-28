@@ -117,6 +117,15 @@ public struct Fraction {
     // Check that we aren't magnitude zero.
     guard !isZero else { return Fraction(numerator: 0, denominator: 1, sign: sign) }
 
+//    let decimal = Float80(numerator) / Float80(denominator)
+//
+//    let (integer, exponent) = integerize(decimal)
+//
+//    let numerator = UInt128(integer)
+//    let denominator = _pow10(exponent)
+//
+//    return Fraction(numerator: numerator, denominator: denominator, sign: sign)
+
     // Calculate the quotient and remainder.
     var (quotient, remainder) =
       numerator.quotientAndRemainder(dividingBy: denominator)
@@ -352,7 +361,7 @@ public extension Fraction {
     let integer: Float80 = Swift.abs(value).rounded(.towardZero)
     var numerator = UInt128(integer)
     let fractional = Swift.abs(value) - integer
-    let digits = fractionalDigits(fractional)
+    let digits = decimalDigits(fractional).fractional
 
     let (nonrepeating, repeating) = _split(fractionalNumerator: digits)
 
@@ -2409,8 +2418,7 @@ private func _split(numerator: UInt128, exponent: Int) -> (integer: UInt128,
                                                            repeating: [UInt8])
 {
   guard numerator > 0 else { return (0, [], []) }
-  let denominator: UInt128 = power(value: 10, exponent: abs(exponent),
-                                   identity: 1, operation: *)
+  let denominator: UInt128 = _pow10(abs(exponent))
   let integer = numerator / denominator
   let fractional = numerator - integer * denominator
 
