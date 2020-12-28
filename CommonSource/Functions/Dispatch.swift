@@ -30,7 +30,8 @@ public func backgroundDispatch(_ block: @escaping () -> Void) {
 extension DispatchWallTime {
 
   public init(seconds: Double) {
-    let (whole, fractional) = seconds.parts
+    let whole = seconds.rounded(.towardZero)
+    let fractional = seconds - whole
     let time = timespec(tv_sec: Int(whole), tv_nsec: Int(fractional * Double(NSEC_PER_SEC)))
     self = DispatchWallTime(timespec: time)
   }

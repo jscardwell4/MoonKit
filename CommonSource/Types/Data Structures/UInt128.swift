@@ -24,42 +24,24 @@ public struct UInt128: UnsignedInteger {
   ///   - high: The value for the high bits.
   public init(low: UInt64 = 0, high: UInt64 = 0) { self.low = low; self.high = high }
 
-  /// Initializing by rounding a `Decimal` value.
-  ///
-  /// - Parameter value: The value to be converted via rounding.
-  public init(_ value: Decimal) {
-    precondition(value.sign == .plus,
-                 "Negative values cannot be represented by `UInt128`.")
-
-    let handler = NSDecimalNumberHandler(roundingMode: .down,
-                                         scale: 0,
-                                         raiseOnExactness: false,
-                                         raiseOnOverflow: false,
-                                         raiseOnUnderflow: false,
-                                         raiseOnDivideByZero: false)
-    let value = value as NSDecimalNumber
-    let digits = value.rounding(accordingToBehavior: handler).decimalValue.digits()
-    self = UInt128(digits: digits)
-  }
-
   /// Returns the value as an array of decimal digits padded with leading zeros to
   /// contain at least `minLength` digits.
   ///
   /// - Parameter minLength: The minimum number of digits to return. Default is `0`.
   /// - Returns: An array with the decimal digits of this value
   ///            along with any leading `0`s
-  public func digits(minLength: Int = 0) -> [UInt8] {
-//    guard self > 0 else { return Array<UInt8>(repeating: 0, count: Swift.max(minLength, 1)) }
-    var digits: Stack<UInt8> = []
-    var value = self
-    var exponent = Swift.max(minLength, Int(log10(Double(self)).isInfinite ? 0 : log10(Double(self))))
-    repeat {
-      digits.push(UInt8((value % 10).low))
-      value /= 10; exponent -= 1
-    } while value > 0
-    while exponent > 0 { digits.push(0); exponent -= 1 }
-    return Array(digits)
-  }
+//  public func digits(minLength: Int = 0) -> [UInt8] {
+////    guard self > 0 else { return Array<UInt8>(repeating: 0, count: Swift.max(minLength, 1)) }
+//    var digits: Stack<UInt8> = []
+//    var value = self
+//    var exponent = Swift.max(minLength, Int(log10(Double(self)).isInfinite ? 0 : log10(Double(self))))
+//    repeat {
+//      digits.push(UInt8((value % 10).low))
+//      value /= 10; exponent -= 1
+//    } while value > 0
+//    while exponent > 0 { digits.push(0); exponent -= 1 }
+//    return Array(digits)
+//  }
 
   /// Initialize from an array of decimal digits.
   ///

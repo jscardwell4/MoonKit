@@ -74,7 +74,7 @@ public struct BitMap: Collection {
         bitIndex = 0
         continue
       }
-      let bitRange = bitIndex ..< (bitsPerWord - countLeadingZeros(word))
+      let bitRange = bitIndex ..< (bitsPerWord - word.leadingZeroBitCount)
       for i in bitRange where word & (1 << UInt(i)) != 0 {
         return wordIndex * bitsPerWord + i
       }
@@ -121,7 +121,7 @@ public struct BitMap: Collection {
     var result: [Int] = []
     let bitsPerWord = Int(UInt.bitWidth)
     for (wordIndex, word) in buffer.enumerated() where word > 0 {
-      let bitRange = 0 ..< (bitsPerWord - countLeadingZeros(word))
+      let bitRange = 0 ..< (bitsPerWord - word.leadingZeroBitCount)
       for bitIndex in bitRange where self[wordIndex * bitsPerWord + bitIndex] {
         result.append(wordIndex * bitsPerWord + bitIndex)
       }
@@ -188,7 +188,7 @@ extension BitMap: CustomStringConvertible {
   public var description: String {
     var result = "(total words: \(numberOfWords); total bits: \(count))\n"
     result += buffer.enumerated().map({
-      "word \($0): \("0" * countLeadingZeros($1))\(String($1, radix: 2))"
+      "word \($0): \("0" * $1.leadingZeroBitCount)\(String($1, radix: 2))"
     }).joined(separator: "\n")
 
     return result

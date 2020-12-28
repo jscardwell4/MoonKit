@@ -36,7 +36,7 @@ public struct Fraction {
     self.flags = flags
     if denominator == 0 { self.flags.insert(.isInfinite) }
     if _isDecimalBase(denominator) {
-      let (_, repeating) = _split(fractionalNumerator: numerator.digits())
+      let (_, repeating) = _split(fractionalNumerator: decimalDigits(numerator))
       if !repeating.isEmpty { self.flags.insert(.isRepeating) }
     }
     if reducing { reduce() }
@@ -95,7 +95,7 @@ public struct Fraction {
 
   /// The nonrepeating and repeating digits of the fraction's decimal form numerator.
   public var parts: (nonrepeating: [UInt8], repeating: [UInt8]) {
-    _split(fractionalNumerator: fractionalPart.decimalForm.numerator.digits())
+    _split(fractionalNumerator: decimalDigits(fractionalPart.decimalForm.numerator))
   }
 
   /// The inverted fraction.
@@ -204,66 +204,6 @@ public struct Fraction {
                     repeating: [])
   }
 
-//  /// Creates a fraction where the denominator is a power of 10 and the represented
-//  /// value is equivalent to `a.bc̅` where `a = integerPart`, `b = nonrepeatingPart`,
-//  /// and  `c = repeatingPart`.
-//  ///
-//  /// - Parameters:
-//  ///   - sign: Whether the fraction is positive or negative
-//  ///   - integer: The whole number value.
-//  ///   - nonrepeating: The non-repeating fractional part.
-//  ///   - repeating: The infinitely repeating fractional part.
-//  ///   - reducing: Whether to reduce the fraction while initializing.
-//  public init<S1, S2>(sign: FloatingPointSign = .plus,
-//                      integer: UInt128,
-//                      nonrepeating: S1,
-//                      repeating: S2,
-//                      reducing: Bool = false)
-//    where S1: Collection, S2: Collection, S1.Element == UInt8, S2.Element == UInt8
-//  {
-//    let pad = integer == 0 ? 0 : Int(log10(Double(integer))) &+ 1
-//    var m = 0
-//    switch (nonrepeating.count, repeating.count) {
-//      case (0, 0):
-//        self = Fraction(numerator: integer, denominator: 1, sign: sign)
-//
-//      case (0, _):
-//        var numerator = integer
-//        for digit in repeating.repeating() {
-//          guard m &+ pad < 38 else { break }
-//          numerator = numerator * 10 &+ UInt128(digit)
-//          m = m &+ 1
-//        }
-//        self = Fraction(numerator: numerator, denominator: _powersOfTen[m], sign: sign)
-//        flags.insert(.isRepeating)
-//
-//      case (_, 0):
-//        var numerator = integer
-//        for digit in nonrepeating {
-//          guard m &+ pad < 38 else { break }
-//          numerator = numerator * 10 &+ UInt128(digit)
-//          m = m &+ 1
-//        }
-//        self = Fraction(numerator: numerator, denominator: _powersOfTen[m], sign: sign)
-//
-//      default:
-//        var numerator = integer
-//        for digit in nonrepeating {
-//          guard m &+ pad < 38 else { break }
-//          numerator = numerator * 10 &+ UInt128(digit)
-//          m = m &+ 1
-//        }
-//        for digit in repeating.repeating() {
-//          guard m &+ pad < 38 else { break }
-//          numerator = numerator * 10 &+ UInt128(digit)
-//          m = m &+ 1
-//        }
-//        self = Fraction(numerator: numerator, denominator: _powersOfTen[m], sign: sign)
-//        flags.insert(.isRepeating)
-//    }
-//    if reducing { reduce() }
-//  }
-
   /// Creates a fraction where the denominator is a power of 10 and the represented
   /// value is equivalent to `a.bc̅` where `a = integerPart`, `b = nonrepeatingPart`,
   /// and  `c = repeatingPart`.
@@ -281,7 +221,7 @@ public struct Fraction {
                       reducing: Bool = false)
     where S1: Collection, S2: Collection, S1.Element == UInt8, S2.Element == UInt8
   {
-    let pad = integer == 0 ? 0 : Int(log10(Double(integer))) &+ 1
+    let pad = integer == 0 ? 0 : Int(log10(Float80(integer))) &+ 1
     var m = 0
     switch (nonrepeating.count, repeating.count) {
       case (0, 0):
@@ -322,25 +262,6 @@ public struct Fraction {
         flags.insert(.isRepeating)
     }
     if reducing { reduce() }
-//    if repeating.count > 0 {
-//      var denominatorDigits: [UInt8] = []
-//      for _ in 0..<repeating.count { denominatorDigits.append(9) }
-//      for _ in 0..<nonrepeating.count { denominatorDigits.append(0) }
-//      denominator = UInt128(digits: denominatorDigits)
-//    } else if nonrepeating.count > 0 {
-//      var denominatorDigits: [UInt8] = [1]
-//      for _ in 0..<nonrepeating.count { denominatorDigits.append(0) }
-//      denominator = UInt128(digits: denominatorDigits)
-//    } else {
-//      denominator = 1
-//    }
-//    numerator = integer * denominator
-//              + UInt128(digits: Array(nonrepeating))
-//              + UInt128(digits: Array(repeating))
-//    flags = []
-//    if sign == .minus { flags.insert(.isNegative) }
-//    if repeating.count > 0 { flags.insert(.isRepeating) }
-//    if reducing { reduce() }
   }
 
   // MARK: Reducing/rebasing fractions
@@ -412,7 +333,7 @@ public extension Fraction {
   /// fraction down from it's decimal form.
   ///
   /// - parameter value:  The value to be converted into a fraction
-  init(_ value: Double) {
+  init(_ value: Float80) {
     guard !value.isSignalingNaN else {
       let payload = UInt128(value.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling, reducing: false)
@@ -428,10 +349,10 @@ public extension Fraction {
       return
     }
 
-    let integer: Double = Swift.abs(value).rounded(.towardZero)
+    let integer: Float80 = Swift.abs(value).rounded(.towardZero)
     var numerator = UInt128(integer)
     let fractional = Swift.abs(value) - integer
-    let digits = Array(fractional.digits().prefix(15))
+    let digits = fractionalDigits(fractional)
 
     let (nonrepeating, repeating) = _split(fractionalNumerator: digits)
 
@@ -460,79 +381,6 @@ public extension Fraction {
       // The decimal terminates or does not have a repeating pattern
 
       let denominator: UInt128 = _pow10(digits.count)
-      numerator *= denominator
-      numerator += UInt128(digits: digits)
-      self = Fraction(numerator: numerator, denominator: denominator, sign: value.sign)
-    }
-
-    reduce()
-  }
-
-  /// Full width conversion from a `Decimal` to a fraction. The maximum value of both
-  /// `Double` and `Decimal` are well above that of `Fraction`; however, there may be
-  /// some degree of increased precision in converting from a `Decimal` value versus a
-  /// `Double` value. The fraction will be in decimal form unless `reduce` is `true`,
-  /// in which case an attempt will be made to reduce the fraction down from it's
-  /// decimal form.
-  ///
-  /// - parameter value:  The value to be converted into a fraction
-  /// - parameter reduce: Whether the fraction should be reduced before returning.
-  init(_ value: Decimal) {
-    guard !value.isSignalingNaN else {
-      let bitPattern = (value as NSDecimalNumber).doubleValue.significandBitPattern
-      let payload = UInt128(bitPattern & ~(UInt64(1) << 50))
-      self.init(numerator: payload, flags: .isSignaling, reducing: false)
-      return
-    }
-    guard !value.isNaN else {
-      self.init(flags: .isNaN)
-      return
-    }
-
-    guard !value.isInfinite else {
-      self.init(flags: value < 0 ? [.isInfinite, .isNegative] : [.isInfinite])
-      return
-    }
-
-    let valueʹ = abs(value)
-
-    let decimalHandler = NSDecimalNumberHandler(roundingMode: .down,
-                                                scale: 0,
-                                                raiseOnExactness: false,
-                                                raiseOnOverflow: false,
-                                                raiseOnUnderflow: false,
-                                                raiseOnDivideByZero: false)
-
-    let integer = (valueʹ as NSDecimalNumber)
-      .rounding(accordingToBehavior: decimalHandler).decimalValue
-    let fractional = valueʹ - integer
-
-    var numerator = UInt128(integer)
-
-    let digits = fractional.digits()
-
-    let (nonrepeating, repeating) = _split(fractionalNumerator: digits)
-    if !repeating.isEmpty {
-      // The decimal has a repeating pattern
-
-      let fractionalValue = UInt128(digits: nonrepeating + repeating)
-      let nonrepeatingValue = UInt128(digits: nonrepeating)
-
-      let numeratorʹ = fractionalValue &- nonrepeatingValue
-      let denominatorDigits = [UInt8](repeating: 9, count: repeating.count)
-        + [UInt8](repeating: 0, count: nonrepeating.count)
-      let denominator = UInt128(digits: denominatorDigits)
-      numerator *= denominator
-      numerator += numeratorʹ
-
-      self = Fraction(numerator: numerator, denominator: denominator, sign: value.sign)
-      flags.insert(.isRepeating)
-
-    } else {
-      // The decimal terminates or does not have a repeating pattern
-
-      let denominator: UInt128 = power(value: 10, exponent: digits.count,
-                                       identity: 1, operation: *)
       numerator *= denominator
       numerator += UInt128(digits: digits)
       self = Fraction(numerator: numerator, denominator: denominator, sign: value.sign)
@@ -846,11 +694,11 @@ extension Fraction: Strideable {
 extension Fraction: FloatingPoint {
   /// Creates a new value from the given sign, exponent, and significand.
   ///
-  /// The following example uses this initializer to create a new `Double`
-  /// instance. `Double` is a binary floating-point type that has a radix of
+  /// The following example uses this initializer to create a new `Float80`
+  /// instance. `Float80` is a binary floating-point type that has a radix of
   /// `2`.
   ///
-  ///     let x = Double(sign: .plus, exponent: -2, significand: 1.5)
+  ///     let x = Float80(sign: .plus, exponent: -2, significand: 1.5)
   ///     // x == 0.375
   ///
   /// This initializer is equivalent to the following calculation, where `**`
@@ -860,7 +708,7 @@ extension Fraction: FloatingPoint {
   ///     let sign: FloatingPointSign = .plus
   ///     let exponent = -2
   ///     let significand = 1.5
-  ///     let y = (sign == .minus ? -1 : 1) * significand * Double.radix ** exponent
+  ///     let y = (sign == .minus ? -1 : 1) * significand * Float80.radix ** exponent
   ///     // y == 0.375
   ///
   /// As with any basic operation, if this value is outside the representable
@@ -922,12 +770,12 @@ extension Fraction: FloatingPoint {
   /// Creates a new floating-point value using the sign of one value and the
   /// magnitude of another.
   ///
-  /// The following example uses this initializer to create a new `Double`
+  /// The following example uses this initializer to create a new `Float80`
   /// instance with the sign of `a` and the magnitude of `b`:
   ///
   ///     let a = -21.5
   ///     let b = 305.15
-  ///     let c = Double(signOf: a, magnitudeOf: b)
+  ///     let c = Float80(signOf: a, magnitudeOf: b)
   ///     print(c)
   ///     // Prints "-305.15"
   ///
@@ -975,16 +823,16 @@ extension Fraction: FloatingPoint {
   /// in NaN.
   ///
   ///     let x = 1.21
-  ///     // x > Double.nan == false
-  ///     // x < Double.nan == false
-  ///     // x == Double.nan == false
+  ///     // x > Float80.nan == false
+  ///     // x < Float80.nan == false
+  ///     // x == Float80.nan == false
   ///
   /// Because a NaN always compares not equal to itself, to test whether a
   /// floating-point value is NaN, use its `isNaN` property instead of the
   /// equal-to operator (`==`). In the following example, `y` is NaN.
   ///
-  ///     let y = x + Double.nan
-  ///     print(y == Double.nan)
+  ///     let y = x + Float80.nan
+  ///     print(y == Float80.nan)
   ///     // Prints "false"
   ///     print(y.isNaN)
   ///     // Prints "true"
@@ -1012,9 +860,9 @@ extension Fraction: FloatingPoint {
   /// Infinity compares greater than all finite numbers and equal to other
   /// infinite values.
   ///
-  ///     let x = Double.greatestFiniteMagnitude
+  ///     let x = Float80.greatestFiniteMagnitude
   ///     let y = x * 2
-  ///     // y == Double.infinity
+  ///     // y == Float80.infinity
   ///     // y > x
   public static let infinity = Fraction(flags: .isInfinite)
 
@@ -1035,7 +883,7 @@ extension Fraction: FloatingPoint {
   /// conforms to the `FloatingPoint` protocol provides the value for `pi` at
   /// its best possible precision.
   ///
-  ///     print(Double.pi)
+  ///     print(Float80.pi)
   ///     // Prints "3.14159265358979"
   public static let pi = Fraction(numerator: UInt128(low: 0xaae7b57d8c88bd6a,
                                                      high: 0x17a27cc3ed6cf7ee),
@@ -1122,10 +970,10 @@ extension Fraction: FloatingPoint {
   /// In the next example, `y` has a value of `21.5`, which is encoded as
   /// `1.34375 * 2 ** 4`. The significand of `y` is therefore 1.34375.
   ///
-  ///     let y: Double = 21.5
+  ///     let y: Float80 = 21.5
   ///     // y.significand == 1.34375
   ///     // y.exponent == 4
-  ///     // Double.radix == 2
+  ///     // Float80.radix == 2
   ///
   /// The `exponent` property has the following edge cases:
   ///
@@ -1150,10 +998,10 @@ extension Fraction: FloatingPoint {
   /// In the next example, `y` has a value of `21.5`, which is encoded as
   /// `1.34375 * 2 ** 4`. The significand of `y` is therefore 1.34375.
   ///
-  ///     let y: Double = 21.5
+  ///     let y: Float80 = 21.5
   ///     // y.significand == 1.34375
   ///     // y.exponent == 4
-  ///     // Double.radix == 2
+  ///     // Float80.radix == 2
   ///
   /// If a type's radix is 2, then for finite nonzero numbers, the significand
   /// is in the range `1.0 ..< 2.0`. For other values of `x`, `x.significand`
@@ -1350,7 +1198,7 @@ extension Fraction: FloatingPoint {
   /// The following example declares a function that calculates the length of
   /// the hypotenuse of a right triangle given its two perpendicular sides.
   ///
-  ///     func hypotenuse(_ a: Double, _ b: Double) -> Double {
+  ///     func hypotenuse(_ a: Float80, _ b: Float80) -> Float80 {
   ///         return (a * a + b * b).squareRoot()
   ///     }
   ///
@@ -1400,13 +1248,13 @@ extension Fraction: FloatingPoint {
   /// or `y` is a number if the other is a quiet NaN. If both `x` and `y` are
   /// NaN, or either `x` or `y` is a signaling NaN, the result is NaN.
   ///
-  ///     Double.minimum(10.0, -25.0)
+  ///     Float80.minimum(10.0, -25.0)
   ///     // -25.0
-  ///     Double.minimum(10.0, .nan)
+  ///     Float80.minimum(10.0, .nan)
   ///     // 10.0
-  ///     Double.minimum(.nan, -25.0)
+  ///     Float80.minimum(.nan, -25.0)
   ///     // -25.0
-  ///     Double.minimum(.nan, .nan)
+  ///     Float80.minimum(.nan, .nan)
   ///     // nan
   ///
   /// The `minimum` method implements the `minNum` operation defined by the
@@ -1435,13 +1283,13 @@ extension Fraction: FloatingPoint {
   /// or `y` is a number if the other is a quiet NaN. If both `x` and `y` are
   /// NaN, or either `x` or `y` is a signaling NaN, the result is NaN.
   ///
-  ///     Double.maximum(10.0, -25.0)
+  ///     Float80.maximum(10.0, -25.0)
   ///     // 10.0
-  ///     Double.maximum(10.0, .nan)
+  ///     Float80.maximum(10.0, .nan)
   ///     // 10.0
-  ///     Double.maximum(.nan, -25.0)
+  ///     Float80.maximum(.nan, -25.0)
   ///     // -25.0
-  ///     Double.maximum(.nan, .nan)
+  ///     Float80.maximum(.nan, .nan)
   ///     // nan
   ///
   /// The `maximum` method implements the `maxNum` operation defined by the
@@ -1472,13 +1320,13 @@ extension Fraction: FloatingPoint {
   /// `x` and `y` are NaN, or either `x` or `y` is a signaling NaN, the result
   /// is NaN.
   ///
-  ///     Double.minimumMagnitude(10.0, -25.0)
+  ///     Float80.minimumMagnitude(10.0, -25.0)
   ///     // 10.0
-  ///     Double.minimumMagnitude(10.0, .nan)
+  ///     Float80.minimumMagnitude(10.0, .nan)
   ///     // 10.0
-  ///     Double.minimumMagnitude(.nan, -25.0)
+  ///     Float80.minimumMagnitude(.nan, -25.0)
   ///     // -25.0
-  ///     Double.minimumMagnitude(.nan, .nan)
+  ///     Float80.minimumMagnitude(.nan, .nan)
   ///     // nan
   ///
   /// The `minimumMagnitude` method implements the `minNumMag` operation
@@ -1505,13 +1353,13 @@ extension Fraction: FloatingPoint {
   /// `x` and `y` are NaN, or either `x` or `y` is a signaling NaN, the result
   /// is NaN.
   ///
-  ///     Double.maximumMagnitude(10.0, -25.0)
+  ///     Float80.maximumMagnitude(10.0, -25.0)
   ///     // -25.0
-  ///     Double.maximumMagnitude(10.0, .nan)
+  ///     Float80.maximumMagnitude(10.0, .nan)
   ///     // 10.0
-  ///     Double.maximumMagnitude(.nan, -25.0)
+  ///     Float80.maximumMagnitude(.nan, -25.0)
   ///     // -25.0
-  ///     Double.maximumMagnitude(.nan, .nan)
+  ///     Float80.maximumMagnitude(.nan, .nan)
   ///     // nan
   ///
   /// The `maximumMagnitude` method implements the `maxNumMag` operation
@@ -1662,7 +1510,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isEqual(to: .nan)
   ///     // false
-  ///     Double.nan.isEqual(to: .nan)
+  ///     Float80.nan.isEqual(to: .nan)
   ///     // false
   ///
   /// The `isEqual(to:)` method implements the equality predicate defined by
@@ -1694,7 +1542,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isLess(than: .nan)
   ///     // false
-  ///     Double.nan.isLess(than: x)
+  ///     Float80.nan.isLess(than: x)
   ///     // false
   ///
   /// The `isLess(than:)` method implements the less-than predicate defined by
@@ -1724,7 +1572,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isLessThanOrEqualTo(.nan)
   ///     // false
-  ///     Double.nan.isLessThanOrEqualTo(x)
+  ///     Float80.nan.isLessThanOrEqualTo(x)
   ///     // false
   ///
   /// The `isLessThanOrEqualTo(_:)` method implements the less-than-or-equal
@@ -1818,9 +1666,9 @@ extension Fraction: FloatingPoint {
   ///     // y is a NaN
   ///
   ///     // Comparing with the equal-to operator never returns 'true'
-  ///     print(x == Double.nan)
+  ///     print(x == Float80.nan)
   ///     // Prints "false"
-  ///     print(y == Double.nan)
+  ///     print(y == Float80.nan)
   ///     // Prints "false"
   ///
   ///     // Test with the 'isNaN' property instead
@@ -1867,13 +1715,13 @@ extension Fraction: FloatingPoint {
   ///
   /// The [IEEE 754 specification][spec] defines a *canonical*, or preferred,
   /// encoding of a floating-point value. On platforms that fully support
-  /// IEEE 754, every `Float` or `Double` value is canonical, but
+  /// IEEE 754, every `Float` or `Float80` value is canonical, but
   /// non-canonical values can exist on other platforms or for other types.
   /// Some examples:
   ///
   /// - On platforms that flush subnormal numbers to zero (such as armv7
   ///   with the default floating-point environment), Swift interprets
-  ///   subnormal `Float` and `Double` values as non-canonical zeros.
+  ///   subnormal `Float` and `Float80` values as non-canonical zeros.
   ///   (In Swift 5.1 and earlier, `isCanonical` is `true` for these
   ///   values, which is the incorrect value.)
   ///
@@ -1933,11 +1781,40 @@ extension Fraction {
 
 // MARK: - Converting from a Fraction
 
-public extension Double {
-  /// Converts a `Fraction` into a `Double` by converting the numerator and denominator
+public extension Float80 {
+  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
   /// values and then dividing the numerator by the denominator, negating the result
   /// when `value.isNegative`.
-  /// - Parameter value: The fraction to convert into a `Double`.
+  /// - Parameter value: The fraction to convert into a `Float80`.
+  init(_ value: Fraction) {
+    switch value.floatingPointClass {
+      case .quietNaN:
+        self = .nan
+      case .signalingNaN:
+        self = .signalingNaN
+      case .positiveInfinity:
+        self = .infinity
+      case .negativeInfinity:
+        self = -.infinity
+      case .positiveZero:
+        self = .zero
+      case .negativeZero:
+        self = -.zero
+      case .positiveNormal,
+           .positiveSubnormal:
+        self = Float80(value.numerator) / Float80(value.denominator)
+      case .negativeNormal,
+           .negativeSubnormal:
+        self = -(Float80(value.numerator) / Float80(value.denominator))
+    }
+  }
+}
+
+public extension Double {
+  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
+  /// values and then dividing the numerator by the denominator, negating the result
+  /// when `value.isNegative`.
+  /// - Parameter value: The fraction to convert into a `Float80`.
   init(_ value: Fraction) {
     switch value.floatingPointClass {
       case .quietNaN:
@@ -1958,6 +1835,35 @@ public extension Double {
       case .negativeNormal,
            .negativeSubnormal:
         self = -(Double(value.numerator) / Double(value.denominator))
+    }
+  }
+}
+
+public extension Float {
+  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
+  /// values and then dividing the numerator by the denominator, negating the result
+  /// when `value.isNegative`.
+  /// - Parameter value: The fraction to convert into a `Float80`.
+  init(_ value: Fraction) {
+    switch value.floatingPointClass {
+      case .quietNaN:
+        self = .nan
+      case .signalingNaN:
+        self = .signalingNaN
+      case .positiveInfinity:
+        self = .infinity
+      case .negativeInfinity:
+        self = -.infinity
+      case .positiveZero:
+        self = .zero
+      case .negativeZero:
+        self = -.zero
+      case .positiveNormal,
+           .positiveSubnormal:
+        self = Float(value.numerator) / Float(value.denominator)
+      case .negativeNormal,
+           .negativeSubnormal:
+        self = -(Float(value.numerator) / Float(value.denominator))
     }
   }
 }
@@ -2186,7 +2092,7 @@ private func _squareRoot(_ value: Fraction) -> Fraction {
        overflow) = value.numerator.multipliedReportingOverflow(by: value.denominator)
 
   guard !overflow else {
-    return Fraction(Double(value).squareRoot())
+    return Fraction(Float80(value).squareRoot())
   }
 
   let pairs: AnyIterator<UInt128> = {
@@ -2435,7 +2341,7 @@ private func _pow10(_ exponent: Int) -> UInt128 {
 ///
 /// - Parameter value: The value for which to calculate the logarithm.
 /// - Returns: The base 10 logarithm for `value`.
-private func _log10(_ value: UInt128) -> Int { Int(log10(Double(value))) }
+private func _log10(_ value: UInt128) -> Int { Int(log10(Float80(value))) }
 
 /// The first 39 powers of ten.
 private let _powersOfTen = OrderedSet<UInt128>((0...38).map(_pow10))
@@ -2508,7 +2414,7 @@ private func _split(numerator: UInt128, exponent: Int) -> (integer: UInt128,
   let integer = numerator / denominator
   let fractional = numerator - integer * denominator
 
-  let digits = fractional.digits()
+  let digits = decimalDigits(fractional)
   let exponent = _log10(denominator)
   let zeroPadding = [UInt8](repeating: 0, count: abs(exponent - digits.count))
 

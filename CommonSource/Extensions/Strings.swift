@@ -140,7 +140,7 @@ public extension String {
 
   // MARK: Splitting
 
-  func split(_ string: String) -> [String] { split(~/string) }
+//  func split(_ string: String) -> [String] { split(~/string) }
 
   func split(_ regex: RegularExpression) -> [String] {
     let ranges = regex.matchRanges(in: self).compactMap {Range($0, in: self)}

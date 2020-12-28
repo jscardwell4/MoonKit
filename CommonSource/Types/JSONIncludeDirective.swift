@@ -16,7 +16,7 @@ internal class JSONIncludeDirective {
 
   var parameters: [String:String]? {
     if let p = _parameters {
-      return Dictionary(",".split(p).map({disperse2("=".split($0))}))
+      return Dictionary(",".split(~/p).map({disperse2("=".split(~/$0))}))
     } else { return nil }
   }
 
