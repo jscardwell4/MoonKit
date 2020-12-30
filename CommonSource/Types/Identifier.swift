@@ -68,7 +68,7 @@ public struct Identifier: RandomAccessCollection, Comparable {
   /// Initialize from a string using the specified separator
   public init(_ tags: String..., tagSeparator: String = Identifier.defaultTagSeparator) {
     self.tagSeparator = tagSeparator
-    _tags = filteredTags(tags.map({tagSeparator.split(~/$0)}).joined())
+    _tags = filteredTags(tags.map({tagSeparator.split(regex: ~/$0)}).joined())
   }
 
   public static func ∋(lhs: Identifier, rhs: String) -> Bool {
@@ -112,7 +112,7 @@ extension Identifier: ExpressibleByStringLiteral {
 
   /// Initialize from a literal string
   public init(stringLiteral value: String) {
-    self.init(Identifier.defaultTagSeparator.split(~/value))
+    self.init(Identifier.defaultTagSeparator.split(regex: ~/value))
   }
 
   /// Initialize from a literal string

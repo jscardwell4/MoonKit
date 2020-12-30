@@ -8,14 +8,11 @@
 
 import Foundation
 
-public func secondsToNanoseconds(_ seconds: Double) -> UInt64 {
-  return UInt64(seconds * Double(NSEC_PER_SEC))
-}
-
-public func nanosecondsToSeconds(_ nanoseconds: UInt64) -> Double {
-  return Double(nanoseconds) / Double(NSEC_PER_SEC)
-}
-
+/// Synchronously or asynchronously queues the specified closure for execution on the
+/// main thread.
+/// - Parameters:
+///   - synchronous: Whether to queue synchronously.
+///   - block: The closure to execute.
 public func dispatchToMain(synchronous: Bool = false, _ block: @escaping () -> Void) {
   if Thread.isMainThread { block() }
   else if synchronous { DispatchQueue.main.sync(execute: block) }
@@ -23,12 +20,18 @@ public func dispatchToMain(synchronous: Bool = false, _ block: @escaping () -> V
 }
 
 
+/// Asynchronously queues the specified closure for background execution.
+///
+/// - Parameter block: The closure to execute.
 public func backgroundDispatch(_ block: @escaping () -> Void) {
   DispatchQueue.global(qos: .background).async(execute: block)
 }
 
 extension DispatchWallTime {
 
+  /// Initializing with a time seconds into the future.
+  /// - Parameter seconds: The number of seconds into the future the
+  ///                      time should represent.
   public init(seconds: Double) {
     let whole = seconds.rounded(.towardZero)
     let fractional = seconds - whole

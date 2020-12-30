@@ -84,11 +84,15 @@ public struct Fraction {
   public var isRepeating: Bool { flags ∋ .isRepeating }
 
   /// The integer portion of the fraction's decimal form.
-  public var integerPart: UInt128 { isImproper ? numerator / denominator : 0 }
+  public var integerPart: Fraction {
+    Fraction(numerator: isImproper ? numerator/denominator : 0,
+             denominator: 1,
+             sign: sign)
+  }
 
   /// The fractional portion of the fraction's decimal form.
   public var fractionalPart: Fraction {
-    Fraction(numerator: numerator - integerPart * denominator,
+    Fraction(numerator: numerator - integerPart.numerator * denominator,
              denominator: denominator,
              sign: sign)
   }
@@ -117,7 +121,7 @@ public struct Fraction {
     // Check that we aren't magnitude zero.
     guard !isZero else { return Fraction(numerator: 0, denominator: 1, sign: sign) }
 
-//    let decimal = Float80(numerator) / Float80(denominator)
+//    let decimal = Double(numerator) / Double(denominator)
 //
 //    let (integer, exponent) = integerize(decimal)
 //
@@ -230,7 +234,7 @@ public struct Fraction {
                       reducing: Bool = false)
     where S1: Collection, S2: Collection, S1.Element == UInt8, S2.Element == UInt8
   {
-    let pad = integer == 0 ? 0 : Int(log10(Float80(integer))) &+ 1
+    let pad = integer == 0 ? 0 : Int(log10(Double(integer))) &+ 1
     var m = 0
     switch (nonrepeating.count, repeating.count) {
       case (0, 0):
@@ -342,7 +346,7 @@ public extension Fraction {
   /// fraction down from it's decimal form.
   ///
   /// - parameter value:  The value to be converted into a fraction
-  init(_ value: Float80) {
+  init(_ value: Double) {
     guard !value.isSignalingNaN else {
       let payload = UInt128(value.significandBitPattern & ~(UInt64(1) << 50))
       self.init(numerator: payload, flags: .isSignaling, reducing: false)
@@ -358,7 +362,7 @@ public extension Fraction {
       return
     }
 
-    let integer: Float80 = Swift.abs(value).rounded(.towardZero)
+    let integer: Double = Swift.abs(value).rounded(.towardZero)
     var numerator = UInt128(integer)
     let fractional = Swift.abs(value) - integer
     let digits = decimalDigits(fractional).fractional
@@ -703,11 +707,11 @@ extension Fraction: Strideable {
 extension Fraction: FloatingPoint {
   /// Creates a new value from the given sign, exponent, and significand.
   ///
-  /// The following example uses this initializer to create a new `Float80`
-  /// instance. `Float80` is a binary floating-point type that has a radix of
+  /// The following example uses this initializer to create a new `Double`
+  /// instance. `Double` is a binary floating-point type that has a radix of
   /// `2`.
   ///
-  ///     let x = Float80(sign: .plus, exponent: -2, significand: 1.5)
+  ///     let x = Double(sign: .plus, exponent: -2, significand: 1.5)
   ///     // x == 0.375
   ///
   /// This initializer is equivalent to the following calculation, where `**`
@@ -717,7 +721,7 @@ extension Fraction: FloatingPoint {
   ///     let sign: FloatingPointSign = .plus
   ///     let exponent = -2
   ///     let significand = 1.5
-  ///     let y = (sign == .minus ? -1 : 1) * significand * Float80.radix ** exponent
+  ///     let y = (sign == .minus ? -1 : 1) * significand * Double.radix ** exponent
   ///     // y == 0.375
   ///
   /// As with any basic operation, if this value is outside the representable
@@ -779,12 +783,12 @@ extension Fraction: FloatingPoint {
   /// Creates a new floating-point value using the sign of one value and the
   /// magnitude of another.
   ///
-  /// The following example uses this initializer to create a new `Float80`
+  /// The following example uses this initializer to create a new `Double`
   /// instance with the sign of `a` and the magnitude of `b`:
   ///
   ///     let a = -21.5
   ///     let b = 305.15
-  ///     let c = Float80(signOf: a, magnitudeOf: b)
+  ///     let c = Double(signOf: a, magnitudeOf: b)
   ///     print(c)
   ///     // Prints "-305.15"
   ///
@@ -832,16 +836,16 @@ extension Fraction: FloatingPoint {
   /// in NaN.
   ///
   ///     let x = 1.21
-  ///     // x > Float80.nan == false
-  ///     // x < Float80.nan == false
-  ///     // x == Float80.nan == false
+  ///     // x > Double.nan == false
+  ///     // x < Double.nan == false
+  ///     // x == Double.nan == false
   ///
   /// Because a NaN always compares not equal to itself, to test whether a
   /// floating-point value is NaN, use its `isNaN` property instead of the
   /// equal-to operator (`==`). In the following example, `y` is NaN.
   ///
-  ///     let y = x + Float80.nan
-  ///     print(y == Float80.nan)
+  ///     let y = x + Double.nan
+  ///     print(y == Double.nan)
   ///     // Prints "false"
   ///     print(y.isNaN)
   ///     // Prints "true"
@@ -869,9 +873,9 @@ extension Fraction: FloatingPoint {
   /// Infinity compares greater than all finite numbers and equal to other
   /// infinite values.
   ///
-  ///     let x = Float80.greatestFiniteMagnitude
+  ///     let x = Double.greatestFiniteMagnitude
   ///     let y = x * 2
-  ///     // y == Float80.infinity
+  ///     // y == Double.infinity
   ///     // y > x
   public static let infinity = Fraction(flags: .isInfinite)
 
@@ -892,7 +896,7 @@ extension Fraction: FloatingPoint {
   /// conforms to the `FloatingPoint` protocol provides the value for `pi` at
   /// its best possible precision.
   ///
-  ///     print(Float80.pi)
+  ///     print(Double.pi)
   ///     // Prints "3.14159265358979"
   public static let pi = Fraction(numerator: UInt128(low: 0xaae7b57d8c88bd6a,
                                                      high: 0x17a27cc3ed6cf7ee),
@@ -979,10 +983,10 @@ extension Fraction: FloatingPoint {
   /// In the next example, `y` has a value of `21.5`, which is encoded as
   /// `1.34375 * 2 ** 4`. The significand of `y` is therefore 1.34375.
   ///
-  ///     let y: Float80 = 21.5
+  ///     let y: Double = 21.5
   ///     // y.significand == 1.34375
   ///     // y.exponent == 4
-  ///     // Float80.radix == 2
+  ///     // Double.radix == 2
   ///
   /// The `exponent` property has the following edge cases:
   ///
@@ -1007,10 +1011,10 @@ extension Fraction: FloatingPoint {
   /// In the next example, `y` has a value of `21.5`, which is encoded as
   /// `1.34375 * 2 ** 4`. The significand of `y` is therefore 1.34375.
   ///
-  ///     let y: Float80 = 21.5
+  ///     let y: Double = 21.5
   ///     // y.significand == 1.34375
   ///     // y.exponent == 4
-  ///     // Float80.radix == 2
+  ///     // Double.radix == 2
   ///
   /// If a type's radix is 2, then for finite nonzero numbers, the significand
   /// is in the range `1.0 ..< 2.0`. For other values of `x`, `x.significand`
@@ -1207,7 +1211,7 @@ extension Fraction: FloatingPoint {
   /// The following example declares a function that calculates the length of
   /// the hypotenuse of a right triangle given its two perpendicular sides.
   ///
-  ///     func hypotenuse(_ a: Float80, _ b: Float80) -> Float80 {
+  ///     func hypotenuse(_ a: Double, _ b: Double) -> Double {
   ///         return (a * a + b * b).squareRoot()
   ///     }
   ///
@@ -1257,13 +1261,13 @@ extension Fraction: FloatingPoint {
   /// or `y` is a number if the other is a quiet NaN. If both `x` and `y` are
   /// NaN, or either `x` or `y` is a signaling NaN, the result is NaN.
   ///
-  ///     Float80.minimum(10.0, -25.0)
+  ///     Double.minimum(10.0, -25.0)
   ///     // -25.0
-  ///     Float80.minimum(10.0, .nan)
+  ///     Double.minimum(10.0, .nan)
   ///     // 10.0
-  ///     Float80.minimum(.nan, -25.0)
+  ///     Double.minimum(.nan, -25.0)
   ///     // -25.0
-  ///     Float80.minimum(.nan, .nan)
+  ///     Double.minimum(.nan, .nan)
   ///     // nan
   ///
   /// The `minimum` method implements the `minNum` operation defined by the
@@ -1292,13 +1296,13 @@ extension Fraction: FloatingPoint {
   /// or `y` is a number if the other is a quiet NaN. If both `x` and `y` are
   /// NaN, or either `x` or `y` is a signaling NaN, the result is NaN.
   ///
-  ///     Float80.maximum(10.0, -25.0)
+  ///     Double.maximum(10.0, -25.0)
   ///     // 10.0
-  ///     Float80.maximum(10.0, .nan)
+  ///     Double.maximum(10.0, .nan)
   ///     // 10.0
-  ///     Float80.maximum(.nan, -25.0)
+  ///     Double.maximum(.nan, -25.0)
   ///     // -25.0
-  ///     Float80.maximum(.nan, .nan)
+  ///     Double.maximum(.nan, .nan)
   ///     // nan
   ///
   /// The `maximum` method implements the `maxNum` operation defined by the
@@ -1329,13 +1333,13 @@ extension Fraction: FloatingPoint {
   /// `x` and `y` are NaN, or either `x` or `y` is a signaling NaN, the result
   /// is NaN.
   ///
-  ///     Float80.minimumMagnitude(10.0, -25.0)
+  ///     Double.minimumMagnitude(10.0, -25.0)
   ///     // 10.0
-  ///     Float80.minimumMagnitude(10.0, .nan)
+  ///     Double.minimumMagnitude(10.0, .nan)
   ///     // 10.0
-  ///     Float80.minimumMagnitude(.nan, -25.0)
+  ///     Double.minimumMagnitude(.nan, -25.0)
   ///     // -25.0
-  ///     Float80.minimumMagnitude(.nan, .nan)
+  ///     Double.minimumMagnitude(.nan, .nan)
   ///     // nan
   ///
   /// The `minimumMagnitude` method implements the `minNumMag` operation
@@ -1362,13 +1366,13 @@ extension Fraction: FloatingPoint {
   /// `x` and `y` are NaN, or either `x` or `y` is a signaling NaN, the result
   /// is NaN.
   ///
-  ///     Float80.maximumMagnitude(10.0, -25.0)
+  ///     Double.maximumMagnitude(10.0, -25.0)
   ///     // -25.0
-  ///     Float80.maximumMagnitude(10.0, .nan)
+  ///     Double.maximumMagnitude(10.0, .nan)
   ///     // 10.0
-  ///     Float80.maximumMagnitude(.nan, -25.0)
+  ///     Double.maximumMagnitude(.nan, -25.0)
   ///     // -25.0
-  ///     Float80.maximumMagnitude(.nan, .nan)
+  ///     Double.maximumMagnitude(.nan, .nan)
   ///     // nan
   ///
   /// The `maximumMagnitude` method implements the `maxNumMag` operation
@@ -1519,7 +1523,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isEqual(to: .nan)
   ///     // false
-  ///     Float80.nan.isEqual(to: .nan)
+  ///     Double.nan.isEqual(to: .nan)
   ///     // false
   ///
   /// The `isEqual(to:)` method implements the equality predicate defined by
@@ -1551,7 +1555,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isLess(than: .nan)
   ///     // false
-  ///     Float80.nan.isLess(than: x)
+  ///     Double.nan.isLess(than: x)
   ///     // false
   ///
   /// The `isLess(than:)` method implements the less-than predicate defined by
@@ -1581,7 +1585,7 @@ extension Fraction: FloatingPoint {
   ///     // true
   ///     x.isLessThanOrEqualTo(.nan)
   ///     // false
-  ///     Float80.nan.isLessThanOrEqualTo(x)
+  ///     Double.nan.isLessThanOrEqualTo(x)
   ///     // false
   ///
   /// The `isLessThanOrEqualTo(_:)` method implements the less-than-or-equal
@@ -1675,9 +1679,9 @@ extension Fraction: FloatingPoint {
   ///     // y is a NaN
   ///
   ///     // Comparing with the equal-to operator never returns 'true'
-  ///     print(x == Float80.nan)
+  ///     print(x == Double.nan)
   ///     // Prints "false"
-  ///     print(y == Float80.nan)
+  ///     print(y == Double.nan)
   ///     // Prints "false"
   ///
   ///     // Test with the 'isNaN' property instead
@@ -1724,17 +1728,17 @@ extension Fraction: FloatingPoint {
   ///
   /// The [IEEE 754 specification][spec] defines a *canonical*, or preferred,
   /// encoding of a floating-point value. On platforms that fully support
-  /// IEEE 754, every `Float` or `Float80` value is canonical, but
+  /// IEEE 754, every `Float` or `Double` value is canonical, but
   /// non-canonical values can exist on other platforms or for other types.
   /// Some examples:
   ///
   /// - On platforms that flush subnormal numbers to zero (such as armv7
   ///   with the default floating-point environment), Swift interprets
-  ///   subnormal `Float` and `Float80` values as non-canonical zeros.
+  ///   subnormal `Float` and `Double` values as non-canonical zeros.
   ///   (In Swift 5.1 and earlier, `isCanonical` is `true` for these
   ///   values, which is the incorrect value.)
   ///
-  /// - On i386 and x86_64, `Float80` has a number of non-canonical
+  /// - On i386 and x86_64, `Double` has a number of non-canonical
   ///   encodings. "Pseudo-NaNs", "pseudo-infinities", and "unnormals" are
   ///   interpreted as non-canonical NaN encodings. "Pseudo-denormals" are
   ///   interpreted as non-canonical encodings of subnormal values.
@@ -1790,40 +1794,11 @@ extension Fraction {
 
 // MARK: - Converting from a Fraction
 
-public extension Float80 {
-  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
-  /// values and then dividing the numerator by the denominator, negating the result
-  /// when `value.isNegative`.
-  /// - Parameter value: The fraction to convert into a `Float80`.
-  init(_ value: Fraction) {
-    switch value.floatingPointClass {
-      case .quietNaN:
-        self = .nan
-      case .signalingNaN:
-        self = .signalingNaN
-      case .positiveInfinity:
-        self = .infinity
-      case .negativeInfinity:
-        self = -.infinity
-      case .positiveZero:
-        self = .zero
-      case .negativeZero:
-        self = -.zero
-      case .positiveNormal,
-           .positiveSubnormal:
-        self = Float80(value.numerator) / Float80(value.denominator)
-      case .negativeNormal,
-           .negativeSubnormal:
-        self = -(Float80(value.numerator) / Float80(value.denominator))
-    }
-  }
-}
-
 public extension Double {
-  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
+  /// Converts a `Fraction` into a `Double` by converting the numerator and denominator
   /// values and then dividing the numerator by the denominator, negating the result
   /// when `value.isNegative`.
-  /// - Parameter value: The fraction to convert into a `Float80`.
+  /// - Parameter value: The fraction to convert into a `Double`.
   init(_ value: Fraction) {
     switch value.floatingPointClass {
       case .quietNaN:
@@ -1849,10 +1824,10 @@ public extension Double {
 }
 
 public extension Float {
-  /// Converts a `Fraction` into a `Float80` by converting the numerator and denominator
+  /// Converts a `Fraction` into a `Double` by converting the numerator and denominator
   /// values and then dividing the numerator by the denominator, negating the result
   /// when `value.isNegative`.
-  /// - Parameter value: The fraction to convert into a `Float80`.
+  /// - Parameter value: The fraction to convert into a `Double`.
   init(_ value: Fraction) {
     switch value.floatingPointClass {
       case .quietNaN:
@@ -2101,7 +2076,7 @@ private func _squareRoot(_ value: Fraction) -> Fraction {
        overflow) = value.numerator.multipliedReportingOverflow(by: value.denominator)
 
   guard !overflow else {
-    return Fraction(Float80(value).squareRoot())
+    return Fraction(Double(value).squareRoot())
   }
 
   let pairs: AnyIterator<UInt128> = {
@@ -2350,7 +2325,7 @@ private func _pow10(_ exponent: Int) -> UInt128 {
 ///
 /// - Parameter value: The value for which to calculate the logarithm.
 /// - Returns: The base 10 logarithm for `value`.
-private func _log10(_ value: UInt128) -> Int { Int(log10(Float80(value))) }
+private func _log10(_ value: UInt128) -> Int { Int(log10(Double(value))) }
 
 /// The first 39 powers of ten.
 private let _powersOfTen = OrderedSet<UInt128>((0...38).map(_pow10))

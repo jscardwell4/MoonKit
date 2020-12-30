@@ -140,9 +140,7 @@ public extension String {
 
   // MARK: Splitting
 
-//  func split(_ string: String) -> [String] { split(~/string) }
-
-  func split(_ regex: RegularExpression) -> [String] {
+  func split(regex: RegularExpression) -> [String] {
     let ranges = regex.matchRanges(in: self).compactMap {Range($0, in: self)}
     guard ranges.count > 0 else { return [self] }
     return (startIndex ..< endIndex).split(
@@ -172,7 +170,7 @@ public extension String {
     isDashCase
       ? self
       : (isCamelCase
-        ? split(~/"(?<=\\p{Ll})(?=\\p{Lu})").joined(separator: "-").lowercased()
+          ? split(regex: ~/"(?<=\\p{Ll})(?=\\p{Lu})").joined(separator: "-").lowercased()
         : camelCaseString.dashCaseString)
   }
 
@@ -191,7 +189,7 @@ public extension String {
 
     guard !isCamelCase else { return self }
 
-    var segments = split(~/#"(?<=\p{Ll})(?=\p{Lu})|(?<=\p{Lu})(?=\p{Lu})|(\p{Z}|\p{P})"#)
+    var segments = split(regex: ~/#"(?<=\p{Ll})(?=\p{Lu})|(?<=\p{Lu})(?=\p{Lu})|(\p{Z}|\p{P})"#)
 
     guard segments.count > 0 else { return self }
 
@@ -394,8 +392,9 @@ extension String {
   /// Initializing with the hexadecimal representation for a sequence of byte values.
   ///
   /// - Parameter hexBytes: The sequence of byte values to describe.
-  init<S: Sequence>(hexBytes: S) where S.Iterator.Element == UInt8 {
-    self = " ".join(hexBytes.map { String($0, radix: 16, uppercase: true, minCount: 2) })
+  init<S: Sequence>(hexBytes: S) where S.Element == UInt8 {
+    self = hexBytes.map { String($0, radix: 16, uppercase: true, minCount: 2) }
+            .joined(separator: " ")
   }
 
   /// Initializes the string with the address of the specified object.
@@ -433,6 +432,7 @@ extension String {
         self = "\(s[..<decimal]).\(s[s.index(after: decimal)...].prefix(precision))"
     }
   }
+
 }
 
 // MARK: - String + PrettyPrint

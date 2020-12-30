@@ -145,9 +145,7 @@ public struct ReverseClosedRange<Bound: Comparable>: Equatable, CustomStringConv
 }
 
 
-extension ReverseClosedRange
-  where Bound:SignedNumeric, Bound:Additive, Bound:Subtractive, Bound: Multiplicative, Bound: Divisive
-{
+extension ReverseClosedRange where Bound:BinarySignedNumeric, Bound.Magnitude == Bound {
 
   public var diameter: Bound { return abs(lowerBound - upperBound) }
 
@@ -269,14 +267,18 @@ public extension ClosedRange where Bound:FloatingPoint {
 }
 
 public extension ClosedRange
-  where Bound:SignedNumeric, Bound:Additive, Bound:Subtractive, Bound:Multiplicative, Bound:Divisive
+where Bound:BinarySignedNumeric, Bound.Magnitude == Bound
 {
   // FIXME: I think this only works for positive start intervals and intervals of the form -x ... x
   var diameter: Bound { return abs(upperBound - lowerBound) }
 
   func normalizeValue(_ value: Bound) -> Bound {
     let value = clampValue(value)
-    if lowerBound < 0 { return (value + abs(lowerBound)) / diameter }
+    if lowerBound < 0 {
+
+      return (value + lowerBound.magnitude) / diameter
+
+    }
     else if lowerBound > 0 { return (value - lowerBound) / diameter }
     else { return value / diameter }
   }

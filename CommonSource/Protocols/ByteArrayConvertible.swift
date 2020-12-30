@@ -10,9 +10,9 @@ import Foundation
 // MARK: - ByteArrayConvertible
 
 public protocol ByteArrayConvertible: Equatable, DataConvertible {
-  var bytes: [Byte] { get }
-  init(_ bytes: [Byte])
-  init<S: Sequence>(_ bytes: S) where S.Iterator.Element == Byte
+  var bytes: [UInt8] { get }
+  init(_ bytes: [UInt8])
+  init<S: Sequence>(_ bytes: S) where S.Iterator.Element == UInt8
 }
 
 public extension ByteArrayConvertible {
@@ -44,12 +44,12 @@ public func == <B: ByteArrayConvertible>(lhs: B, rhs: B) -> Bool {
 }
 
 public extension ByteArrayConvertible {
-  init<S: Sequence>(_ bytes: S) where S.Iterator.Element == Byte {
+  init<S: Sequence>(_ bytes: S) where S.Iterator.Element == UInt8 {
     self.init(Array(bytes))
   }
 }
 
-private func _bytes<T>(_ value: T) -> [Byte] {
+private func _bytes<T>(_ value: T) -> [UInt8] {
   var value = value
   return withUnsafeBytes(of: &value) { Array($0.reversed()) }
 }
@@ -57,8 +57,8 @@ private func _bytes<T>(_ value: T) -> [Byte] {
 // MARK: - UInt + ByteArrayConvertible
 
 extension UInt: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) {
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) {
     self = MemoryLayout<UInt>.size == 8 ? UInt(UInt64(bytes)) : UInt(UInt32(bytes))
   }
 }
@@ -66,15 +66,15 @@ extension UInt: ByteArrayConvertible {
 // MARK: - Int + ByteArrayConvertible
 
 extension Int: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init<S: Sequence>(_ bytes: S) where S.Iterator.Element == Byte { self = Int(UInt(bytes)) }
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init<S: Sequence>(_ bytes: S) where S.Iterator.Element == UInt8 { self = Int(UInt(bytes)) }
 }
 
 // MARK: - UInt8 + ByteArrayConvertible
 
 extension UInt8: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) {
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) {
     guard let byte = bytes.first else { self = 0; return }
     self = byte
   }
@@ -83,15 +83,15 @@ extension UInt8: ByteArrayConvertible {
 // MARK: - Int8 + ByteArrayConvertible
 
 extension Int8: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) { self = Int8(UInt8(bytes)) }
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) { self = Int8(UInt8(bytes)) }
 }
 
 // MARK: - UInt16 + ByteArrayConvertible
 
 extension UInt16: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) {
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) {
     let count = bytes.count
     guard count < 3 else { self = UInt16(bytes[count - 2 ..< count]); return }
     switch bytes.count {
@@ -108,15 +108,15 @@ extension UInt16: ByteArrayConvertible {
 // MARK: - Int16 + ByteArrayConvertible
 
 extension Int16: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) { self = Int16(UInt16(bytes)) }
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) { self = Int16(UInt16(bytes)) }
 }
 
 // MARK: - UInt32 + ByteArrayConvertible
 
 extension UInt32: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) {
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) {
     let count = bytes.count
     guard count > 2 else { self = UInt32(UInt16(bytes)); return }
 
@@ -130,15 +130,15 @@ extension UInt32: ByteArrayConvertible {
 // MARK: - Int32 + ByteArrayConvertible
 
 extension Int32: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) { self = Int32(UInt32(bytes)) }
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) { self = Int32(UInt32(bytes)) }
 }
 
 // MARK: - UInt64 + ByteArrayConvertible
 
 extension UInt64: ByteArrayConvertible {
-  public var bytes: [Byte] { return _bytes(self) }
-  public init(_ bytes: [Byte]) {
+  public var bytes: [UInt8] { return _bytes(self) }
+  public init(_ bytes: [UInt8]) {
     let count = bytes.count
     guard count > 4 else { self = UInt64(UInt32(bytes)); return }
     self = UInt64(UInt32(bytes[0 ..< count - 4])) << 32
@@ -149,22 +149,22 @@ extension UInt64: ByteArrayConvertible {
 // MARK: - Int64 + ByteArrayConvertible
 
 extension Int64: ByteArrayConvertible {
-  public var bytes: [Byte] { _bytes(self) }
-  public init(_ bytes: [Byte]) { self = Int64(UInt64(bytes)) }
+  public var bytes: [UInt8] { _bytes(self) }
+  public init(_ bytes: [UInt8]) { self = Int64(UInt64(bytes)) }
 }
 
 // MARK: - String + ByteArrayConvertible
 
 extension String: ByteArrayConvertible {
-  public var bytes: [Byte] {
+  public var bytes: [UInt8] {
     return Array(utf8)
   }
 
-  public init<S: Sequence>(_ bytes: S) where S.Iterator.Element == Byte {
+  public init<S: Sequence>(_ bytes: S) where S.Iterator.Element == UInt8 {
     self.init(Array(bytes))
   }
 
-  public init(_ bytes: [Byte]) {
+  public init(_ bytes: [UInt8]) {
     let endIndex = bytes.firstIndex(of: 0) ?? bytes.endIndex
     let scalars = String.UnicodeScalarView(bytes[..<endIndex].map(UnicodeScalar.init))
     self = String(scalars)

@@ -438,3 +438,6 @@ extension JSONValue: DataConvertible {
     self.init(rawValue: string)
   }
 }
+
+private func typeCast<T,U>(_ t: T, _ u: U.Type) -> U? { t as? U }
+private func typeCast<T,U>(_ t: T?, _ u: U.Type) -> U? { t != nil ? typeCast(t!, u) : nil }

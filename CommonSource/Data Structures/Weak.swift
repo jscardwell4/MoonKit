@@ -35,7 +35,7 @@ extension Weak: CustomStringConvertible {
 }
 
 public func compact<C: RangeReplaceableCollection, T: AnyObject>(_ collection: inout C)
-  where C.Iterator.Element == Weak<T>, C.SubSequence == C
+  where C.Element == Weak<T>, C.SubSequence == C
 {
   var result = collection.prefix(0)
   for element in collection where element.reference != nil { result.append(element) }

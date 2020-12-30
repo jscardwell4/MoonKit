@@ -33,6 +33,8 @@ public func checkDirectory(url: URL, createDirectories: Bool = false) throws -> 
 
 }
 
+#if os(macOS)
+
 /// Performs glob expansion using the specified shell and arguments on the provided list of
 /// file paths.
 ///
@@ -79,3 +81,5 @@ public func expandGlobPatterns(in paths: [String],
   return fileList
 
 }
+
+#endif

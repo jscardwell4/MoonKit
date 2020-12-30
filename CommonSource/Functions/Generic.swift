@@ -86,23 +86,3 @@ public func weakMethod<T:AnyObject, U>(_ object: T, _ method: @escaping (T) -> (
   }
 }
 
-public func weakMethod<T:AnyObject, U>(_ object: T, default: Bool = false, _ method: @escaping (T) -> (U) -> Bool) -> (U) -> Bool {
-  return {
-    [weak object] in
-    guard object != nil else { return `default` }
-    return method(object!)($0)
-  }
-}
-
-public func weakMethod<T:AnyObject, U, R>(_ object: T, default: R, _ method: @escaping (T) -> (U) -> R) -> (U) -> R {
-  return {
-    [weak object] in
-    guard object != nil else { return `default` }
-    return method(object!)($0)
-  }
-}
-
-public func unownedMethod<T:AnyObject, U, R>(_ object: T, _ method: @escaping (T) -> (U) -> R) -> (U) -> R {
-  return { [unowned object] in return method(object)($0) }
-}
-

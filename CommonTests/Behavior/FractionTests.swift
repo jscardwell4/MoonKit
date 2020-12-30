@@ -354,10 +354,10 @@ final class FractionTests: XCTestCase {
     expect((-Fraction.zero).squareRoot()) == -Fraction.zero
     expect(Fraction.nan.squareRoot()).to(beNaN())
     expect(Fraction.signalingNaN.squareRoot()).to(beNaN())
-    expect(Float80((12÷10).squareRoot())).to(equalWithAccuracy(Float80(1.2).squareRoot(), 0.1e-14))
-//    expect(Float80((-12÷10).squareRoot())).to(equalWithAccuracy(Float80(-1.2).squareRoot(), 0.1e-14))
-    expect(Float80((12525÷100).squareRoot())).to(equalWithAccuracy(Float80(125.25).squareRoot(), 0.1e-13))
-    expect(Float80((4÷9).squareRoot())).to(equalWithAccuracy(Float80(4.0/9.0).squareRoot(), 0.1e-14))
+    expect(Double((12÷10).squareRoot())).to(equalWithAccuracy(Double(1.2).squareRoot(), 0.1e-14))
+//    expect(Double((-12÷10).squareRoot())).to(equalWithAccuracy(Double(-1.2).squareRoot(), 0.1e-14))
+    expect(Double((12525÷100).squareRoot())).to(equalWithAccuracy(Double(125.25).squareRoot(), 0.1e-13))
+    expect(Double((4÷9).squareRoot())).to(equalWithAccuracy(Double(4.0/9.0).squareRoot(), 0.1e-14))
   }
 
   func testRounding() {
@@ -622,113 +622,113 @@ final class FractionTests: XCTestCase {
     expect((-Fraction.zero).reciprocal) == -.infinity
   }
 
-  func testInitializeWithFloat80() {
-    expect(Fraction(Float80.nan)).to(beNaN())
-    expect(Fraction(Float80.nan)).toNot(beSignalingNaN())
-    expect(Fraction(Float80.nan).numerator) == 0
-    expect(Fraction(Float80.nan).denominator) == 1
-    expect(Fraction(Float80.signalingNaN)).to(beNaN())
-    expect(Fraction(Float80.signalingNaN)).to(beSignalingNaN())
-    expect(Fraction(Float80.infinity)) == .infinity
-    expect(Fraction(-Float80.infinity)) == -.infinity
-    expect(Fraction(Float80.pi)).to(equalWithAccuracy(.pi, 1÷1e15))
-    expect(Fraction(-Float80.pi)).to(equalWithAccuracy(-.pi, (1÷1e15)))
+  func testInitializeWithDouble() {
+    expect(Fraction(Double.nan)).to(beNaN())
+    expect(Fraction(Double.nan)).toNot(beSignalingNaN())
+    expect(Fraction(Double.nan).numerator) == 0
+    expect(Fraction(Double.nan).denominator) == 1
+    expect(Fraction(Double.signalingNaN)).to(beNaN())
+    expect(Fraction(Double.signalingNaN)).to(beSignalingNaN())
+    expect(Fraction(Double.infinity)) == .infinity
+    expect(Fraction(-Double.infinity)) == -.infinity
+    expect(Fraction(Double.pi)).to(equalWithAccuracy(.pi, 1÷1e15))
+    expect(Fraction(-Double.pi)).to(equalWithAccuracy(-.pi, (1÷1e15)))
   }
 
-  func testConversionToFloat80() {
-    expect(Float80(1÷2)) == 0.5
-    expect(Float80(1÷3)) == 0.33333333333333333334
-    expect(Float80(2÷3)) == 0.66666666666666666667
-    expect(Float80(1÷4)) == 0.25
-    expect(Float80(2÷4)) == 0.5
-    expect(Float80(3÷4)) == 0.75
-    expect(Float80(1÷5)) == 0.2
-    expect(Float80(2÷5)) == 0.4
-    expect(Float80(3÷5)) == 0.6
-    expect(Float80(4÷5)) == 0.8
-    expect(Float80(1÷6)) == 0.16666666666666666667
-    expect(Float80(2÷6)) == 0.33333333333333333334
-    expect(Float80(3÷6)) == 0.5
-    expect(Float80(4÷6)) == 0.66666666666666666667
-    expect(Float80(5÷6)) == 0.83333333333333333334
-    expect(Float80(1÷7)) == 0.14285714285714285714
-    expect(Float80(2÷7)) == 0.28571428571428571428
-    expect(Float80(3÷7)) == 0.42857142857142857144
-    expect(Float80(4÷7)) == 0.57142857142857142857
-    expect(Float80(5÷7)) == 0.71428571428571428571
-    expect(Float80(6÷7)) == 0.85714285714285714285
-    expect(Float80(1÷8)) == 0.125
-    expect(Float80(2÷8)) == 0.25
-    expect(Float80(3÷8)) == 0.375
-    expect(Float80(4÷8)) == 0.5
-    expect(Float80(5÷8)) == 0.625
-    expect(Float80(6÷8)) == 0.75
-    expect(Float80(7÷8)) == 0.875
-    expect(Float80(1÷9)) == 0.11111111111111111111
-    expect(Float80(2÷9)) == 0.22222222222222222222
-    expect(Float80(3÷9)) == 0.33333333333333333333
-    expect(Float80(4÷9)) == 0.44444444444444444444
-    expect(Float80(5÷9)) == 0.55555555555555555556
-    expect(Float80(6÷9)) == 0.66666666666666666667
-    expect(Float80(7÷9)) == 0.77777777777777777778
-    expect(Float80(8÷9)) == 0.88888888888888888889
-    expect(Float80(1÷10)) == 0.1
-    expect(Float80(2÷10)) == 0.2
-    expect(Float80(3÷10)) == 0.3
-    expect(Float80(4÷10)) == 0.4
-    expect(Float80(5÷10)) == 0.5
-    expect(Float80(6÷10)) == 0.6
-    expect(Float80(7÷10)) == 0.7
-    expect(Float80(8÷10)) == 0.8
-    expect(Float80(9÷10)) == 0.9
+  func testConversionToDouble() {
+    expect(Double(1÷2)) == 0.5
+    expect(Double(1÷3)) == 0.33333333333333333334
+    expect(Double(2÷3)) == 0.66666666666666666667
+    expect(Double(1÷4)) == 0.25
+    expect(Double(2÷4)) == 0.5
+    expect(Double(3÷4)) == 0.75
+    expect(Double(1÷5)) == 0.2
+    expect(Double(2÷5)) == 0.4
+    expect(Double(3÷5)) == 0.6
+    expect(Double(4÷5)) == 0.8
+    expect(Double(1÷6)) == 0.16666666666666666667
+    expect(Double(2÷6)) == 0.33333333333333333334
+    expect(Double(3÷6)) == 0.5
+    expect(Double(4÷6)) == 0.66666666666666666667
+    expect(Double(5÷6)) == 0.83333333333333333334
+    expect(Double(1÷7)) == 0.14285714285714285714
+    expect(Double(2÷7)) == 0.28571428571428571428
+    expect(Double(3÷7)) == 0.42857142857142857144
+    expect(Double(4÷7)) == 0.57142857142857142857
+    expect(Double(5÷7)) == 0.71428571428571428571
+    expect(Double(6÷7)) == 0.85714285714285714285
+    expect(Double(1÷8)) == 0.125
+    expect(Double(2÷8)) == 0.25
+    expect(Double(3÷8)) == 0.375
+    expect(Double(4÷8)) == 0.5
+    expect(Double(5÷8)) == 0.625
+    expect(Double(6÷8)) == 0.75
+    expect(Double(7÷8)) == 0.875
+    expect(Double(1÷9)) == 0.11111111111111111111
+    expect(Double(2÷9)) == 0.22222222222222222222
+    expect(Double(3÷9)) == 0.33333333333333333333
+    expect(Double(4÷9)) == 0.44444444444444444444
+    expect(Double(5÷9)) == 0.55555555555555555556
+    expect(Double(6÷9)) == 0.66666666666666666667
+    expect(Double(7÷9)) == 0.77777777777777777778
+    expect(Double(8÷9)) == 0.88888888888888888889
+    expect(Double(1÷10)) == 0.1
+    expect(Double(2÷10)) == 0.2
+    expect(Double(3÷10)) == 0.3
+    expect(Double(4÷10)) == 0.4
+    expect(Double(5÷10)) == 0.5
+    expect(Double(6÷10)) == 0.6
+    expect(Double(7÷10)) == 0.7
+    expect(Double(8÷10)) == 0.8
+    expect(Double(9÷10)) == 0.9
   }
 
-  func testFloat80RoundTrip() {
-    expect(Fraction(Float80(1÷2))) == 1÷2
-    expect(Fraction(Float80(1÷3))) == 1÷3
-    expect(Fraction(Float80(2÷3))) == 2÷3
-    expect(Fraction(Float80(1÷4))) == 1÷4
-    expect(Fraction(Float80(2÷4))) == 2÷4
-    expect(Fraction(Float80(3÷4))) == 3÷4
-    expect(Fraction(Float80(1÷5))) == 1÷5
-    expect(Fraction(Float80(2÷5))) == 2÷5
-    expect(Fraction(Float80(3÷5))) == 3÷5
-    expect(Fraction(Float80(4÷5))) == 4÷5
-    expect(Fraction(Float80(1÷6))) == 1÷6
-    expect(Fraction(Float80(2÷6))) == 2÷6
-    expect(Fraction(Float80(3÷6))) == 3÷6
-    expect(Fraction(Float80(4÷6))) == 4÷6
-    expect(Fraction(Float80(5÷6))) == 5÷6
-    expect(Fraction(Float80(1÷7))) == 1÷7
-    expect(Fraction(Float80(2÷7))) == 2÷7
-    expect(Fraction(Float80(3÷7))) == 3÷7
-    expect(Fraction(Float80(4÷7))) == 4÷7
-    expect(Fraction(Float80(5÷7))) == 5÷7
-    expect(Fraction(Float80(6÷7))) == 6÷7
-    expect(Fraction(Float80(1÷8))) == 1÷8
-    expect(Fraction(Float80(2÷8))) == 2÷8
-    expect(Fraction(Float80(3÷8))) == 3÷8
-    expect(Fraction(Float80(4÷8))) == 4÷8
-    expect(Fraction(Float80(5÷8))) == 5÷8
-    expect(Fraction(Float80(6÷8))) == 6÷8
-    expect(Fraction(Float80(7÷8))) == 7÷8
-    expect(Fraction(Float80(1÷9))) == 1÷9
-    expect(Fraction(Float80(2÷9))) == 2÷9
-    expect(Fraction(Float80(3÷9))) == 3÷9
-    expect(Fraction(Float80(4÷9))) == 4÷9
-    expect(Fraction(Float80(5÷9))) == 5÷9
-    expect(Fraction(Float80(6÷9))) == 6÷9
-    expect(Fraction(Float80(7÷9))) == 7÷9
-    expect(Fraction(Float80(8÷9))) == 8÷9
-    expect(Fraction(Float80(1÷10))) == 1÷10
-    expect(Fraction(Float80(2÷10))) == 2÷10
-    expect(Fraction(Float80(3÷10))) == 3÷10
-    expect(Fraction(Float80(4÷10))) == 4÷10
-    expect(Fraction(Float80(5÷10))) == 5÷10
-    expect(Fraction(Float80(6÷10))) == 6÷10
-    expect(Fraction(Float80(7÷10))) == 7÷10
-    expect(Fraction(Float80(8÷10))) == 8÷10
-    expect(Fraction(Float80(9÷10))) == 9÷10
+  func testDoubleRoundTrip() {
+    expect(Fraction(Double(1÷2))) == 1÷2
+    expect(Fraction(Double(1÷3))) == 1÷3
+    expect(Fraction(Double(2÷3))) == 2÷3
+    expect(Fraction(Double(1÷4))) == 1÷4
+    expect(Fraction(Double(2÷4))) == 2÷4
+    expect(Fraction(Double(3÷4))) == 3÷4
+    expect(Fraction(Double(1÷5))) == 1÷5
+    expect(Fraction(Double(2÷5))) == 2÷5
+    expect(Fraction(Double(3÷5))) == 3÷5
+    expect(Fraction(Double(4÷5))) == 4÷5
+    expect(Fraction(Double(1÷6))) == 1÷6
+    expect(Fraction(Double(2÷6))) == 2÷6
+    expect(Fraction(Double(3÷6))) == 3÷6
+    expect(Fraction(Double(4÷6))) == 4÷6
+    expect(Fraction(Double(5÷6))) == 5÷6
+    expect(Fraction(Double(1÷7))) == 1÷7
+    expect(Fraction(Double(2÷7))) == 2÷7
+    expect(Fraction(Double(3÷7))) == 3÷7
+    expect(Fraction(Double(4÷7))) == 4÷7
+    expect(Fraction(Double(5÷7))) == 5÷7
+    expect(Fraction(Double(6÷7))) == 6÷7
+    expect(Fraction(Double(1÷8))) == 1÷8
+    expect(Fraction(Double(2÷8))) == 2÷8
+    expect(Fraction(Double(3÷8))) == 3÷8
+    expect(Fraction(Double(4÷8))) == 4÷8
+    expect(Fraction(Double(5÷8))) == 5÷8
+    expect(Fraction(Double(6÷8))) == 6÷8
+    expect(Fraction(Double(7÷8))) == 7÷8
+    expect(Fraction(Double(1÷9))) == 1÷9
+    expect(Fraction(Double(2÷9))) == 2÷9
+    expect(Fraction(Double(3÷9))) == 3÷9
+    expect(Fraction(Double(4÷9))) == 4÷9
+    expect(Fraction(Double(5÷9))) == 5÷9
+    expect(Fraction(Double(6÷9))) == 6÷9
+    expect(Fraction(Double(7÷9))) == 7÷9
+    expect(Fraction(Double(8÷9))) == 8÷9
+    expect(Fraction(Double(1÷10))) == 1÷10
+    expect(Fraction(Double(2÷10))) == 2÷10
+    expect(Fraction(Double(3÷10))) == 3÷10
+    expect(Fraction(Double(4÷10))) == 4÷10
+    expect(Fraction(Double(5÷10))) == 5÷10
+    expect(Fraction(Double(6÷10))) == 6÷10
+    expect(Fraction(Double(7÷10))) == 7÷10
+    expect(Fraction(Double(8÷10))) == 8÷10
+    expect(Fraction(Double(9÷10))) == 9÷10
   }
 
 }

@@ -87,7 +87,7 @@ public extension KeyValueBase where Self.Iterator.Element == KeyValuePair<Key, V
     for (key, value) in zip(keyDescriptions, values) {
       let keyString = "\(indentation)\(key): "
       var valueString: String
-      var valueComponents = "\n".split(~/"\(value)")
+      var valueComponents = "\n".split(regex: ~/"\(value)")
       if valueComponents.count > 0 {
         valueString = valueComponents.remove(at: 0)
         if valueComponents.count > 0 {

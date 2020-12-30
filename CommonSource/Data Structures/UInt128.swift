@@ -2039,11 +2039,3 @@ public extension Double {
   /// - Parameter value: The value with which to initialize the `Double`.
   init(_ value: UInt128) { self = Double(value.high) * exp2(64.0) + Double(value.low) }
 }
-
-public extension Float80 {
-  /// Initializing with a `UInt128` value.
-  /// - Parameter value: The value with which to initialize the `Double`.
-  init(_ value: UInt128) {
-    self = Float80(value.high) * exp2(Float80(64.0)) + Float80(value.low)
-  }
-}

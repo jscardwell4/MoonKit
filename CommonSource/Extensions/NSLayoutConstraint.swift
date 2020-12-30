@@ -23,7 +23,7 @@ extension NSLayoutConstraint {
 
     return format.split(separator: "\n")
       .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
-      .filter(invert({$0.isEmpty}))
+      .filter({!$0.isEmpty})
   }
 
   public convenience init(_ pseudoConstraint: PseudoConstraint) {
