@@ -248,6 +248,19 @@
 		C2EDA8ED2590F7B2008B542D /* IntervalMapBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA68C258FE17D008B542D /* IntervalMapBehaviorTests.swift */; };
 		C2EDA8F42590F9C2008B542D /* SortedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CCD610258E79DC00E9923C /* SortedDictionary.swift */; };
 		C2EDA8FB2590F9C3008B542D /* SortedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CCD610258E79DC00E9923C /* SortedDictionary.swift */; };
+		C2EECC79259CD8ED007CE6A1 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECC78259CD8ED007CE6A1 /* LabelButton.swift */; };
+		C2EECC81259CD956007CE6A1 /* NSParagraphStyle+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECC80259CD956007CE6A1 /* NSParagraphStyle+MoonKitAdditions.swift */; };
+		C2EECC8C259CDB37007CE6A1 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECC8B259CDB36007CE6A1 /* ErrorType.swift */; };
+		C2EECC94259CDBD2007CE6A1 /* UIFont+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECC93259CDBD2007CE6A1 /* UIFont+MoonKitAdditions.swift */; };
+		C2EECC9C259CDEC0007CE6A1 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECC9B259CDEC0007CE6A1 /* DirectoryMonitor.swift */; };
+		C2EECCA4259CE266007CE6A1 /* PanGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCA3259CE266007CE6A1 /* PanGesture.swift */; };
+		C2EECCAC259CE473007CE6A1 /* ConfiningBlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCAB259CE473007CE6A1 /* ConfiningBlockActionGesture.swift */; };
+		C2EECCBA259CE47C007CE6A1 /* BlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCB9259CE47C007CE6A1 /* BlockActionGesture.swift */; };
+		C2EECCC2259CE706007CE6A1 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCC1259CE706007CE6A1 /* Knob.swift */; };
+		C2EECCCA259CE70D007CE6A1 /* MarqueeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCC9259CE70D007CE6A1 /* MarqueeField.swift */; };
+		C2EECCD2259CE74D007CE6A1 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCD1259CE74D007CE6A1 /* TextField.swift */; };
+		C2EECCDA259CE75B007CE6A1 /* Marquee.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCD9259CE75B007CE6A1 /* Marquee.swift */; };
+		C2EECCE2259CEB26007CE6A1 /* KVOReceptionist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EECCE1259CEB26007CE6A1 /* KVOReceptionist.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -463,6 +476,19 @@
 		C2EDA84A2590358F008B542D /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		C2EDA8BA25904BBE008B542D /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2EDA8BC25904C14008B542D /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2EECC78259CD8ED007CE6A1 /* LabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
+		C2EECC80259CD956007CE6A1 /* NSParagraphStyle+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2EECC8B259CDB36007CE6A1 /* ErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
+		C2EECC93259CDBD2007CE6A1 /* UIFont+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2EECC9B259CDEC0007CE6A1 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
+		C2EECCA3259CE266007CE6A1 /* PanGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGesture.swift; sourceTree = "<group>"; };
+		C2EECCAB259CE473007CE6A1 /* ConfiningBlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfiningBlockActionGesture.swift; sourceTree = "<group>"; };
+		C2EECCB9259CE47C007CE6A1 /* BlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockActionGesture.swift; sourceTree = "<group>"; };
+		C2EECCC1259CE706007CE6A1 /* Knob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
+		C2EECCC9259CE70D007CE6A1 /* MarqueeField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeField.swift; sourceTree = "<group>"; };
+		C2EECCD1259CE74D007CE6A1 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		C2EECCD9259CE75B007CE6A1 /* Marquee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Marquee.swift; sourceTree = "<group>"; };
+		C2EECCE1259CEB26007CE6A1 /* KVOReceptionist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVOReceptionist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -521,11 +547,21 @@
 			isa = PBXGroup;
 			children = (
 				C21ADF2D259BEA4C000A18D7 /* InlinePickerView.swift */,
+				C2EECCC1259CE706007CE6A1 /* Knob.swift */,
+				C2EECC78259CD8ED007CE6A1 /* LabelButton.swift */,
+				C2EECC9B259CDEC0007CE6A1 /* DirectoryMonitor.swift */,
 				C21ADF6B259BF25B000A18D7 /* PopoverView.swift */,
 				C21ADF5B259BEDE6000A18D7 /* LabeledStepper.swift */,
 				C21ADF35259BEA67000A18D7 /* InlinePickerViewLayout.swift */,
+				C2EECCE1259CEB26007CE6A1 /* KVOReceptionist.swift */,
 				C21ADF63259BEE09000A18D7 /* ImageSegmentedControl.swift */,
+				C2EECCAB259CE473007CE6A1 /* ConfiningBlockActionGesture.swift */,
+				C2EECCD1259CE74D007CE6A1 /* TextField.swift */,
+				C2EECCA3259CE266007CE6A1 /* PanGesture.swift */,
+				C2EECCB9259CE47C007CE6A1 /* BlockActionGesture.swift */,
 				C21ADF3D259BEA6F000A18D7 /* InlinePickerViewCell.swift */,
+				C2EECCC9259CE70D007CE6A1 /* MarqueeField.swift */,
+				C2EECCD9259CE75B007CE6A1 /* Marquee.swift */,
 				C21ADF83259BF9B6000A18D7 /* Slider.swift */,
 				C21ADEAA259BDB03000A18D7 /* ScrollWheel.swift */,
 				C21ADF1D259BE175000A18D7 /* TintColorControl.swift */,
@@ -726,7 +762,10 @@
 				C29DBD261FEC063000A7EB56 /* CollectionExtensions */,
 				C29DBD271FEC065700A7EB56 /* SequenceExtensions */,
 				C2EDA6FD258FE6AB008B542D /* NSLayoutConstraint.swift */,
+				C2EECC8B259CDB36007CE6A1 /* ErrorType.swift */,
+				C2EECC93259CDBD2007CE6A1 /* UIFont+MoonKitAdditions.swift */,
 				C21ADF53259BED51000A18D7 /* UILabel+MoonKitAdditions.swift */,
+				C2EECC80259CD956007CE6A1 /* NSParagraphStyle+MoonKitAdditions.swift */,
 				C21ADF25259BE1F2000A18D7 /* CATransform3D.swift */,
 				C21ADF45259BEBEE000A18D7 /* NSAttributedString+MoonKitAdditions.swift */,
 				C21ADF7B259BF882000A18D7 /* NSURL+MoonKitAdditions.swift */,
@@ -1136,6 +1175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C21ADEAB259BDB03000A18D7 /* ScrollWheel.swift in Sources */,
+				C2EECCC2259CE706007CE6A1 /* Knob.swift in Sources */,
 				C2E3FD34258D3229000AA924 /* HashedStorage.swift in Sources */,
 				C21ADF1E259BE175000A18D7 /* TintColorControl.swift in Sources */,
 				C2EDA76325900FFE008B542D /* Any2DIndex.swift in Sources */,
@@ -1151,6 +1191,7 @@
 				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
 				C21ADEA3259BDADD000A18D7 /* TemplateImageView.swift in Sources */,
 				C21ADEDE259BDEB0000A18D7 /* CGRect+MoonKitAdditions.swift in Sources */,
+				C2EECCE2259CEB26007CE6A1 /* KVOReceptionist.swift in Sources */,
 				C21ADF54259BED51000A18D7 /* UILabel+MoonKitAdditions.swift in Sources */,
 				C2EDA811259025F5008B542D /* WeakArray.swift in Sources */,
 				C21ADF6C259BF25B000A18D7 /* PopoverView.swift in Sources */,
@@ -1166,6 +1207,8 @@
 				C2731724258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C2EDA83C259031F6008B542D /* JSONValueRelatedExtensions.swift in Sources */,
 				C21ADF7C259BF882000A18D7 /* NSURL+MoonKitAdditions.swift in Sources */,
+				C2EECC81259CD956007CE6A1 /* NSParagraphStyle+MoonKitAdditions.swift in Sources */,
+				C2EECCCA259CE70D007CE6A1 /* MarqueeField.swift in Sources */,
 				C2258A9C2591148100A4BED4 /* List.swift in Sources */,
 				C2EDA6BA258FE46C008B542D /* PseudoConstraint.swift in Sources */,
 				C21ADE84259BD956000A18D7 /* Timer.swift in Sources */,
@@ -1174,6 +1217,7 @@
 				C29DBD481FEC078C00A7EB56 /* ByteArrayConvertible.swift in Sources */,
 				C2E6CB81201ACFFE00D50E78 /* HostTimeBase.swift in Sources */,
 				C2EDA82E259031A9008B542D /* JSONValue.swift in Sources */,
+				C2EECC8C259CDB37007CE6A1 /* ErrorType.swift in Sources */,
 				C21ADF16259BE169000A18D7 /* ToggleControl.swift in Sources */,
 				C2EDA853259036C7008B542D /* JSONParser.swift in Sources */,
 				C2E3FD44258D36FE000AA924 /* Math.swift in Sources */,
@@ -1187,6 +1231,7 @@
 				C21ADEEE259BE058000A18D7 /* CGVector+MoonKitAdditions.swift in Sources */,
 				C2E3FD57258D3884000AA924 /* Stack.swift in Sources */,
 				C21ADEE6259BE04E000A18D7 /* CGSize+MoonKitAdditions.swift in Sources */,
+				C2EECCDA259CE75B007CE6A1 /* Marquee.swift in Sources */,
 				C21ADF5C259BEDE6000A18D7 /* LabeledStepper.swift in Sources */,
 				C2CCD61F258E7A8200E9923C /* KeyValueCollection.swift in Sources */,
 				C2EDA87B2590422B008B542D /* JSONIncludeDirective.swift in Sources */,
@@ -1194,14 +1239,19 @@
 				C273173A258D665000554FB2 /* RepeatingSequence.swift in Sources */,
 				C29DBD2E1FEC06AC00A7EB56 /* CollectionCreationOperators.swift in Sources */,
 				C2258A80259112EB00A4BED4 /* Tree.swift in Sources */,
+				C2EECCD2259CE74D007CE6A1 /* TextField.swift in Sources */,
 				C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
 				C2E6CB7E201AAC4C00D50E78 /* Date.swift in Sources */,
 				C2EDA6A2258FE258008B542D /* Dispatch.swift in Sources */,
+				C2EECC94259CDBD2007CE6A1 /* UIFont+MoonKitAdditions.swift in Sources */,
 				C21ADEDD259BDEB0000A18D7 /* CGPoint+MoonKitAdditions.swift in Sources */,
 				C21ADF64259BEE09000A18D7 /* ImageSegmentedControl.swift in Sources */,
 				C21ADEBB259BDB45000A18D7 /* ArrayJSONValue.swift in Sources */,
 				C29DBD381FEC06D400A7EB56 /* SequenceManipulation.swift in Sources */,
+				C2EECCA4259CE266007CE6A1 /* PanGesture.swift in Sources */,
+				C2EECCAC259CE473007CE6A1 /* ConfiningBlockActionGesture.swift in Sources */,
 				C21ADF36259BEA67000A18D7 /* InlinePickerViewLayout.swift in Sources */,
+				C2EECC9C259CDEC0007CE6A1 /* DirectoryMonitor.swift in Sources */,
 				C21ADF84259BF9B6000A18D7 /* Slider.swift in Sources */,
 				C2E3FD41258D36FE000AA924 /* Operators.swift in Sources */,
 				C21ADEC6259BDC96000A18D7 /* CoreGraphics.swift in Sources */,
@@ -1212,6 +1262,7 @@
 				C2EDA8F42590F9C2008B542D /* SortedDictionary.swift in Sources */,
 				C2EDA86D25904214008B542D /* JSONSerialization.swift in Sources */,
 				C2EDA7772590107A008B542D /* AnyComparable.swift in Sources */,
+				C2EECCBA259CE47C007CE6A1 /* BlockActionGesture.swift in Sources */,
 				C273172A258D5F7A00554FB2 /* SetType.swift in Sources */,
 				C250064120C8314A005A1BEB /* OrDie.swift in Sources */,
 				C2EDA7B925902069008B542D /* HashableTuple.swift in Sources */,
@@ -1231,6 +1282,7 @@
 				C21ADECE259BDCE2000A18D7 /* UIImage+MoonKitAdditions.swift in Sources */,
 				C273171F258D55AE00554FB2 /* Queue.swift in Sources */,
 				C2E3FD42258D36FE000AA924 /* MiscellaneousFunctions.swift in Sources */,
+				C2EECC79259CD8ED007CE6A1 /* LabelButton.swift in Sources */,
 				C21ADE9B259BDAB0000A18D7 /* ImageButtonView.swift in Sources */,
 				C2EDA6E1258FE5D9008B542D /* Identifier.swift in Sources */,
 				C21ADEFE259BE06C000A18D7 /* UIOffset+MoonKitAdditions.swift in Sources */,
@@ -1606,6 +1658,7 @@
 		C29DBCFB1FEC03C700A7EB56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -1615,6 +1668,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1636,6 +1690,7 @@
 		C29DBCFC1FEC03C700A7EB56 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -1645,6 +1700,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1726,6 +1782,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1748,6 +1805,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1769,6 +1827,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1791,6 +1850,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CommonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (

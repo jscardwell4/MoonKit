@@ -31,8 +31,8 @@ public func ⊉ <S: SetAlgebra>(lhs: S, rhs: S) -> Bool { !(lhs ⊇ rhs) }
 //public func ∪= <S: SetAlgebra>(lhs: inout S, rhs: S) where S.Element == S { lhs.formUnion(rhs) }
 public func ∪ <S: SetAlgebra>(lhs: S, rhs: S) -> S { lhs.union(rhs) }
 public func ∪= <S: SetAlgebra>(lhs: inout S, rhs: S) { lhs.formUnion(rhs) }
-public func ∪ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { var lhs = lhs; lhs ∪= rhs; return lhs }
-public func ∪= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs.insert(rhs) }
+//public func ∪ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { var lhs = lhs; lhs ∪= rhs; return lhs }
+//public func ∪= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs.insert(rhs) }
 
 // minus
 //public func ∖ <S: SetAlgebra>(lhs: S, rhs: S) -> S where S.Element == S {
@@ -42,8 +42,8 @@ public func ∪= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs.insert(rhs)
 //public func ∖= <S: SetAlgebra>(lhs: inout S, rhs: S) where S.Element == S { lhs.subtract(rhs) }
 public func ∖ <S: SetAlgebra>(lhs: S, rhs: S) -> S { lhs.subtracting(rhs) }
 public func ∖= <S: SetAlgebra>(lhs: inout S, rhs: S) { lhs.subtract(rhs) }
-public func ∖ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { var lhs = lhs; lhs ∖= rhs; return lhs }
-public func ∖= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs.remove(rhs) }
+//public func ∖ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { var lhs = lhs; lhs ∖= rhs; return lhs }
+//public func ∖= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs.remove(rhs) }
 
 // intersect
 public func ∩ <S: SetAlgebra>(lhs: S, rhs: S) -> S { lhs.intersection(rhs) }
@@ -54,5 +54,5 @@ public func ∩= <S: SetAlgebra>(lhs: inout S, rhs: S) { lhs.formIntersection(rh
 //public func ∆= <S: SetAlgebra>(lhs: inout S, rhs: S) where S.Element == S { lhs.formSymmetricDifference(rhs) }
 public func ∆ <S: SetAlgebra>(lhs: S, rhs: S) -> S { lhs.symmetricDifference(rhs) }
 public func ∆= <S: SetAlgebra>(lhs: inout S, rhs: S) { lhs.formSymmetricDifference(rhs) }
-public func ∆ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { lhs ∆ S([rhs]) }
-public func ∆= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs ∆= S([rhs]) }
+//public func ∆ <S: SetAlgebra>(lhs: S, rhs: S.Element) -> S { lhs ∆ S([rhs]) }
+//public func ∆= <S: SetAlgebra>(lhs: inout S, rhs: S.Element) { lhs ∆= S([rhs]) }

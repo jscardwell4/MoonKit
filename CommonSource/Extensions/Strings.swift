@@ -136,12 +136,11 @@ public extension String {
 
   func join(_ strings: String...) -> String { strings.joined(separator: self) }
   func join(_ strings: [String]) -> String { strings.joined(separator: self) }
-  
 
   // MARK: Splitting
 
   func split(regex: RegularExpression) -> [String] {
-    let ranges = regex.matchRanges(in: self).compactMap {Range($0, in: self)}
+    let ranges = regex.matchRanges(in: self).compactMap { Range($0, in: self) }
     guard ranges.count > 0 else { return [self] }
     return (startIndex ..< endIndex).split(
       ranges,
@@ -170,23 +169,22 @@ public extension String {
     isDashCase
       ? self
       : (isCamelCase
-          ? split(regex: ~/"(?<=\\p{Ll})(?=\\p{Lu})").joined(separator: "-").lowercased()
+        ? split(regex: ~/"(?<=\\p{Ll})(?=\\p{Lu})").joined(separator: "-").lowercased()
         : camelCaseString.dashCaseString)
   }
 
   /// Returns the string with the first character converted to lowercase.
   var lowercaseFirst: String {
-    count < 2 ? lowercased() : self.first!.lowercased() + dropFirst()
+    count < 2 ? lowercased() : first!.lowercased() + dropFirst()
   }
 
   /// Returns the string with the first character converted to uppercase.
   var uppercaseFirst: String {
-    count < 2 ? uppercased() : self.first!.uppercased() + dropFirst()
+    count < 2 ? uppercased() : first!.uppercased() + dropFirst()
   }
 
   /// Returns the string converted to 'camelCase'.
   var camelCaseString: String {
-
     guard !isCamelCase else { return self }
 
     var segments = split(regex: ~/#"(?<=\p{Ll})(?=\p{Lu})|(?<=\p{Lu})(?=\p{Lu})|(\p{Z}|\p{P})"#)
@@ -212,7 +210,7 @@ public extension String {
     isPascalCase
       ? self
       : (~/#"^(\p{Ll}+)"#).substitute(matchesIn: camelCaseString)
-        {$0.substring.uppercased()}
+      { $0.substring.uppercased() }
   }
 
   var isCamelCase: Bool { ~/#"^\p{Ll}+((?:\p{Lu}|\p{N})+\p{Ll}*)*$"# ~= self }
@@ -229,7 +227,7 @@ public extension String {
 
   var unquoted: String {
     isQuoted
-      ? String(self[index(after: startIndex)..<index(before: endIndex)])
+      ? String(self[index(after: startIndex) ..< index(before: endIndex)])
       : self
   }
 
@@ -282,10 +280,10 @@ public extension String {
   func substitute(_ regex: RegularExpression, _ template: String) -> String {
     regex.substitute(matchesIn: self, using: template)
   }
+
   func substitute(_ string: String, _ template: String) -> String {
     substitute(~/string, template)
   }
-
 
   /// Perform substitutions for matches against the specified regular expression.
   ///
@@ -304,12 +302,11 @@ public extension String {
   {
     substitute(~/string, block)
   }
-
 }
 
 // MARK: - Initializers
 
-extension String {
+public extension String {
   /// Intialzing with a description of a floating point number given a specified
   /// precision.
   ///
@@ -394,7 +391,7 @@ extension String {
   /// - Parameter hexBytes: The sequence of byte values to describe.
   init<S: Sequence>(hexBytes: S) where S.Element == UInt8 {
     self = hexBytes.map { String($0, radix: 16, uppercase: true, minCount: 2) }
-            .joined(separator: " ")
+      .joined(separator: " ")
   }
 
   /// Initializes the string with the address of the specified object.
@@ -432,7 +429,6 @@ extension String {
         self = "\(s[..<decimal]).\(s[s.index(after: decimal)...].prefix(precision))"
     }
   }
-
 }
 
 // MARK: - String + PrettyPrint
