@@ -7,7 +7,7 @@
 		<key>MoonCode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>14</integer>
 		</dict>
 		<key>MoonCodeApp.xcscheme_^#shared#^_</key>
 		<dict>
@@ -32,7 +32,7 @@
 		<key>MoonKit_Mac.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>17</integer>
 		</dict>
 		<key>MoonKit_iOS.xcscheme</key>
 		<dict>
@@ -42,7 +42,7 @@
 		<key>MoonKit_iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>10</integer>
 		</dict>
 		<key>MoonTestKit.xcscheme_^#shared#^_</key>
 		<dict>
