@@ -151,6 +151,8 @@
 		C29DBD4B1FEC078C00A7EB56 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD471FEC078C00A7EB56 /* DataConvertible.swift */; };
 		C29DBD5A1FEC0CE900A7EB56 /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD591FEC0CE900A7EB56 /* Paths.swift */; };
 		C2AF2098259B9F2B00EC084A /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD591FEC0CE900A7EB56 /* Paths.swift */; };
+		C2BA05C425A0FA29009EAA19 /* Number_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */; };
+		C2BA05C525A0FA29009EAA19 /* Number_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */; };
 		C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2CCD606258E74F900E9923C /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD2B258D313C000AA924 /* OrderedDictionary.swift */; };
@@ -398,6 +400,7 @@
 		C2A69650258C06F5009CB31F /* JSONIncludeDirective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONIncludeDirective.swift; sourceTree = "<group>"; };
 		C2A69652258C06F5009CB31F /* NotificationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		C2A69653258C06F5009CB31F /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
+		C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number_Extensions.swift; sourceTree = "<group>"; };
 		C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CircularBuffer+AudioBufferList.swift"; sourceTree = "<group>"; };
 		C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 		C2CCD610258E79DC00E9923C /* SortedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedDictionary.swift; sourceTree = "<group>"; };
@@ -725,6 +728,7 @@
 			children = (
 				C29DBD351FEC06D400A7EB56 /* SequenceManipulation.swift */,
 				C29DBD341FEC06D400A7EB56 /* Zip.swift */,
+				C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */,
 			);
 			path = SequenceExtensions;
 			sourceTree = "<group>";
@@ -1272,6 +1276,7 @@
 				C2EDA659258FCA1A008B542D /* CollectionManipulations.swift in Sources */,
 				C2E3FD4D258D3714000AA924 /* Protocols.swift in Sources */,
 				C2258AC5259133F000A4BED4 /* Fraction.swift in Sources */,
+				C2BA05C425A0FA29009EAA19 /* Number_Extensions.swift in Sources */,
 				C2EDA84B2590358F008B542D /* Array.swift in Sources */,
 				C273176C258D701E00554FB2 /* OrderedSet.swift in Sources */,
 				C21ADF26259BE1F2000A18D7 /* CATransform3D.swift in Sources */,
@@ -1309,6 +1314,7 @@
 				C2EDA82125902673008B542D /* Weak.swift in Sources */,
 				C29DBD4B1FEC078C00A7EB56 /* DataConvertible.swift in Sources */,
 				C2EDA7DC259021B1008B542D /* Interval.swift in Sources */,
+				C2BA05C525A0FA29009EAA19 /* Number_Extensions.swift in Sources */,
 				C29DBD441FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C2EDA7F0259021F2008B542D /* IntervalMap.swift in Sources */,
 				C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,

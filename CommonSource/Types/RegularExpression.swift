@@ -20,19 +20,19 @@ public struct RegularExpression {
   private static let namedCapturesExpression =
     RegularExpression(
       regex: try! NSRegularExpression(
-        pattern: "(?<![\\\\\\[])[(](?:\\?<([^>]+)>)?(?![?]:)"),
+        pattern: #"(?<![\\\[])[(](?:\?<([^>]+)>)?(?![?]:)"#),
       namedCaptureGroups: [:])
 
   /// The regular expression's pattern.
-  public var pattern: String { return regex.pattern }
+  public var pattern: String { regex.pattern }
 
   public typealias Options = NSRegularExpression.Options
 
   /// The regular expression's options.
-  public var options: Options { return regex.options }
+  public var options: Options { regex.options }
 
   /// The number of capture groups in the regular expression.
-  public var numberOfCaptureGroups: Int { return regex.numberOfCaptureGroups }
+  public var numberOfCaptureGroups: Int { regex.numberOfCaptureGroups }
 
   /// Initializing with an existing foundation type and named capture groups.
   ///
@@ -57,7 +57,7 @@ public struct RegularExpression {
 
     // Get the enumerated captures.
     let captures = matches.map { $0.captures[1] }.enumerated().compactMap {
-      $1 != nil ? (String($1!.substring), $0) : nil
+      $1 != nil ? (String($1!.substring), $0 + 1) : nil
     }
 
     // Initialize the named capture groups.
