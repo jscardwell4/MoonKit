@@ -19,22 +19,24 @@ import Foundation
 ///   - block: The closure that must be performed.
 /// - Returns: The result of invoking `block`.
 public func tryOrDie<T>(fileID: StaticString = #fileID,
-                       function: StaticString = #function,
-                       message: String? = nil,
-                       block: () throws -> T) -> T
+                        function: StaticString = #function,
+                        message: String? = nil,
+                        block: () throws -> T) -> T
 {
-  do {
+  do
+  {
     return try block()
-  } catch {
+  }
+  catch
+  {
     let message = """
-      \(fileID) \(function) \
-      \(message ?? "Fatal error encountered"): \(error)
-      """
+    \(fileID) \(function) \
+    \(message ?? "Fatal error encountered"): \(error)
+    """
     loge(message)
     fatalError(message)
   }
 }
-
 
 /// When you absolutely, positively must produce an unwrapped optional.
 ///
@@ -52,11 +54,13 @@ public func unwrapOrDie<T>(fileID: StaticString = #fileID,
                            message: String? = nil,
                            block: () -> T?) -> T
 {
-  guard let value = block() else {
+  guard let value = block()
+  else
+  {
     let message = """
-      \(fileID) \(function) \
-      \(message ?? "Unexpected `nil` value."))
-      """
+    \(fileID) \(function) \
+    \(message ?? "Unexpected `nil` value."))
+    """
     loge(message)
     fatalError(message)
   }
@@ -79,7 +83,5 @@ public func unwrapOrDie<T>(fileID: StaticString = #fileID,
                            message: String? = nil,
                            _ value: T?) -> T
 {
-  unwrapOrDie(fileID: fileID, function: function, message: message, block: {value})
+  unwrapOrDie(fileID: fileID, function: function, message: message, block: { value })
 }
-
-

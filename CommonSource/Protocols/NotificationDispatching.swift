@@ -1,5 +1,5 @@
 //
-//  NotificationType.swift
+//  NotificationDispatching.swift
 //  MoonKit
 //
 //  Created by Jason Cardwell on 10/5/15.
@@ -28,13 +28,13 @@ public protocol NotificationDispatching {
 
 extension NotificationDispatching {
 
-  public var notificationQueue: NotificationQueue? { return NotificationQueue.default }
-  public var postingStyle: PostingStyle { return .now }
-  public var coalescing: NotificationCoalescing { return [.onName, .onSender] }
+  public var notificationQueue: NotificationQueue? { NotificationQueue.default }
+  public var postingStyle: PostingStyle { .now }
+  public var coalescing: NotificationCoalescing { [.onName, .onSender] }
 
-  public static var notificationQueue: NotificationQueue? { return NotificationQueue.default }
-  public static var postingStyle: PostingStyle { return .now }
-  public static var coalescing: NotificationCoalescing { return [.onName, .onSender] }
+  public static var notificationQueue: NotificationQueue? { .default }
+  public static var postingStyle: PostingStyle { .now }
+  public static var coalescing: NotificationCoalescing { [.onName, .onSender] }
 
   public func postNotification(name: NotificationName,
                                object: Any? = nil,

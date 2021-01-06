@@ -48,8 +48,8 @@
 		C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
 		C2258A6425910D7300A4BED4 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC90258D1AD4000AA924 /* SortedArray.swift */; };
 		C2258A6B2591114300A4BED4 /* SortedArrayBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA684258FE17C008B542D /* SortedArrayBehaviorTests.swift */; };
-		C2258A722591127200A4BED4 /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationType.swift */; };
-		C2258A792591127300A4BED4 /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationType.swift */; };
+		C2258A722591127200A4BED4 /* NotificationDispatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationDispatching.swift */; };
+		C2258A792591127300A4BED4 /* NotificationDispatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A69652258C06F5009CB31F /* NotificationDispatching.swift */; };
 		C2258A80259112EB00A4BED4 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC94258D1AD4000AA924 /* Tree.swift */; };
 		C2258A87259112EC00A4BED4 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC94258D1AD4000AA924 /* Tree.swift */; };
 		C2258A8E2591140500A4BED4 /* Point3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC85258D1AD3000AA924 /* Point3D.swift */; };
@@ -125,6 +125,10 @@
 		C2731763258D6E2400554FB2 /* CountableRangeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FC98258D1AD4000AA924 /* CountableRangeMap.swift */; };
 		C273176C258D701E00554FB2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD26258D308D000AA924 /* OrderedSet.swift */; };
 		C273176F258D701F00554FB2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD26258D308D000AA924 /* OrderedSet.swift */; };
+		C2873A7625A407D000870EE0 /* PassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873A7525A407D000870EE0 /* PassThrough.swift */; };
+		C2873A7725A407D000870EE0 /* PassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873A7525A407D000870EE0 /* PassThrough.swift */; };
+		C2873AAC25A5360A00870EE0 /* Clamping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873AAB25A5360A00870EE0 /* Clamping.swift */; };
+		C2873AAD25A5360A00870EE0 /* Clamping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873AAB25A5360A00870EE0 /* Clamping.swift */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD231FEC04E400A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD281FEC06AB00A7EB56 /* DictionaryMerging.swift */; };
@@ -377,6 +381,8 @@
 		C250064620C831F0005A1BEB /* DebugConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsoleView.swift; sourceTree = "<group>"; };
 		C2731712258D530500554FB2 /* Fraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 		C2731723258D586100554FB2 /* SetAlgebraType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetAlgebraType.swift; sourceTree = "<group>"; };
+		C2873A7525A407D000870EE0 /* PassThrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassThrough.swift; sourceTree = "<group>"; };
+		C2873AAB25A5360A00870EE0 /* Clamping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clamping.swift; sourceTree = "<group>"; };
 		C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD051FEC041400A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD1D1FEC046600A7EB56 /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
@@ -398,7 +404,7 @@
 		C2A6964C258C06F5009CB31F /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
 		C2A6964F258C06F5009CB31F /* JSONValueRelatedExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValueRelatedExtensions.swift; sourceTree = "<group>"; };
 		C2A69650258C06F5009CB31F /* JSONIncludeDirective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONIncludeDirective.swift; sourceTree = "<group>"; };
-		C2A69652258C06F5009CB31F /* NotificationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
+		C2A69652258C06F5009CB31F /* NotificationDispatching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDispatching.swift; sourceTree = "<group>"; };
 		C2A69653258C06F5009CB31F /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number_Extensions.swift; sourceTree = "<group>"; };
 		C2C7134F258BBA2E00EC9458 /* CircularBuffer+AudioBufferList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CircularBuffer+AudioBufferList.swift"; sourceTree = "<group>"; };
@@ -756,6 +762,8 @@
 				C29DBD3C1FEC06F900A7EB56 /* RegularExpression.swift */,
 				C2E6CB80201ACFFE00D50E78 /* HostTimeBase.swift */,
 				C2E9BE4020B8AD6100A07F63 /* CircularBuffer_Generic.swift */,
+				C2873A7525A407D000870EE0 /* PassThrough.swift */,
+				C2873AAB25A5360A00870EE0 /* Clamping.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -797,7 +805,7 @@
 		C29DBD451FEC072E00A7EB56 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				C2A69652258C06F5009CB31F /* NotificationType.swift */,
+				C2A69652258C06F5009CB31F /* NotificationDispatching.swift */,
 				C2E3FC87258D1AD3000AA924 /* KeyValueCollection.swift */,
 				C2E3FD02258D21DD000AA924 /* Packing.swift */,
 				C2E3FCFD258D20D6000AA924 /* Protocols.swift */,
@@ -1190,6 +1198,7 @@
 				C29DBD301FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C21ADE75259BB3A6000A18D7 /* NotificationReceptionist.swift in Sources */,
 				C29DBD4A1FEC078C00A7EB56 /* DataConvertible.swift in Sources */,
+				C2873AAC25A5360A00870EE0 /* Clamping.swift in Sources */,
 				C29DBD431FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C2731760258D6E2300554FB2 /* CountableRangeMap.swift in Sources */,
 				C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */,
@@ -1223,6 +1232,7 @@
 				C2EDA82E259031A9008B542D /* JSONValue.swift in Sources */,
 				C2EECC8C259CDB37007CE6A1 /* ErrorType.swift in Sources */,
 				C21ADF16259BE169000A18D7 /* ToggleControl.swift in Sources */,
+				C2873A7625A407D000870EE0 /* PassThrough.swift in Sources */,
 				C2EDA853259036C7008B542D /* JSONParser.swift in Sources */,
 				C2E3FD44258D36FE000AA924 /* Math.swift in Sources */,
 				C2258A5D25910D7300A4BED4 /* SortedArray.swift in Sources */,
@@ -1262,7 +1272,7 @@
 				C21ADEB3259BDB35000A18D7 /* ObjectJSONValue.swift in Sources */,
 				C21ADF2E259BEA4C000A18D7 /* InlinePickerView.swift in Sources */,
 				C21ADF8C259BFDD9000A18D7 /* Numbers_Protocols.swift in Sources */,
-				C2258A722591127200A4BED4 /* NotificationType.swift in Sources */,
+				C2258A722591127200A4BED4 /* NotificationDispatching.swift in Sources */,
 				C2EDA8F42590F9C2008B542D /* SortedDictionary.swift in Sources */,
 				C2EDA86D25904214008B542D /* JSONSerialization.swift in Sources */,
 				C2EDA7772590107A008B542D /* AnyComparable.swift in Sources */,
@@ -1315,6 +1325,7 @@
 				C29DBD4B1FEC078C00A7EB56 /* DataConvertible.swift in Sources */,
 				C2EDA7DC259021B1008B542D /* Interval.swift in Sources */,
 				C2BA05C525A0FA29009EAA19 /* Number_Extensions.swift in Sources */,
+				C2873AAD25A5360A00870EE0 /* Clamping.swift in Sources */,
 				C29DBD441FEC072800A7EB56 /* FourCharacterCode.swift in Sources */,
 				C2EDA7F0259021F2008B542D /* IntervalMap.swift in Sources */,
 				C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */,
@@ -1348,9 +1359,10 @@
 				C29DBD371FEC06D400A7EB56 /* Zip.swift in Sources */,
 				C21ADE85259BD956000A18D7 /* Timer.swift in Sources */,
 				C2E3FD53258D372A000AA924 /* Packing.swift in Sources */,
-				C2258A792591127300A4BED4 /* NotificationType.swift in Sources */,
+				C2258A792591127300A4BED4 /* NotificationDispatching.swift in Sources */,
 				C2EDA8FB2590F9C3008B542D /* SortedDictionary.swift in Sources */,
 				C2EDA87425904215008B542D /* JSONSerialization.swift in Sources */,
+				C2873A7725A407D000870EE0 /* PassThrough.swift in Sources */,
 				C2EDA77E2590107B008B542D /* AnyComparable.swift in Sources */,
 				C29DBD3E1FEC06F900A7EB56 /* RegularExpression.swift in Sources */,
 				C250064820C831F0005A1BEB /* DebugConsoleView.swift in Sources */,

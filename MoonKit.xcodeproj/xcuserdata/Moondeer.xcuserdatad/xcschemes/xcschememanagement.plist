@@ -6,8 +6,10 @@
 	<dict>
 		<key>MoonCode.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>24</integer>
 		</dict>
 		<key>MoonCodeApp.xcscheme_^#shared#^_</key>
 		<dict>
@@ -31,8 +33,10 @@
 		</dict>
 		<key>MoonKit_Mac.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>17</integer>
+			<integer>26</integer>
 		</dict>
 		<key>MoonKit_iOS.xcscheme</key>
 		<dict>
@@ -41,6 +45,8 @@
 		</dict>
 		<key>MoonKit_iOS.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>10</integer>
 		</dict>
@@ -52,7 +58,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>C228E124258E5FB40060E476</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C228E14B258E67740060E476</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C29DBCE51FEC03C700A7EB56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C29DBD041FEC041400A7EB56</key>
 		<dict>
 			<key>primary</key>
 			<true/>
