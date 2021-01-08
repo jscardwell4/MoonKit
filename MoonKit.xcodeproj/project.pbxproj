@@ -60,19 +60,6 @@
 		C2258AC5259133F000A4BED4 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2731712258D530500554FB2 /* Fraction.swift */; };
 		C2258ACC259133F600A4BED4 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2731712258D530500554FB2 /* Fraction.swift */; };
 		C2258AD32591404800A4BED4 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA688258FE17C008B542D /* FractionTests.swift */; };
-		C228E128258E5FB40060E476 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E127258E5FB40060E476 /* Cocoa.framework */; };
-		C228E12A258E5FB40060E476 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
-		C228E12D258E5FB40060E476 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E12C258E5FB40060E476 /* SourceEditorExtension.swift */; };
-		C228E13D258E5FF50060E476 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E13A258E5FF40060E476 /* Helpers.swift */; };
-		C228E13E258E5FF50060E476 /* LineDeletingCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E13B258E5FF40060E476 /* LineDeletingCommands.swift */; };
-		C228E13F258E5FF50060E476 /* ConvertToColorLiteralCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E13C258E5FF40060E476 /* ConvertToColorLiteralCommand.swift */; };
-		C228E140258E5FF50060E476 /* LineJoiningCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E139258E5FF40060E476 /* LineJoiningCommands.swift */; };
-		C228E141258E5FF50060E476 /* CommentRelatedCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E138258E5FF40060E476 /* CommentRelatedCommands.swift */; };
-		C228E14F258E67740060E476 /* MoonCodeAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E14E258E67740060E476 /* MoonCodeAppApp.swift */; };
-		C228E151258E67740060E476 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C228E150258E67740060E476 /* ContentView.swift */; };
-		C228E153258E67750060E476 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C228E152258E67750060E476 /* Assets.xcassets */; };
-		C228E156258E67750060E476 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C228E155258E67750060E476 /* Preview Assets.xcassets */; };
-		C228E160258E678D0060E476 /* MoonCode.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C228E125258E5FB40060E476 /* MoonCode.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C23591AC20A63FC400F1C813 /* AttributedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591AB20A63FC400F1C813 /* AttributedStrings.swift */; };
 		C23591AD20A63FC400F1C813 /* AttributedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591AB20A63FC400F1C813 /* AttributedStrings.swift */; };
 		C23591BD20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */; };
@@ -107,6 +94,15 @@
 		C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DA20A6423900F1C813 /* FontStyle.swift */; };
 		C23591DE20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
 		C23591DF20A6423900F1C813 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23591DB20A6423900F1C813 /* Fonts.swift */; };
+		C239A1B425A778E200A14982 /* MoonEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1B325A778E200A14982 /* MoonEditApp.swift */; };
+		C239A1B625A778E200A14982 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1B525A778E200A14982 /* ContentView.swift */; };
+		C239A1B825A778E300A14982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C239A1B725A778E300A14982 /* Assets.xcassets */; };
+		C239A1BB25A778E300A14982 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C239A1BA25A778E300A14982 /* Preview Assets.xcassets */; };
+		C239A1D025A7795300A14982 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E127258E5FB40060E476 /* Cocoa.framework */; };
+		C239A1D125A7795300A14982 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
+		C239A1D425A7795300A14982 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1D325A7795300A14982 /* SourceEditorExtension.swift */; };
+		C239A1D625A7795300A14982 /* SourceEditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1D525A7795300A14982 /* SourceEditorCommand.swift */; };
+		C239A1DB25A7795300A14982 /* Editor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C239A1CF25A7795300A14982 /* Editor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C250064120C8314A005A1BEB /* OrDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* OrDie.swift */; };
 		C250064220C8314A005A1BEB /* OrDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* OrDie.swift */; };
 		C250064420C831A5005A1BEB /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064320C831A5005A1BEB /* Logging.swift */; };
@@ -129,6 +125,8 @@
 		C2873A7725A407D000870EE0 /* PassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873A7525A407D000870EE0 /* PassThrough.swift */; };
 		C2873AAC25A5360A00870EE0 /* Clamping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873AAB25A5360A00870EE0 /* Clamping.swift */; };
 		C2873AAD25A5360A00870EE0 /* Clamping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2873AAB25A5360A00870EE0 /* Clamping.swift */; };
+		C2937E6925A687D10061BD92 /* Synchronizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2937E6825A687D10061BD92 /* Synchronizing.swift */; };
+		C2937E6A25A687D10061BD92 /* Synchronizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2937E6825A687D10061BD92 /* Synchronizing.swift */; };
 		C29DBD221FEC04E300A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD231FEC04E400A7EB56 /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C29DBD1D1FEC046600A7EB56 /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C29DBD2C1FEC06AC00A7EB56 /* DictionaryMerging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD281FEC06AB00A7EB56 /* DictionaryMerging.swift */; };
@@ -270,12 +268,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C228E161258E678D0060E476 /* PBXContainerItemProxy */ = {
+		C239A1D925A7795300A14982 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C29DBCDD1FEC03C700A7EB56 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = C228E124258E5FB40060E476;
-			remoteInfo = MoonCode;
+			remoteGlobalIDString = C239A1CE25A7795300A14982;
+			remoteInfo = "Editor Extension";
 		};
 		C2CCD70C258EC5FB00E9923C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -294,13 +292,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C228E163258E678E0060E476 /* Embed App Extensions */ = {
+		C239A1DF25A7795300A14982 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C228E160258E678D0060E476 /* MoonCode.appex in Embed App Extensions */,
+				C239A1DB25A7795300A14982 /* Editor Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,24 +339,15 @@
 		C21ADF7B259BF882000A18D7 /* NSURL+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C21ADF83259BF9B6000A18D7 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		C21ADF8B259BFDD9000A18D7 /* Numbers_Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers_Protocols.swift; sourceTree = "<group>"; };
-		C228E125258E5FB40060E476 /* MoonCode.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MoonCode.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C228E127258E5FB40060E476 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		C228E129258E5FB40060E476 /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		C228E12C258E5FB40060E476 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
 		C228E130258E5FB40060E476 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C228E131258E5FB40060E476 /* MoonCode.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonCode.entitlements; sourceTree = "<group>"; };
 		C228E138258E5FF40060E476 /* CommentRelatedCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRelatedCommands.swift; sourceTree = "<group>"; };
 		C228E139258E5FF40060E476 /* LineJoiningCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineJoiningCommands.swift; sourceTree = "<group>"; };
 		C228E13A258E5FF40060E476 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		C228E13B258E5FF40060E476 /* LineDeletingCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineDeletingCommands.swift; sourceTree = "<group>"; };
 		C228E13C258E5FF40060E476 /* ConvertToColorLiteralCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertToColorLiteralCommand.swift; sourceTree = "<group>"; };
-		C228E14C258E67740060E476 /* MoonCodeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoonCodeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C228E14E258E67740060E476 /* MoonCodeAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonCodeAppApp.swift; sourceTree = "<group>"; };
-		C228E150258E67740060E476 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C228E152258E67750060E476 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C228E155258E67750060E476 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C228E157258E67750060E476 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C228E158258E67750060E476 /* MoonCodeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonCodeApp.entitlements; sourceTree = "<group>"; };
 		C23591AB20A63FC400F1C813 /* AttributedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStrings.swift; sourceTree = "<group>"; };
 		C23591AF20A641EC00F1C813 /* InputMonoCompressed-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Italic.ttf"; sourceTree = "<group>"; };
 		C23591B020A641EC00F1C813 /* InputMonoCompressed-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -376,6 +365,18 @@
 		C23591BC20A641EC00F1C813 /* InputMonoCompressed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InputMonoCompressed-Regular.ttf"; sourceTree = "<group>"; };
 		C23591DA20A6423900F1C813 /* FontStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontStyle.swift; sourceTree = "<group>"; };
 		C23591DB20A6423900F1C813 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		C239A1B125A778E200A14982 /* MoonEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoonEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C239A1B325A778E200A14982 /* MoonEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonEditApp.swift; sourceTree = "<group>"; };
+		C239A1B525A778E200A14982 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C239A1B725A778E300A14982 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C239A1BA25A778E300A14982 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C239A1BC25A778E300A14982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C239A1BD25A778E300A14982 /* MoonEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonEdit.entitlements; sourceTree = "<group>"; };
+		C239A1CF25A7795300A14982 /* Editor Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Editor Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C239A1D325A7795300A14982 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
+		C239A1D525A7795300A14982 /* SourceEditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorCommand.swift; sourceTree = "<group>"; };
+		C239A1D725A7795300A14982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C239A1D825A7795300A14982 /* Editor_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Editor_Extension.entitlements; sourceTree = "<group>"; };
 		C250064020C83149005A1BEB /* OrDie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrDie.swift; sourceTree = "<group>"; };
 		C250064320C831A5005A1BEB /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C250064620C831F0005A1BEB /* DebugConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsoleView.swift; sourceTree = "<group>"; };
@@ -383,6 +384,7 @@
 		C2731723258D586100554FB2 /* SetAlgebraType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetAlgebraType.swift; sourceTree = "<group>"; };
 		C2873A7525A407D000870EE0 /* PassThrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassThrough.swift; sourceTree = "<group>"; };
 		C2873AAB25A5360A00870EE0 /* Clamping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clamping.swift; sourceTree = "<group>"; };
+		C2937E6825A687D10061BD92 /* Synchronizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Synchronizing.swift; sourceTree = "<group>"; };
 		C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD051FEC041400A7EB56 /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29DBD1D1FEC046600A7EB56 /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
@@ -501,19 +503,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C228E122258E5FB40060E476 /* Frameworks */ = {
+		C239A1AE25A778E200A14982 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C228E128258E5FB40060E476 /* Cocoa.framework in Frameworks */,
-				C228E12A258E5FB40060E476 /* XcodeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C228E149258E67740060E476 /* Frameworks */ = {
+		C239A1CC25A7795300A14982 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C239A1D025A7795300A14982 /* Cocoa.framework in Frameworks */,
+				C239A1D125A7795300A14982 /* XcodeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,30 +606,8 @@
 				C228E13C258E5FF40060E476 /* ConvertToColorLiteralCommand.swift */,
 				C228E12C258E5FB40060E476 /* SourceEditorExtension.swift */,
 				C228E130258E5FB40060E476 /* Info.plist */,
-				C228E131258E5FB40060E476 /* MoonCode.entitlements */,
 			);
 			path = MoonCode;
-			sourceTree = "<group>";
-		};
-		C228E14D258E67740060E476 /* MoonCodeApp */ = {
-			isa = PBXGroup;
-			children = (
-				C228E14E258E67740060E476 /* MoonCodeAppApp.swift */,
-				C228E150258E67740060E476 /* ContentView.swift */,
-				C228E152258E67750060E476 /* Assets.xcassets */,
-				C228E157258E67750060E476 /* Info.plist */,
-				C228E158258E67750060E476 /* MoonCodeApp.entitlements */,
-				C228E154258E67750060E476 /* Preview Content */,
-			);
-			path = MoonCodeApp;
-			sourceTree = "<group>";
-		};
-		C228E154258E67750060E476 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C228E155258E67750060E476 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		C23591AE20A641EC00F1C813 /* CommonResources */ = {
@@ -660,6 +640,38 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		C239A1B225A778E200A14982 /* MoonEdit */ = {
+			isa = PBXGroup;
+			children = (
+				C239A1B325A778E200A14982 /* MoonEditApp.swift */,
+				C239A1B525A778E200A14982 /* ContentView.swift */,
+				C239A1B725A778E300A14982 /* Assets.xcassets */,
+				C239A1BC25A778E300A14982 /* Info.plist */,
+				C239A1BD25A778E300A14982 /* MoonEdit.entitlements */,
+				C239A1B925A778E300A14982 /* Preview Content */,
+			);
+			path = MoonEdit;
+			sourceTree = "<group>";
+		};
+		C239A1B925A778E300A14982 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C239A1BA25A778E300A14982 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C239A1D225A7795300A14982 /* Editor Extension */ = {
+			isa = PBXGroup;
+			children = (
+				C239A1D325A7795300A14982 /* SourceEditorExtension.swift */,
+				C239A1D525A7795300A14982 /* SourceEditorCommand.swift */,
+				C239A1D725A7795300A14982 /* Info.plist */,
+				C239A1D825A7795300A14982 /* Editor_Extension.entitlements */,
+			);
+			path = "Editor Extension";
+			sourceTree = "<group>";
+		};
 		C29DBCDC1FEC03C700A7EB56 = {
 			isa = PBXGroup;
 			children = (
@@ -667,7 +679,8 @@
 				C29DBD1C1FEC046600A7EB56 /* CommonSource */,
 				C29DBD1F1FEC04A200A7EB56 /* CommonTests */,
 				C228E12B258E5FB40060E476 /* MoonCode */,
-				C228E14D258E67740060E476 /* MoonCodeApp */,
+				C239A1B225A778E200A14982 /* MoonEdit */,
+				C239A1D225A7795300A14982 /* Editor Extension */,
 				C228E126258E5FB40060E476 /* Frameworks */,
 				C29DBCE71FEC03C700A7EB56 /* Products */,
 			);
@@ -678,10 +691,10 @@
 			children = (
 				C29DBCE61FEC03C700A7EB56 /* MoonKit.framework */,
 				C29DBD051FEC041400A7EB56 /* MoonKit.framework */,
-				C228E125258E5FB40060E476 /* MoonCode.appex */,
-				C228E14C258E67740060E476 /* MoonCodeApp.app */,
 				C2CCD706258EC5FB00E9923C /* MoonKitBehaviorTests.xctest */,
 				C2EDA72C25900C5E008B542D /* MoonKitPerformanceTests.xctest */,
+				C239A1B125A778E200A14982 /* MoonEdit.app */,
+				C239A1CF25A7795300A14982 /* Editor Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -764,6 +777,7 @@
 				C2E9BE4020B8AD6100A07F63 /* CircularBuffer_Generic.swift */,
 				C2873A7525A407D000870EE0 /* PassThrough.swift */,
 				C2873AAB25A5360A00870EE0 /* Clamping.swift */,
+				C2937E6825A687D10061BD92 /* Synchronizing.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -922,41 +936,41 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C228E124258E5FB40060E476 /* MoonCode */ = {
+		C239A1B025A778E200A14982 /* MoonEdit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C228E134258E5FB40060E476 /* Build configuration list for PBXNativeTarget "MoonCode" */;
+			buildConfigurationList = C239A1BE25A778E300A14982 /* Build configuration list for PBXNativeTarget "MoonEdit" */;
 			buildPhases = (
-				C228E121258E5FB40060E476 /* Sources */,
-				C228E122258E5FB40060E476 /* Frameworks */,
-				C228E123258E5FB40060E476 /* Resources */,
+				C239A1AD25A778E200A14982 /* Sources */,
+				C239A1AE25A778E200A14982 /* Frameworks */,
+				C239A1AF25A778E200A14982 /* Resources */,
+				C239A1DF25A7795300A14982 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C239A1DA25A7795300A14982 /* PBXTargetDependency */,
 			);
-			name = MoonCode;
-			productName = MoonCode;
-			productReference = C228E125258E5FB40060E476 /* MoonCode.appex */;
-			productType = "com.apple.product-type.xcode-extension";
-		};
-		C228E14B258E67740060E476 /* MoonCodeApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C228E159258E67750060E476 /* Build configuration list for PBXNativeTarget "MoonCodeApp" */;
-			buildPhases = (
-				C228E148258E67740060E476 /* Sources */,
-				C228E149258E67740060E476 /* Frameworks */,
-				C228E14A258E67740060E476 /* Resources */,
-				C228E163258E678E0060E476 /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C228E162258E678D0060E476 /* PBXTargetDependency */,
-			);
-			name = MoonCodeApp;
-			productName = MoonCodeApp;
-			productReference = C228E14C258E67740060E476 /* MoonCodeApp.app */;
+			name = MoonEdit;
+			productName = MoonEdit;
+			productReference = C239A1B125A778E200A14982 /* MoonEdit.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C239A1CE25A7795300A14982 /* Editor Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "Editor Extension" */;
+			buildPhases = (
+				C239A1CB25A7795300A14982 /* Sources */,
+				C239A1CC25A7795300A14982 /* Frameworks */,
+				C239A1CD25A7795300A14982 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Editor Extension";
+			productName = "Editor Extension";
+			productReference = C239A1CF25A7795300A14982 /* Editor Extension.appex */;
+			productType = "com.apple.product-type.xcode-extension";
 		};
 		C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */ = {
 			isa = PBXNativeTarget;
@@ -1040,10 +1054,10 @@
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Moondeer Studios";
 				TargetAttributes = {
-					C228E124258E5FB40060E476 = {
+					C239A1B025A778E200A14982 = {
 						CreatedOnToolsVersion = 12.3;
 					};
-					C228E14B258E67740060E476 = {
+					C239A1CE25A7795300A14982 = {
 						CreatedOnToolsVersion = 12.3;
 					};
 					C29DBCE51FEC03C700A7EB56 = {
@@ -1076,28 +1090,28 @@
 			targets = (
 				C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */,
 				C29DBD041FEC041400A7EB56 /* MoonKit_Mac */,
-				C228E124258E5FB40060E476 /* MoonCode */,
-				C228E14B258E67740060E476 /* MoonCodeApp */,
 				C2CCD705258EC5FB00E9923C /* MoonKitBehaviorTests */,
 				C2EDA71525900C5E008B542D /* MoonKitPerformanceTests */,
+				C239A1B025A778E200A14982 /* MoonEdit */,
+				C239A1CE25A7795300A14982 /* Editor Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C228E123258E5FB40060E476 /* Resources */ = {
+		C239A1AF25A778E200A14982 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C239A1BB25A778E300A14982 /* Preview Assets.xcassets in Resources */,
+				C239A1B825A778E300A14982 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C228E14A258E67740060E476 /* Resources */ = {
+		C239A1CD25A7795300A14982 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C228E156258E67750060E476 /* Preview Assets.xcassets in Resources */,
-				C228E153258E67750060E476 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1160,25 +1174,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C228E121258E5FB40060E476 /* Sources */ = {
+		C239A1AD25A778E200A14982 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C228E140258E5FF50060E476 /* LineJoiningCommands.swift in Sources */,
-				C228E12D258E5FB40060E476 /* SourceEditorExtension.swift in Sources */,
-				C228E13D258E5FF50060E476 /* Helpers.swift in Sources */,
-				C228E13E258E5FF50060E476 /* LineDeletingCommands.swift in Sources */,
-				C228E13F258E5FF50060E476 /* ConvertToColorLiteralCommand.swift in Sources */,
-				C228E141258E5FF50060E476 /* CommentRelatedCommands.swift in Sources */,
+				C239A1B625A778E200A14982 /* ContentView.swift in Sources */,
+				C239A1B425A778E200A14982 /* MoonEditApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C228E148258E67740060E476 /* Sources */ = {
+		C239A1CB25A7795300A14982 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C228E151258E67740060E476 /* ContentView.swift in Sources */,
-				C228E14F258E67740060E476 /* MoonCodeAppApp.swift in Sources */,
+				C239A1D425A7795300A14982 /* SourceEditorExtension.swift in Sources */,
+				C239A1D625A7795300A14982 /* SourceEditorCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1302,6 +1312,7 @@
 				C2EDA6E1258FE5D9008B542D /* Identifier.swift in Sources */,
 				C21ADEFE259BE06C000A18D7 /* UIOffset+MoonKitAdditions.swift in Sources */,
 				C21ADF46259BEBEE000A18D7 /* NSAttributedString+MoonKitAdditions.swift in Sources */,
+				C2937E6925A687D10061BD92 /* Synchronizing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1320,6 +1331,7 @@
 				C29DBD311FEC06AC00A7EB56 /* CollectionSubranges.swift in Sources */,
 				C2E3FD4A258D36FF000AA924 /* Math.swift in Sources */,
 				C2EDA818259025F6008B542D /* WeakArray.swift in Sources */,
+				C2937E6A25A687D10061BD92 /* Synchronizing.swift in Sources */,
 				C23591DD20A6423900F1C813 /* FontStyle.swift in Sources */,
 				C2EDA82125902673008B542D /* Weak.swift in Sources */,
 				C29DBD4B1FEC078C00A7EB56 /* DataConvertible.swift in Sources */,
@@ -1426,10 +1438,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C228E162258E678D0060E476 /* PBXTargetDependency */ = {
+		C239A1DA25A7795300A14982 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C228E124258E5FB40060E476 /* MoonCode */;
-			targetProxy = C228E161258E678D0060E476 /* PBXContainerItemProxy */;
+			target = C239A1CE25A7795300A14982 /* Editor Extension */;
+			targetProxy = C239A1D925A7795300A14982 /* PBXContainerItemProxy */;
 		};
 		C2CCD70D258EC5FB00E9923C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1444,108 +1456,110 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C228E132258E5FB40060E476 /* Debug */ = {
+		C239A1BF25A778E300A14982 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = MoonCode/MoonCode.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MoonEdit/MoonEdit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"MoonEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = MoonCode/Info.plist;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = MoonEdit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
-					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonCodeApp.MoonCode;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		C228E133258E5FB40060E476 /* Release */ = {
+		C239A1C025A778E300A14982 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = MoonCode/MoonCode.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MoonEdit/MoonEdit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"MoonEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = MoonCode/Info.plist;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = MoonEdit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
-					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonCodeApp.MoonCode;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
-		C228E15A258E67750060E476 /* Debug */ = {
+		C239A1DD25A7795300A14982 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = MoonCodeApp/MoonCodeApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Editor Extension/Editor_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MoonCodeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MoonCodeApp/Info.plist;
+				INFOPLIST_FILE = "Editor Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonCodeApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonEdit.Editor-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		C228E15B258E67750060E476 /* Release */ = {
+		C239A1DE25A7795300A14982 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = MoonCodeApp/MoonCodeApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Editor Extension/Editor_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MoonCodeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MoonCodeApp/Info.plist;
+				INFOPLIST_FILE = "Editor Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonCodeApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonEdit.Editor-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1887,20 +1901,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C228E134258E5FB40060E476 /* Build configuration list for PBXNativeTarget "MoonCode" */ = {
+		C239A1BE25A778E300A14982 /* Build configuration list for PBXNativeTarget "MoonEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C228E132258E5FB40060E476 /* Debug */,
-				C228E133258E5FB40060E476 /* Release */,
+				C239A1BF25A778E300A14982 /* Debug */,
+				C239A1C025A778E300A14982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C228E159258E67750060E476 /* Build configuration list for PBXNativeTarget "MoonCodeApp" */ = {
+		C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "Editor Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C228E15A258E67750060E476 /* Debug */,
-				C228E15B258E67750060E476 /* Release */,
+				C239A1DD25A7795300A14982 /* Debug */,
+				C239A1DE25A7795300A14982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

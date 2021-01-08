@@ -4,6 +4,13 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Editor Extension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>29</integer>
+		</dict>
 		<key>MoonCode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
@@ -15,6 +22,13 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>11</integer>
+		</dict>
+		<key>MoonEdit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>27</integer>
 		</dict>
 		<key>MoonKitTests copy.xcscheme_^#shared#^_</key>
 		<dict>
@@ -34,7 +48,7 @@
 		<key>MoonKit_Mac.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
 			<integer>26</integer>
 		</dict>
@@ -64,6 +78,16 @@
 			<true/>
 		</dict>
 		<key>C228E14B258E67740060E476</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C239A1B025A778E200A14982</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C239A1CE25A7795300A14982</key>
 		<dict>
 			<key>primary</key>
 			<true/>

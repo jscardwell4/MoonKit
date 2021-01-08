@@ -92,6 +92,10 @@ public protocol EnumerableType {
   static var allCases: [Self] { get }
 }
 
+public extension EnumerableType {
+  static subscript(position: Int) -> Self { allCases[position] }
+}
+
 public extension EnumerableType where Self: Equatable {
   var index: Int {
     guard let index = Self.allCases.firstIndex(of: self) else { fatalError("`allCases` does not contain \(self)") }

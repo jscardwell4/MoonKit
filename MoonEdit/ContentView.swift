@@ -1,16 +1,16 @@
 //
 //  ContentView.swift
-//  MoonCodeApp
+//  MoonEdit
 //
-//  Created by Jason Cardwell on 12/19/20.
-//  Copyright © 2020 Moondeer Studios. All rights reserved.
+//  Created by Jason Cardwell on 1/7/21.
+//  Copyright © 2021 Moondeer Studios. All rights reserved.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
+        Text("MoonEdit muthafucka")
             .padding()
     }
 }
