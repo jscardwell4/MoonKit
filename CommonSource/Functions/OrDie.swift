@@ -85,3 +85,7 @@ public func unwrapOrDie<T>(fileID: StaticString = #fileID,
 {
   unwrapOrDie(fileID: fileID, function: function, message: message, block: { value })
 }
+
+postfix operator ¿
+
+public postfix func ¿<T>(_ value: T?) -> T { unwrapOrDie(value) }

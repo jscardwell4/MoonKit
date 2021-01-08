@@ -5,8 +5,41 @@
 //  Created by Jason Cardwell on 7/26/15.
 //  Copyright © 2015 Jason Cardwell. All rights reserved.
 //
-
 import Foundation
+
+
+public func ∈ <Bound>(lhs: Bound, rhs: Range<Bound>) -> Bool { rhs.contains(lhs) }
+public func ∋ <Bound>(lhs: Range<Bound>, rhs: Bound) -> Bool { rhs ∈ lhs }
+
+public func ⊂ <Bound>(lhs: Range<Bound>, rhs: Range<Bound>) -> Bool {
+  lhs.lowerBound >= rhs.lowerBound
+    && (lhs.upperBound < rhs.upperBound
+          || (lhs.upperBound == rhs.upperBound && lhs.lowerBound > rhs.lowerBound))
+}
+
+public func ⊃ <Bound>(lhs: Range<Bound>, rhs: Range<Bound>) -> Bool { rhs ⊂ lhs }
+
+public func ⊆ <Bound>(lhs: Range<Bound>, rhs: Range<Bound>) -> Bool {
+  lhs.lowerBound >= rhs.lowerBound && lhs.upperBound <= rhs.upperBound
+}
+public func ⊇ <Bound>(lhs: Range<Bound>, rhs: Range<Bound>) -> Bool { rhs ⊆ lhs }
+
+public func ∈ <Bound>(lhs: Bound, rhs: ClosedRange<Bound>) -> Bool { rhs.contains(lhs) }
+public func ∋ <Bound>(lhs: ClosedRange<Bound>, rhs: Bound) -> Bool { rhs ∈ lhs }
+
+public func ⊂ <Bound>(lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
+  lhs.lowerBound >= rhs.lowerBound
+    && (lhs.upperBound < rhs.upperBound
+          || (lhs.upperBound == rhs.upperBound && lhs.lowerBound > rhs.lowerBound))
+}
+
+public func ⊃ <Bound>(lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool { rhs ⊂ lhs }
+
+public func ⊆ <Bound>(lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
+  lhs.lowerBound >= rhs.lowerBound && lhs.upperBound <= rhs.upperBound
+}
+public func ⊇ <Bound>(lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool { rhs ⊆ lhs }
+
 
 /// Type to represent the range of anything less than a specified value.
 public struct UnboundedLowerRange<Bound:Comparable>: Equatable {
