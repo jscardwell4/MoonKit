@@ -178,14 +178,14 @@ public final class NotificationReceptionist: NSObject {
   ///                    `queue`, `self.callbackQueue`, `OperationQueue.current`, `OperationQueue.main`.
   /// - Parameter callback: The code to run when a notification has been received.
   /// - Parameter notification: The notification received by the receptionist.
-  public func observe<N>(name: N.NotificationName,
-                      from object: N,
-                      queue: OperationQueue? = nil,
-                      callback: @escaping (_ notification: Notification) -> Void)
-    where N:NotificationDispatching
-  {
-    observe(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
-  }
+//  public func observe<N>(name: N.Name,
+//                      from object: N,
+//                      queue: OperationQueue? = nil,
+//                      callback: @escaping (_ notification: Notification) -> Void)
+//    where N:NotificationDispatching
+//  {
+//    observe(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
+//  }
 
   /// Registers with the default `NSNotificationCenter` to receive notifications named `name` from
   /// object `object`; `ObervationInfo` is created for this registration and inserted into `infos`
@@ -199,14 +199,14 @@ public final class NotificationReceptionist: NSObject {
   ///                    `queue`, `self.callbackQueue`, `OperationQueue.current`, `OperationQueue.main`.
   /// - Parameter callback: The code to run when a notification has been received.
   /// - Parameter notification: The notification received by the receptionist.
-  public func observe<N>(name: N.NotificationName,
-                      from object: N.Type,
-                      queue: OperationQueue? = nil,
-                      callback: @escaping (_ notification: Notification) -> Void)
-    where N:NotificationDispatching
-  {
-    observe(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
-  }
+//  public func observe<N>(name: N.Name,
+//                      from object: N.Type,
+//                      queue: OperationQueue? = nil,
+//                      callback: @escaping (_ notification: Notification) -> Void)
+//    where N:NotificationDispatching
+//  {
+//    observe(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
+//  }
 
   /// Registers with the default `NSNotificationCenter` to receive notifications named `name` from
   /// object `object`; `ObervationInfo` is created for this registration and inserted into `infos`
@@ -290,14 +290,14 @@ public final class NotificationReceptionist: NSObject {
   ///                    `queue`, `self.callbackQueue`, `OperationQueue.current`, `OperationQueue.main`.
   /// - Parameter callback: The code to run when a notification has been received.
   /// - Parameter notification: The notification received by the receptionist.
-  public func observeOnce<N>(name: N.NotificationName,
-                          from object: N,
-                          queue: OperationQueue? = nil,
-                          callback: @escaping (_ notification: Notification) -> Void)
-    where N:NotificationDispatching
-  {
-    observeOnce(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
-  }
+//  public func observeOnce<N>(name: N.Name,
+//                          from object: N,
+//                          queue: OperationQueue? = nil,
+//                          callback: @escaping (_ notification: Notification) -> Void)
+//    where N:NotificationDispatching
+//  {
+//    observeOnce(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
+//  }
 
   /// Registers with the default `NSNotificationCenter` to receive notifications named `name` from
   /// object `object`; `ObervationInfo` is created for this registration and inserted into `infos`
@@ -312,14 +312,14 @@ public final class NotificationReceptionist: NSObject {
   ///                    `queue`, `self.callbackQueue`, `OperationQueue.current`, `OperationQueue.main`.
   /// - Parameter callback: The code to run when a notification has been received.
   /// - Parameter notification: The notification received by the receptionist.
-  public func observeOnce<N>(name: N.NotificationName,
-                          from object: N.Type,
-                          queue: OperationQueue? = nil,
-                          callback: @escaping (_ notification: Notification) -> Void)
-    where N:NotificationDispatching
-  {
-    observeOnce(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
-  }
+//  public func observeOnce<N>(name: N.Name,
+//                          from object: N.Type,
+//                          queue: OperationQueue? = nil,
+//                          callback: @escaping (_ notification: Notification) -> Void)
+//    where N:NotificationDispatching
+//  {
+//    observeOnce(name: name.description, from: object as AnyObject?, queue: queue, callback: callback)
+//  }
 
   /// Unregisters the receptionist with the default notification center for notifications from `object`
   /// with name `name`. Does not include grouped registrations.
@@ -379,11 +379,11 @@ public final class NotificationReceptionist: NSObject {
   ///
   /// Passing `nil` for both `name` and `object` will unregister for all notifications for which the
   /// receptionist is currently registered.
-  public func stopObserving<N>(name: N.NotificationName, from object: N)
-    where N:NotificationDispatching
-  {
-    stopObserving(name: name.description, from: object as AnyObject?)
-  }
+//  public func stopObserving<N>(name: N.Name, from object: N)
+//    where N:NotificationDispatching
+//  {
+//    stopObserving(name: name.description, from: object as AnyObject?)
+//  }
 
   /// Unregisters the receptionist with the default notification center for notifications from `object`
   /// with name `name`. Does not include grouped registrations.
@@ -394,11 +394,11 @@ public final class NotificationReceptionist: NSObject {
   ///
   /// Passing `nil` for both `name` and `object` will unregister for all notifications for which the
   /// receptionist is currently registered.
-  public func stopObserving<N>(name: N.NotificationName, from object: N.Type)
-    where N:NotificationDispatching
-  {
-    stopObserving(name: name.description, from: object as AnyObject?)
-  }
+//  public func stopObserving<N>(name: N.Name, from object: N.Type)
+//    where N:NotificationDispatching
+//  {
+//    stopObserving(name: name.description, from: object as AnyObject?)
+//  }
 
   /// Unregisters the receptionist with the default notification center for all notifications from `object`
   public func stopObserving(object: AnyObject) {

@@ -99,10 +99,9 @@
 		C239A1B825A778E300A14982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C239A1B725A778E300A14982 /* Assets.xcassets */; };
 		C239A1BB25A778E300A14982 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C239A1BA25A778E300A14982 /* Preview Assets.xcassets */; };
 		C239A1D025A7795300A14982 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E127258E5FB40060E476 /* Cocoa.framework */; };
-		C239A1D125A7795300A14982 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
 		C239A1D425A7795300A14982 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1D325A7795300A14982 /* SourceEditorExtension.swift */; };
 		C239A1D625A7795300A14982 /* SourceEditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C239A1D525A7795300A14982 /* SourceEditorCommand.swift */; };
-		C239A1DB25A7795300A14982 /* Editor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C239A1CF25A7795300A14982 /* Editor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C239A1DB25A7795300A14982 /* EditorExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C239A1CF25A7795300A14982 /* EditorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C250064120C8314A005A1BEB /* OrDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* OrDie.swift */; };
 		C250064220C8314A005A1BEB /* OrDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064020C83149005A1BEB /* OrDie.swift */; };
 		C250064420C831A5005A1BEB /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250064320C831A5005A1BEB /* Logging.swift */; };
@@ -155,6 +154,8 @@
 		C2AF2098259B9F2B00EC084A /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29DBD591FEC0CE900A7EB56 /* Paths.swift */; };
 		C2BA05C425A0FA29009EAA19 /* Number_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */; };
 		C2BA05C525A0FA29009EAA19 /* Number_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05C325A0FA29009EAA19 /* Number_Extensions.swift */; };
+		C2C05AEB25A92E2D00DFF6E4 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; };
+		C2C05AEC25A92E2D00DFF6E4 /* XcodeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C228E129258E5FB40060E476 /* XcodeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2C71353258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2C71354258BBA2E00EC9458 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71350258BBA2E00EC9458 /* CircularBuffer.swift */; };
 		C2CCD606258E74F900E9923C /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E3FD2B258D313C000AA924 /* OrderedDictionary.swift */; };
@@ -298,9 +299,20 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C239A1DB25A7795300A14982 /* Editor Extension.appex in Embed App Extensions */,
+				C239A1DB25A7795300A14982 /* EditorExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2C05AED25A92E2D00DFF6E4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C2C05AEC25A92E2D00DFF6E4 /* XcodeKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -372,11 +384,11 @@
 		C239A1BA25A778E300A14982 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C239A1BC25A778E300A14982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C239A1BD25A778E300A14982 /* MoonEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonEdit.entitlements; sourceTree = "<group>"; };
-		C239A1CF25A7795300A14982 /* Editor Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Editor Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C239A1CF25A7795300A14982 /* EditorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EditorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C239A1D325A7795300A14982 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
 		C239A1D525A7795300A14982 /* SourceEditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorCommand.swift; sourceTree = "<group>"; };
 		C239A1D725A7795300A14982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C239A1D825A7795300A14982 /* Editor_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Editor_Extension.entitlements; sourceTree = "<group>"; };
+		C239A1D825A7795300A14982 /* EditorExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EditorExtension.entitlements; sourceTree = "<group>"; };
 		C250064020C83149005A1BEB /* OrDie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrDie.swift; sourceTree = "<group>"; };
 		C250064320C831A5005A1BEB /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C250064620C831F0005A1BEB /* DebugConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsoleView.swift; sourceTree = "<group>"; };
@@ -515,7 +527,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C239A1D025A7795300A14982 /* Cocoa.framework in Frameworks */,
-				C239A1D125A7795300A14982 /* XcodeKit.framework in Frameworks */,
+				C2C05AEB25A92E2D00DFF6E4 /* XcodeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,7 +679,7 @@
 				C239A1D325A7795300A14982 /* SourceEditorExtension.swift */,
 				C239A1D525A7795300A14982 /* SourceEditorCommand.swift */,
 				C239A1D725A7795300A14982 /* Info.plist */,
-				C239A1D825A7795300A14982 /* Editor_Extension.entitlements */,
+				C239A1D825A7795300A14982 /* EditorExtension.entitlements */,
 			);
 			path = "Editor Extension";
 			sourceTree = "<group>";
@@ -694,7 +706,7 @@
 				C2CCD706258EC5FB00E9923C /* MoonKitBehaviorTests.xctest */,
 				C2EDA72C25900C5E008B542D /* MoonKitPerformanceTests.xctest */,
 				C239A1B125A778E200A14982 /* MoonEdit.app */,
-				C239A1CF25A7795300A14982 /* Editor Extension.appex */,
+				C239A1CF25A7795300A14982 /* EditorExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -955,21 +967,22 @@
 			productReference = C239A1B125A778E200A14982 /* MoonEdit.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C239A1CE25A7795300A14982 /* Editor Extension */ = {
+		C239A1CE25A7795300A14982 /* EditorExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "Editor Extension" */;
+			buildConfigurationList = C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "EditorExtension" */;
 			buildPhases = (
 				C239A1CB25A7795300A14982 /* Sources */,
 				C239A1CC25A7795300A14982 /* Frameworks */,
 				C239A1CD25A7795300A14982 /* Resources */,
+				C2C05AED25A92E2D00DFF6E4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Editor Extension";
+			name = EditorExtension;
 			productName = "Editor Extension";
-			productReference = C239A1CF25A7795300A14982 /* Editor Extension.appex */;
+			productReference = C239A1CF25A7795300A14982 /* EditorExtension.appex */;
 			productType = "com.apple.product-type.xcode-extension";
 		};
 		C29DBCE51FEC03C700A7EB56 /* MoonKit_iOS */ = {
@@ -1093,7 +1106,7 @@
 				C2CCD705258EC5FB00E9923C /* MoonKitBehaviorTests */,
 				C2EDA71525900C5E008B542D /* MoonKitPerformanceTests */,
 				C239A1B025A778E200A14982 /* MoonEdit */,
-				C239A1CE25A7795300A14982 /* Editor Extension */,
+				C239A1CE25A7795300A14982 /* EditorExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1440,7 +1453,7 @@
 /* Begin PBXTargetDependency section */
 		C239A1DA25A7795300A14982 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C239A1CE25A7795300A14982 /* Editor Extension */;
+			target = C239A1CE25A7795300A14982 /* EditorExtension */;
 			targetProxy = C239A1D925A7795300A14982 /* PBXContainerItemProxy */;
 		};
 		C2CCD70D258EC5FB00E9923C /* PBXTargetDependency */ = {
@@ -1462,25 +1475,33 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_ENTITLEMENTS = MoonEdit/MoonEdit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MoonEdit/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
+				ENABLE_PREVIEWS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = MoonEdit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1491,24 +1512,32 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_ENTITLEMENTS = MoonEdit/MoonEdit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MoonEdit/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
+				ENABLE_PREVIEWS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = MoonEdit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1516,51 +1545,75 @@
 		C239A1DD25A7795300A14982 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = "Editor Extension/Editor_Extension.entitlements";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_CODE_COVERAGE = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Editor Extension/EditorExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "Editor Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonEdit.Editor-Extension";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit.SourceEditorExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = all;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Debug;
 		};
 		C239A1DE25A7795300A14982 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = "Editor Extension/Editor_Extension.entitlements";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_CODE_COVERAGE = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Editor Extension/EditorExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = JT6STF4SHA;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "Editor Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.MoonEdit.Editor-Extension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondeerstudios.MoonEdit.SourceEditorExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = all;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
@@ -1910,7 +1963,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "Editor Extension" */ = {
+		C239A1DC25A7795300A14982 /* Build configuration list for PBXNativeTarget "EditorExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C239A1DD25A7795300A14982 /* Debug */,

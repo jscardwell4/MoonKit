@@ -7,16 +7,9 @@
 		<key>Editor Extension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
-			<integer>29</integer>
-		</dict>
-		<key>MoonCode.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>28</integer>
 		</dict>
 		<key>MoonCodeApp.xcscheme_^#shared#^_</key>
 		<dict>
@@ -26,9 +19,9 @@
 		<key>MoonEdit.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
-			<integer>27</integer>
+			<integer>26</integer>
 		</dict>
 		<key>MoonKitTests copy.xcscheme_^#shared#^_</key>
 		<dict>
@@ -50,7 +43,7 @@
 			<key>isShown</key>
 			<true/>
 			<key>orderHint</key>
-			<integer>26</integer>
+			<integer>25</integer>
 		</dict>
 		<key>MoonKit_iOS.xcscheme</key>
 		<dict>

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C239A1CE25A7795300A14982"
-               BuildableName = "Editor Extension.appex"
-               BlueprintName = "Editor Extension"
+               BuildableName = "EditorExtension.appex"
+               BlueprintName = "EditorExtension"
                ReferencedContainer = "container:MoonKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
