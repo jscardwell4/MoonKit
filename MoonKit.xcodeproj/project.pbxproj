@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C21A9C9E25AA78080066EA26 /* TripOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21A9C9D25AA78080066EA26 /* TripOnce.swift */; };
+		C21A9C9F25AA78080066EA26 /* TripOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21A9C9D25AA78080066EA26 /* TripOnce.swift */; };
 		C21ABA4E259196D2009C5C6B /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21ABA4D259196D2009C5C6B /* UInt128.swift */; };
 		C21ABA4F259196D2009C5C6B /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21ABA4D259196D2009C5C6B /* UInt128.swift */; };
 		C21ADE75259BB3A6000A18D7 /* NotificationReceptionist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21ADE74259BB3A6000A18D7 /* NotificationReceptionist.swift */; };
@@ -318,6 +320,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C21A9C9D25AA78080066EA26 /* TripOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripOnce.swift; sourceTree = "<group>"; };
 		C21ABA4D259196D2009C5C6B /* UInt128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
 		C21ADE74259BB3A6000A18D7 /* NotificationReceptionist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationReceptionist.swift; sourceTree = "<group>"; };
 		C21ADE83259BD956000A18D7 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -790,6 +793,7 @@
 				C2873A7525A407D000870EE0 /* PassThrough.swift */,
 				C2873AAB25A5360A00870EE0 /* Clamping.swift */,
 				C2937E6825A687D10061BD92 /* Synchronizing.swift */,
+				C21A9C9D25AA78080066EA26 /* TripOnce.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -1262,6 +1266,7 @@
 				C21ADEF6259BE063000A18D7 /* UIEdgeInsets+MoonKitAdditions.swift in Sources */,
 				C21ABA4E259196D2009C5C6B /* UInt128.swift in Sources */,
 				C250064720C831F0005A1BEB /* DebugConsoleView.swift in Sources */,
+				C21A9C9E25AA78080066EA26 /* TripOnce.swift in Sources */,
 				C2EDA7A525901F56008B542D /* BitMap.swift in Sources */,
 				C2E3FD3A258D328A000AA924 /* Range.swift in Sources */,
 				C29DBD401FEC071700A7EB56 /* Strings.swift in Sources */,
@@ -1359,6 +1364,7 @@
 				C2EDA843259031FA008B542D /* JSONValueRelatedExtensions.swift in Sources */,
 				C2258AA32591148200A4BED4 /* List.swift in Sources */,
 				C2731763258D6E2400554FB2 /* CountableRangeMap.swift in Sources */,
+				C21A9C9F25AA78080066EA26 /* TripOnce.swift in Sources */,
 				C2EDA65A258FCA1A008B542D /* CollectionManipulations.swift in Sources */,
 				C2731725258D586100554FB2 /* SetAlgebraType.swift in Sources */,
 				C29DBD411FEC071700A7EB56 /* Strings.swift in Sources */,
