@@ -7,34 +7,50 @@
 //
 
 import Foundation
-import UIKit
-//import SpriteKit
+// import SpriteKit
 import Swift
+import UIKit
+
+// MARK: - PrettyPrint
 
 public protocol PrettyPrint { var prettyDescription: String { get } }
 
-public protocol Valued {
+// MARK: - Valued
+
+public protocol Valued
+{
   associatedtype ValueType
   var value: ValueType { get }
 }
 
-public protocol IntValued {
+// MARK: - IntValued
+
+public protocol IntValued
+{
   var value: Int { get }
 }
 
-public func withWeakReferenceToObject<T:AnyObject, U, R>(_ object: T?, body: @escaping (T?, U) -> R) -> (U) -> R {
+public func withWeakReferenceToObject<T: AnyObject, U, R>(
+  _ object: T?,
+  body: @escaping (T?, U) -> R
+) -> (U) -> R
+{
   return { [weak object] in body(object, $0) }
 }
 
-extension NSObject {
-  public func withWeakReference<T:NSObject, U, R>(_ body: @escaping (T?, U) -> R) -> (U) -> R {
+public extension NSObject
+{
+  func withWeakReference<T: NSObject, U, R>(_ body: @escaping (T?, U) -> R) -> (U) -> R
+  {
     return withWeakReferenceToObject(self as? T, body: body)
   }
 }
 
-//extension GCDAsyncUdpSocketError: Error {}
+// MARK: - JSONExport
 
-//public protocol ArithmeticType {
+// extension GCDAsyncUdpSocketError: Error {}
+
+// public protocol ArithmeticType {
 //  static func +(lhs: Self, rhs: Self) -> Self
 //  static func -(lhs: Self, rhs: Self) -> Self
 //  static func *(lhs: Self, rhs: Self) -> Self
@@ -45,164 +61,260 @@ extension NSObject {
 ////  init(intMax: IntMax)
 //  init()
 //  var isZero: Bool { get }
-//}
+// }
 //
-//extension ArithmeticType where Self:BitwiseOperations, Self:Equatable {
+// extension ArithmeticType where Self:BitwiseOperations, Self:Equatable {
 //  public var isZero: Bool { return self == Self.allZeros }
-//}
+// }
 
-public protocol JSONExport {
+public protocol JSONExport
+{
   var jsonString: String { get }
 }
 
-public protocol KeyValueCollectionType: Collection {
+// MARK: - KeyValueCollectionType
+
+public protocol KeyValueCollectionType: Collection
+{
   associatedtype Key: Hashable
   associatedtype Value
-  subscript (key: Key) -> Value? { get }
+  subscript(key: Key) -> Value? { get }
   associatedtype KeysType: Collection
   associatedtype ValuesType: Collection
   var keys: KeysType { get }
   var values: ValuesType { get }
 }
 
-public protocol KeyedContainer {
+// MARK: - KeyedContainer
+
+public protocol KeyedContainer
+{
   associatedtype Key: Hashable
   func hasKey(_ key: Key) -> Bool
   func valueForKey(_ key: Key) -> Any?
 }
 
-public protocol KeySearchable {
+// MARK: - KeySearchable
+
+public protocol KeySearchable
+{
   var allValues: [Any] { get }
 }
 
-public protocol NestingContainer {
+// MARK: - NestingContainer
+
+public protocol NestingContainer
+{
   var topLevelObjects: [Any] { get }
   func topLevelObjects<T>(_ type: T.Type) -> [T]
   var allObjects: [Any] { get }
   func allObjects<T>(_ type: T.Type) -> [T]
 }
 
+// MARK: - Dictionary + KeyValueCollectionType
+
 extension Dictionary: KeyValueCollectionType {}
 
-public protocol Presentable {
+// MARK: - Presentable
+
+public protocol Presentable
+{
   var title: String { get }
 }
 
-public protocol EnumerableType {
+// MARK: - EnumerableType
+
+public protocol EnumerableType
+{
   static var allCases: [Self] { get }
 }
 
-public extension EnumerableType {
+public extension EnumerableType
+{
   static subscript(position: Int) -> Self { allCases[position] }
 }
 
-public extension EnumerableType where Self: Equatable {
-  var index: Int {
-    guard let index = Self.allCases.firstIndex(of: self) else { fatalError("`allCases` does not contain \(self)") }
+public extension EnumerableType where Self: Equatable
+{
+  var index: Int
+  {
+    guard let index = Self.allCases.firstIndex(of: self)
+    else { fatalError("`allCases` does not contain \(self)") }
     return index
   }
-  init(index: Int) {
+
+  init(index: Int)
+  {
     guard Self.allCases.indices.contains(index) else { fatalError("index out of bounds") }
     self = Self.allCases[index]
   }
 }
 
-public protocol KeyType: RawRepresentable, Hashable {
+public extension CaseIterable where Self.AllCases == [Self], Self: Equatable
+{
+  var index: Int
+  {
+    guard let index = Self.allCases.firstIndex(of: self)
+    else { fatalError("`allCases` does not contain \(self)") }
+    return index
+  }
+
+  init(index: Int)
+  {
+    guard Self.allCases.indices.contains(index) else { fatalError("index out of bounds") }
+    self = Self.allCases[index]
+  }
+}
+
+// MARK: - KeyType
+
+public protocol KeyType: RawRepresentable, Hashable
+{
   var key: String { get }
 }
 
-public extension KeyType where Self.RawValue == String {
+public extension KeyType where Self.RawValue == String
+{
   var key: String { return rawValue }
   var hashValue: Int { return rawValue.hashValue }
 }
 
-public func ==<K:KeyType>(lhs: K, rhs: K) -> Bool { return lhs.key == rhs.key }
+public func == <K: KeyType>(lhs: K, rhs: K) -> Bool { return lhs.key == rhs.key }
 
-public extension EnumerableType {
-  static func enumerate( _ block: (Self) -> Void) { allCases.forEach(block) }
+public extension EnumerableType
+{
+  static func enumerate(_ block: (Self) -> Void) { allCases.forEach(block) }
 }
 
 #if os(iOS)
-public protocol ImageAssetLiteralType {
+public protocol ImageAssetLiteralType
+{
   var image: UIImage { get }
 }
 
-public extension ImageAssetLiteralType where Self:RawRepresentable, Self.RawValue == String {
+public extension ImageAssetLiteralType where Self: RawRepresentable,
+                                             Self.RawValue == String
+{
   var image: UIImage { return UIImage(named: rawValue)! }
 }
 
-public extension ImageAssetLiteralType where Self:EnumerableType {
-  static var allImages: [UIImage] { return allCases.map({$0.image}) }
+public extension ImageAssetLiteralType where Self: EnumerableType
+{
+  static var allImages: [UIImage] { return allCases.map { $0.image } }
 }
-import class SpriteKit.SKTextureAtlas
+
 import class SpriteKit.SKTexture
-public protocol TextureAssetLiteralType {
+import class SpriteKit.SKTextureAtlas
+public protocol TextureAssetLiteralType
+{
   static var atlas: SKTextureAtlas { get }
   var texture: SKTexture { get }
 }
 
-public extension TextureAssetLiteralType where Self:RawRepresentable, Self.RawValue == String {
+public extension TextureAssetLiteralType where Self: RawRepresentable,
+                                               Self.RawValue == String
+{
   var texture: SKTexture { return Self.atlas.textureNamed(rawValue) }
 }
 
-public extension TextureAssetLiteralType where Self:EnumerableType {
-  static var allTextures: [SKTexture] { return allCases.map({$0.texture}) }
+public extension TextureAssetLiteralType where Self: EnumerableType
+{
+  static var allTextures: [SKTexture] { return allCases.map { $0.texture } }
 }
 
-  #endif
+#endif
+
+// MARK: - IntegerDivisible
 
 // causes ambiguity
-public protocol IntegerDivisible {
-  static func /(lhs: Self, rhs:Int) -> Self
+public protocol IntegerDivisible
+{
+  static func / (lhs: Self, rhs: Int) -> Self
 }
 
-public protocol Additive {
+// MARK: - Additive
+
+public protocol Additive
+{
   static func + (lhs: Self, rhs: Self) -> Self
-  static func +=(lhs: inout Self, rhs: Self)
+  static func += (lhs: inout Self, rhs: Self)
 }
-public protocol Subtractive {
+
+// MARK: - Subtractive
+
+public protocol Subtractive
+{
   static func - (lhs: Self, rhs: Self) -> Self
-  static func -=(lhs: inout Self, rhs: Self)
+  static func -= (lhs: inout Self, rhs: Self)
 }
-public protocol Multiplicative {
+
+// MARK: - Multiplicative
+
+public protocol Multiplicative
+{
   static func * (lhs: Self, rhs: Self) -> Self
-  static func *=(lhs: inout Self, rhs: Self)
+  static func *= (lhs: inout Self, rhs: Self)
 }
-public protocol Divisive {
+
+// MARK: - Divisive
+
+public protocol Divisive
+{
   static func / (lhs: Self, rhs: Self) -> Self
-  static func /=(lhs: inout Self, rhs: Self)
+  static func /= (lhs: inout Self, rhs: Self)
 }
-public protocol BitShifting {
+
+// MARK: - BitShifting
+
+public protocol BitShifting
+{
   static func >> (lhs: Self, rhs: Self) -> Self
   static func >>= (lhs: inout Self, rhs: Self)
   static func << (lhs: Self, rhs: Self) -> Self
   static func <<= (lhs: inout Self, rhs: Self)
 }
 
-public protocol OptionalSubscriptingCollectionType: Collection {
-  subscript (position: Optional<Self.Index>) -> Self.Iterator.Element? { get }
+// MARK: - OptionalSubscriptingCollectionType
+
+public protocol OptionalSubscriptingCollectionType: Collection
+{
+  subscript(position: Self.Index?) -> Self.Iterator.Element? { get }
 }
 
+// MARK: - Named
 
 /** Protocol for an object guaranteed to have a name */
-public protocol Named {
+public protocol Named
+{
   var name: String { get }
 }
 
-public protocol DynamicallyNamed: Named {
+// MARK: - DynamicallyNamed
+
+public protocol DynamicallyNamed: Named
+{
   var name: String { get set }
 }
 
+// MARK: - Nameable
+
 /** Protocol for an object that may have a name */
-public protocol Nameable {
+public protocol Nameable
+{
   var name: String? { get }
 }
 
+// MARK: - Renameable
+
 /** Protocol for an object that may have a name and for which a name may be set */
-public protocol Renameable: Nameable {
+public protocol Renameable: Nameable
+{
   var name: String? { get set }
 }
 
-public protocol StringValueConvertible {
+// MARK: - StringValueConvertible
+
+public protocol StringValueConvertible
+{
   var stringValue: String { get }
 }
