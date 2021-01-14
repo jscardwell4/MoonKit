@@ -9,6 +9,8 @@ import Foundation
 import Darwin
 import Accelerate
 import AudioToolbox
+import CoreAudio
+import AVFoundation
 
 // MARK: - AudioBufferList
 
